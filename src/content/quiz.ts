@@ -1,0 +1,181 @@
+import type { QuizItem } from "./types";
+
+export const quizItems: QuizItem[] = [
+  {
+    id: "qz-parties-poupe",
+    type: "qcm",
+    conceptIds: ["c-poupe", "c-proue"],
+    enonce: "Quelle partie du bateau se trouve à l'opposé de la proue ?",
+    options: ["Le cockpit", "La poupe", "Le pont", "La bôme"],
+    reponseIndex: 1,
+    explication: "La poupe est l'arrière du bateau, à l'opposé de la proue (l'avant).",
+  },
+  {
+    id: "qz-babord-vrai-faux",
+    type: "vrai-faux",
+    conceptIds: ["c-babord"],
+    enonce: "Bâbord est toujours le côté gauche du bateau, quel que soit l'endroit où l'on se trouve à bord.",
+    reponse: true,
+    explication: "Contrairement à « gauche » et « droite », bâbord et tribord ne dépendent pas de l'orientation de la personne : ils désignent toujours le même côté du bateau.",
+  },
+  {
+    id: "qz-vent-apparent",
+    type: "qcm",
+    conceptIds: ["c-vent-apparent", "c-vent-reel"],
+    enonce: "Qu'est-ce que le vent apparent ?",
+    options: [
+      "Le vent mesuré par la météo avant de partir",
+      "Le vent réellement ressenti à bord, combinaison du vent réel et du déplacement du bateau",
+      "Un synonyme du vent réel",
+      "Le vent uniquement présent au près",
+    ],
+    reponseIndex: 1,
+    explication: "Le vent apparent est ce que l'équipage ressent réellement : il dépend à la fois du vent réel et de la vitesse/direction du bateau.",
+  },
+  {
+    id: "qz-amure-vrai-faux",
+    type: "vrai-faux",
+    conceptIds: ["c-amure-tribord", "c-amure-babord"],
+    enonce: "L'amure d'un bateau indique la voile qui est actuellement hissée.",
+    reponse: false,
+    explication: "L'amure indique le côté du bateau d'où vient le vent (tribord amure ou bâbord amure), pas la voile utilisée.",
+  },
+  {
+    id: "qz-allures-association",
+    type: "association",
+    conceptIds: [
+      "c-allure-pres",
+      "c-allure-travers",
+      "c-allure-vent-arriere",
+    ],
+    enonce: "Associe chaque allure à sa description.",
+    paires: [
+      { gauche: "Le près", droite: "Au plus proche du vent, juste avant le lit du vent" },
+      { gauche: "Le travers", droite: "Le vent arrive à 90° du bateau" },
+      { gauche: "Le vent arrière", droite: "Le vent pousse directement par l'arrière" },
+    ],
+    explication: "L'allure se définit uniquement par l'angle entre le cap du bateau et la direction du vent réel.",
+  },
+  {
+    id: "qz-cordages-association",
+    type: "association",
+    conceptIds: ["c-ecoute", "c-drisse", "c-winch"],
+    enonce: "Associe chaque élément à sa fonction.",
+    paires: [
+      { gauche: "La drisse", droite: "Hisse une voile" },
+      { gauche: "L'écoute", droite: "Règle l'angle d'une voile déjà hissée" },
+      { gauche: "Le winch", droite: "Démultiplie la force pour border un cordage" },
+    ],
+    explication: "Trois éléments, trois rôles bien distincts — indispensables pour comprendre une consigne à bord.",
+  },
+  {
+    id: "qz-reconnaissance-allure",
+    type: "reconnaissance",
+    conceptIds: ["c-allure-travers"],
+    enonce: "Regarde le schéma : quelle allure ce bateau adopte-t-il ?",
+    illustration: "quiz-point-of-sail-beam",
+    options: ["Le près", "Le travers", "Le grand largue", "Le vent arrière"],
+    reponseIndex: 1,
+    explication: "La flèche de vent arrive perpendiculairement à l'axe du bateau : c'est l'allure du travers.",
+  },
+  {
+    id: "qz-reconnaissance-partie",
+    type: "reconnaissance",
+    conceptIds: ["c-bome"],
+    enonce: "Sur ce schéma, quelle est la pièce mise en évidence ?",
+    illustration: "quiz-boat-part-boom",
+    options: ["Le mât", "La bôme", "Le safran", "L'étai"],
+    reponseIndex: 1,
+    explication: "C'est la bôme : l'espar horizontal qui tient le bas de la grand-voile.",
+  },
+  {
+    id: "qz-scenario-vent-forcit",
+    type: "scenario",
+    conceptIds: ["c-vent-force", "c-reduire-toile"],
+    situation:
+      "Tu navigues au près. Le vent forcit rapidement. Le bateau gîte beaucoup et devient difficile à contrôler.",
+    options: [
+      "Augmenter la surface de voile",
+      "Prendre un ris pour réduire la toile",
+      "Empanner",
+      "Affaler immédiatement toutes les voiles",
+    ],
+    reponseIndex: 1,
+    explication:
+      "Quand le vent forcit, réduire la toile (prendre un ris) permet de garder un bateau plus équilibré et contrôlable, sans pour autant tout affaler et perdre la propulsion.",
+    chronometre: true,
+  },
+  {
+    id: "qz-scenario-priorite-amures",
+    type: "scenario",
+    conceptIds: ["c-priorite-amures", "c-amure-tribord", "c-amure-babord"],
+    situation: "Tu navigues tribord amure. Un autre voilier arrive et navigue bâbord amure. Vos routes se croisent.",
+    options: [
+      "C'est à toi de t'écarter",
+      "C'est à l'autre voilier de s'écarter",
+      "Le plus rapide des deux a la priorité",
+      "Chacun garde son cap, il n'y a pas de règle",
+    ],
+    reponseIndex: 1,
+    explication:
+      "Règle officielle (RIPAM / COLERG, règle 12) : entre deux voiliers, le bateau bâbord amure doit s'écarter du bateau tribord amure. Cette règle est approfondie et nuancée au Niveau 7 — elle ne remplace pas une formation encadrée.",
+  },
+  {
+    id: "qz-travers-vrai-faux",
+    type: "vrai-faux",
+    conceptIds: ["c-travers-mot"],
+    enonce: "« Par le travers tribord » signifie qu'un objet se trouve droit devant le bateau.",
+    reponse: false,
+    explication: "Le travers désigne une direction perpendiculaire (90°) à l'axe du bateau, pas devant.",
+  },
+  {
+    id: "qz-lit-du-vent",
+    type: "qcm",
+    conceptIds: ["c-lit-du-vent"],
+    enonce: "Que se passe-t-il si un voilier essaie d'avancer directement dans le lit du vent ?",
+    options: [
+      "Il avance plus vite qu'au près",
+      "Les voiles ne portent pas, le bateau ne peut pas avancer dans cet axe",
+      "C'est l'allure du vent arrière",
+      "Rien de particulier",
+    ],
+    reponseIndex: 1,
+    explication: "Face au vent, dans le lit du vent, les voiles ne peuvent pas être gonflées : c'est une zone où l'on ne peut pas naviguer directement.",
+  },
+  {
+    id: "qz-gite-qcm",
+    type: "qcm",
+    conceptIds: ["c-gite"],
+    enonce: "Comment s'appelle l'inclinaison latérale du bateau sous l'effet du vent ?",
+    options: ["La dérive", "La gîte", "L'abattée", "Le ris"],
+    reponseIndex: 1,
+    explication: "La gîte est l'inclinaison du bateau causée par la pression du vent dans les voiles.",
+  },
+  {
+    id: "qz-voiles-qcm",
+    type: "qcm",
+    conceptIds: ["c-spi-notion", "c-foc-notion"],
+    enonce: "Le génois se distingue du foc principalement par :",
+    options: [
+      "Sa couleur",
+      "Sa taille : il est plus grand et recouvre en partie la grand-voile",
+      "Le fait qu'il ne se hisse pas avec une drisse",
+      "Il n'y a aucune différence",
+    ],
+    reponseIndex: 1,
+    explication: "Le génois est une voile d'avant plus grande que le foc, qui recouvre partiellement la grand-voile.",
+  },
+  {
+    id: "qz-barre-vrai-faux",
+    type: "vrai-faux",
+    conceptIds: ["c-barre", "c-safran"],
+    enonce: "Avec une roue à barre, tourner vers tribord fait tourner le bateau vers tribord.",
+    reponse: true,
+    explication: "La roue a un sens direct, contrairement à la barre franche dont le mouvement est inversé.",
+  },
+];
+
+export function getQuizItemsByConcepts(conceptIds: string[]): QuizItem[] {
+  const set = new Set(conceptIds);
+  return quizItems.filter((q) => q.conceptIds.some((c) => set.has(c)));
+}
