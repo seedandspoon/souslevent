@@ -30,7 +30,10 @@ export function AlluresExperience() {
   const d = distanceAuVent(angle);
   const enZoneInterdite = allure.id === "face-au-vent";
 
-  const boomAngle = Math.min(80, Math.max(6, d * 0.85));
+  // Bornée pour que la bôme reste toujours visuellement distincte du mât
+  // (jamais quasi-colinéaire) sans pour autant dépasser la coque de façon
+  // disproportionnée à vent arrière — voir SKILL.md "La voile et la bôme".
+  const boomAngle = Math.min(72, Math.max(16, d * 0.75));
   const sign = amure === "babord" ? 1 : -1;
 
   const atteint = mode === "defi" && allure.id === cible.id;

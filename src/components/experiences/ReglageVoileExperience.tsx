@@ -28,7 +28,9 @@ export function ReglageVoileExperience() {
   const [slider, setSlider] = useState(50);
 
   const chip = ALLURES_CHIPS.find((c) => c.id === chipId)!;
-  const boomAngle = 6 + (slider / 100) * 78; // 6° (bordé) .. 84° (choqué)
+  // Bornée pour que la bôme reste visuellement distincte du mât même
+  // bordée au maximum — voir SKILL.md "La voile et la bôme".
+  const boomAngle = 10 + (slider / 100) * 68; // 10° (bordé) .. 78° (choqué)
   const optimal = chip.windAngle / 2;
   const ecart = boomAngle - optimal;
 
