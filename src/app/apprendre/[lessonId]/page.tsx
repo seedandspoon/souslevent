@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Check, Clock, PartyPopper } from "lucide-react";
+import { ChevronLeft, Check, Clock, PartyPopper, Hand, ArrowRight } from "lucide-react";
 import clsx from "clsx";
 import { getLesson } from "@/content/lessons";
 import { BlockRenderer } from "@/components/lessons/BlockRenderer";
@@ -13,6 +13,7 @@ import { Card } from "@/components/ui/Card";
 import { useIsLessonComplete } from "@/lib/hooks";
 import { marquerLeconTerminee, enregistrerReponse } from "@/lib/progress";
 import { getNextLesson, getAllLessonsOrdered } from "@/lib/curriculum";
+import { LESSON_EXPERIENCE_LINKS } from "@/lib/experienceLinks";
 import { db } from "@/lib/db";
 import { useLiveQuery } from "dexie-react-hooks";
 
@@ -73,6 +74,18 @@ export default function LessonPage() {
             )}
           </div>
         </header>
+
+        {LESSON_EXPERIENCE_LINKS[lesson.id] && (
+          <Link href={LESSON_EXPERIENCE_LINKS[lesson.id].href}>
+            <div className="rounded-xl bg-brand-700 p-4 flex items-center gap-3 hover:opacity-95 transition-opacity">
+              <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                <Hand size={16} className="text-white" />
+              </div>
+              <p className="text-sm font-medium text-white flex-1">{LESSON_EXPERIENCE_LINKS[lesson.id].label}</p>
+              <ArrowRight size={16} className="text-white/70 shrink-0" />
+            </div>
+          </Link>
+        )}
 
         {lesson.blocs.map((bloc, i) => (
           <BlockRenderer key={i} bloc={bloc} />

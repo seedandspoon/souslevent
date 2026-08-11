@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Anchor, ChevronRight, Flame, Sparkles } from "lucide-react";
+import { Anchor, ChevronRight, Flame, Sparkles, Hand } from "lucide-react";
 import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { SkillBar } from "@/components/ui/SkillBar";
 import { LinkButton } from "@/components/ui/Button";
@@ -58,6 +59,21 @@ export default function AccueilPage() {
       </header>
 
       <div className="flex flex-col gap-4">
+        <Link href="/experiences">
+          <div className="rounded-2xl p-4 flex items-center gap-3 bg-brand-700 hover:opacity-95 transition-opacity">
+            <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+              <Hand size={18} className="text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <Badge tone="accent" className="mb-1">
+                Nouveau
+              </Badge>
+              <p className="text-sm font-medium text-white">Apprends en manipulant</p>
+            </div>
+            <ChevronRight size={16} className="text-white/70 shrink-0" />
+          </div>
+        </Link>
+
         {prochaineLecon && (
           <Link href={`/apprendre/${prochaineLecon.id}`}>
             <Card className="p-5 hover:border-brand-300 transition-colors">
