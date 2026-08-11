@@ -87,6 +87,31 @@ Parties à distinguer visuellement (pas seulement nommables) : coque, mât,
 grand-voile, foc/génois, bôme, barre/safran. Voir la recette de coque et le
 gabarit de proportions dans `references/svg-techniques.md`.
 
+### Règle : le voilier de référence porte deux voiles
+
+Le voilier pédagogique standard de l'application se représente **avec sa
+grand-voile ET sa voile d'avant (foc/génois)**, pas une seule. C'est la
+valeur par défaut de `SailboatDiagram` — ne dessine une seule voile que
+lorsque la notion étudiée porte volontairement sur une voile précise
+(ex. une leçon dédiée uniquement au réglage du foc). Dans tous les autres
+cas, les deux voiles sont présentes, même si l'interaction ne permet de
+régler que l'une des deux pour l'instant : la priorité est que
+l'utilisateur apprenne sur la silhouette réelle d'un voilier, pas sur une
+version simplifiée à une seule voile qui ne correspond à rien en
+navigation.
+
+Position relative, non négociable :
+- **Grand-voile** : derrière le mât, le long de la bôme — le guindant
+  colle au mât, la bordure colle à la bôme.
+- **Foc/génois** : devant le mât, attaché à l'étai (le câble qui va du
+  mât vers la proue) — jamais attaché à la bôme, qui n'appartient qu'à la
+  grand-voile.
+
+Les deux voiles doivent réagir ensemble et de façon cohérente au même
+vent (voir section suivante) : c'est ce qui les fait lire comme deux
+pièces d'un même bateau plutôt que comme deux formes ajoutées côte à
+côte.
+
 ## Le vent
 
 Une seule convention, partout dans l'app. Flèche épaisse (≥4px), longue,
@@ -107,7 +132,18 @@ doit changer réellement selon l'état :
 
 La bôme est un **spar physique** (trait épais avec bouts arrondis, pas une
 ligne fine) — elle doit se lire comme une pièce rigide, pas comme un axe
-géométrique abstrait.
+géométrique abstrait. Elle n'appartient qu'à la grand-voile : le foc n'a
+pas de bôme, son bord libre (la chute) flotte sans spar, ce qui est en soi
+une différence visuelle utile entre les deux voiles.
+
+Le foc/génois suit les mêmes règles que la grand-voile (surface remplie,
+ventre qui change avec l'état) mais avec sa propre géométrie : point
+d'amure à l'étai/la proue, point de drisse près du haut du mât, point
+d'écoute libre qui pivote avec le réglage — jamais un simple triangle
+identique à la grand-voile redimensionné. Les deux voiles changent
+d'état (gonflée/faseille/trop bordée) ensemble et de façon cohérente
+quand le bateau change de cap ou d'allure : c'est cette réaction commune
+au même vent qui les fait comprendre comme deux pièces du même bateau.
 
 ## Profondeur — dessus / dessous
 
@@ -180,11 +216,21 @@ redessiner un bateau/une voile/un vent en SVG brut à chaque fois — c'est ce
 qui garantit que la convention reste cohérente dans le temps sans qu'il
 faille relire cette skill à chaque diagramme.
 
+- **`SailboatDiagram`** — le voilier complet et composable : coque, mât,
+  bôme, grand-voile, foc, vent, tout piloté par props (cap, angle de
+  bôme/côté sous le vent, état de chaque voile). **Point d'entrée par
+  défaut pour toute nouvelle expérience avec un bateau** — compose les
+  primitives ci-dessous plutôt que de les assembler à la main à chaque
+  fois. Affiche les deux voiles par défaut (`showJib` à `false` pour les
+  cas volontairement à une seule voile, voir règle ci-dessus).
 - **`SailboatHull`** — coque + orientation (asymétrie proue/poupe), point
   d'ancrage pour mât et safran.
 - **`WindIndicator`** — flèche de vent world-frame, longueur/angle en props.
-- **`Sail`** — surface de voile réactive (angle de bôme, état
+- **`Sail`** — surface de grand-voile réactive (angle de bôme, état
   bon/trop-bordée/pas-assez-bordée en props → forme et couleur en découlent).
+- **`Jib`** — surface de foc/génois réactive, même logique d'état que
+  `Sail` mais géométrie propre (attaché à l'étai, devant le mât, pas de
+  bôme).
 - **`Boom`** — spar physique, pivote autour du point de mât.
 - **`Rope`** — segment de cordage épais, `role="dormant" | "courant"`.
 - **`RopeEnd`** — embout arrondi marquant un bout libre.
@@ -206,8 +252,11 @@ Détails de props et exemples d'usage : `references/svg-techniques.md`.
   faire migrer vers les composants ci-dessus progressivement, pas en
   urgence.
 - `src/components/experiences/AlluresExperience.tsx` et
-  `NoeudChaiseExperience.tsx` — les deux références officielles une fois
-  reconstruites avec cette skill. Regarde-les en premier pour un exemple
-  vivant de chaque convention.
-- `src/components/experiences/ReglageVoileExperience.tsx` — pas encore
-  reconstruit ; bon candidat suivant une fois les deux références validées.
+  `ReglageVoileExperience.tsx` — références officielles pour le voilier à
+  deux voiles (`SailboatDiagram`). Regarde-les en premier pour un exemple
+  vivant de chaque convention bateau/voiles/vent.
+- `NoeudChaiseExperience.tsx` et le prototype
+  `KnotPrototypeBowline.tsx`/`knotRig.ts` — chantier nœuds en pause,
+  volontairement laissé de côté pour l'instant (visuel jugé pas encore
+  compréhensible). Ne pas y toucher tant que ce n'est pas rouvert
+  explicitement.

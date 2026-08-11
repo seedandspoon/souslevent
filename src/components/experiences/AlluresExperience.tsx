@@ -6,7 +6,7 @@ import { RotateCcw } from "lucide-react";
 import { useAngleDrag } from "@/lib/interactions/useAngleDrag";
 import { allurePourCap, amurePourCap, distanceAuVent, ALLURES } from "@/lib/interactions/angle";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
-import { SailboatHull, getHullGeometry, WindIndicator, Sail, Boom } from "@/components/nautical-visuals";
+import { SailboatDiagram } from "@/components/nautical-visuals";
 import { INK, BRAND, SUCCESS, DANGER } from "@/components/nautical-visuals/tokens";
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" —
@@ -30,16 +30,8 @@ export function AlluresExperience() {
   const d = distanceAuVent(angle);
   const enZoneInterdite = allure.id === "face-au-vent";
 
-  const hull = getHullGeometry(CX, CY, HULL_LENGTH);
-  const mastTop = { x: hull.mastBase.x, y: hull.mastBase.y - 26 };
-
   const boomAngle = Math.min(80, Math.max(6, d * 0.85));
   const sign = amure === "babord" ? 1 : -1;
-  const boomLen = 68;
-  const boomEnd = {
-    x: hull.mastBase.x + sign * boomLen * Math.sin((boomAngle * Math.PI) / 180),
-    y: hull.mastBase.y + boomLen * Math.cos((boomAngle * Math.PI) / 180),
-  };
 
   const atteint = mode === "defi" && allure.id === cible.id;
   if (atteint && !reussi) setReussi(true);
@@ -110,16 +102,17 @@ export function AlluresExperience() {
             opacity={0.06}
           />
 
-          {/* Vent : hors du groupe qui tourne, repère du monde fixe */}
-          <WindIndicator tipX={CX} tipY={70} length={52} />
-
-          {/* Bateau + gréement : seul ce groupe tourne */}
-          <g transform={`rotate(${angle} ${CX} ${CY})`}>
-            <SailboatHull cx={CX} cy={CY} length={HULL_LENGTH} />
-            <Sail mastTop={mastTop} mastBase={hull.mastBase} boomEnd={boomEnd} etat={enZoneInterdite ? "faseille" : "bon"} />
-            <Boom from={hull.mastBase} to={boomEnd} />
-            <circle cx={hull.bow.x} cy={hull.bow.y} r={5} fill={enZoneInterdite ? DANGER : atteint ? SUCCESS : INK} />
-          </g>
+          <SailboatDiagram
+            cx={CX}
+            cy={CY}
+            hullLength={HULL_LENGTH}
+            headingDeg={angle}
+            boomAngleDeg={boomAngle}
+            boomSign={sign}
+            mainsailEtat={enZoneInterdite ? "faseille" : "bon"}
+            windTipY={70}
+            bowMarkerColor={enZoneInterdite ? DANGER : atteint ? SUCCESS : INK}
+          />
         </svg>
       </div>
 
