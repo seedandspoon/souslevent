@@ -6,17 +6,16 @@ import { RotateCcw } from "lucide-react";
 import { useAngleDrag } from "@/lib/interactions/useAngleDrag";
 import { allurePourCap, amurePourCap, distanceAuVent, ALLURES } from "@/lib/interactions/angle";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
+import { SailboatHull, getHullGeometry, WindIndicator, Sail, Boom } from "@/components/nautical-visuals";
+import { INK, BRAND, SUCCESS, DANGER } from "@/components/nautical-visuals/tokens";
+
+// Référence officielle de la skill "nautical-pedagogical-visuals" —
+// voir .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de
+// modifier ce fichier ou d'en créer un nouveau du même genre.
 
 const CX = 200;
 const CY = 200;
-
-const INK = "var(--color-ink)";
-const BRAND = "var(--color-brand-500)";
-const ACCENT = "var(--color-accent)";
-const SUCCESS = "var(--color-success)";
-const DANGER = "var(--color-danger)";
-
-const HULL_LOCAL = "M200,128 L227,190 L221,252 Q200,266 179,252 L173,190 Z";
+const HULL_LENGTH = 130;
 
 const CIBLES = ALLURES.filter((a) => a.id !== "face-au-vent");
 
@@ -31,15 +30,16 @@ export function AlluresExperience() {
   const d = distanceAuVent(angle);
   const enZoneInterdite = allure.id === "face-au-vent";
 
+  const hull = getHullGeometry(CX, CY, HULL_LENGTH);
+  const mastTop = { x: hull.mastBase.x, y: hull.mastBase.y - 26 };
+
   const boomAngle = Math.min(80, Math.max(6, d * 0.85));
   const sign = amure === "babord" ? 1 : -1;
   const boomLen = 68;
-  const mastPoint = { x: 200, y: 158 };
   const boomEnd = {
-    x: mastPoint.x + sign * boomLen * Math.sin((boomAngle * Math.PI) / 180),
-    y: mastPoint.y + boomLen * Math.cos((boomAngle * Math.PI) / 180),
+    x: hull.mastBase.x + sign * boomLen * Math.sin((boomAngle * Math.PI) / 180),
+    y: hull.mastBase.y + boomLen * Math.cos((boomAngle * Math.PI) / 180),
   };
-  const sailTip = { x: 200, y: 132 };
 
   const atteint = mode === "defi" && allure.id === cible.id;
   if (atteint && !reussi) setReussi(true);
@@ -103,13 +103,6 @@ export function AlluresExperience() {
           {/* Cercle de manipulation */}
           <circle cx={CX} cy={CY} r={148} fill="none" stroke={BRAND} strokeWidth={1.5} strokeDasharray="3 6" opacity={0.35} />
 
-          {/* Vent, fixe */}
-          <line x1={CX} y1={18} x2={CX} y2={55} stroke={BRAND} strokeWidth={4} />
-          <path d={`M${CX - 8},55 L${CX + 8},55 L${CX},70 Z`} fill={BRAND} />
-          <text x={CX} y={34} textAnchor="middle" fontSize={12} fontWeight={600} fill={BRAND}>
-            Vent
-          </text>
-
           {/* Lit du vent (zone interdite) */}
           <path
             d={`M${CX},${CY} L${CX - 148 * Math.sin((40 * Math.PI) / 180)},${CY - 148 * Math.cos((40 * Math.PI) / 180)} A148,148 0 0 1 ${CX + 148 * Math.sin((40 * Math.PI) / 180)},${CY - 148 * Math.cos((40 * Math.PI) / 180)} Z`}
@@ -117,35 +110,15 @@ export function AlluresExperience() {
             opacity={0.06}
           />
 
-          {/* Groupe bateau + voile, tourne avec l'angle */}
+          {/* Vent : hors du groupe qui tourne, repère du monde fixe */}
+          <WindIndicator tipX={CX} tipY={70} length={52} />
+
+          {/* Bateau + gréement : seul ce groupe tourne */}
           <g transform={`rotate(${angle} ${CX} ${CY})`}>
-            <path d={HULL_LOCAL} fill="none" stroke={INK} strokeWidth={3.5} strokeLinejoin="round" />
-            <line x1={mastPoint.x} y1={mastPoint.y} x2={mastPoint.x} y2={mastPoint.y - 6} stroke={INK} strokeWidth={4} />
-
-            {enZoneInterdite ? (
-              <motion.path
-                fill="none"
-                stroke={ACCENT}
-                strokeWidth={3}
-                initial={false}
-                animate={{
-                  d: [
-                    `M${sailTip.x},${sailTip.y} Q${mastPoint.x + 18},${mastPoint.y + 10} ${mastPoint.x},${mastPoint.y + 20} Q${mastPoint.x - 18},${mastPoint.y + 10} ${boomEnd.x},${boomEnd.y}`,
-                    `M${sailTip.x},${sailTip.y} Q${mastPoint.x - 18},${mastPoint.y + 10} ${mastPoint.x},${mastPoint.y + 20} Q${mastPoint.x + 18},${mastPoint.y + 10} ${boomEnd.x},${boomEnd.y}`,
-                  ],
-                }}
-                transition={{ duration: 0.35, repeat: Infinity, repeatType: "reverse" }}
-              />
-            ) : (
-              <path
-                d={`M${sailTip.x},${sailTip.y} Q${(sailTip.x + boomEnd.x) / 2 + sign * 14},${(sailTip.y + boomEnd.y) / 2} ${boomEnd.x},${boomEnd.y} L${mastPoint.x},${mastPoint.y} Z`}
-                fill={BRAND}
-                opacity={0.7}
-              />
-            )}
-
-            <line x1={mastPoint.x} y1={mastPoint.y} x2={boomEnd.x} y2={boomEnd.y} stroke={INK} strokeWidth={3.5} strokeLinecap="round" />
-            <circle cx={CX} cy={130} r={5} fill={enZoneInterdite ? DANGER : atteint ? SUCCESS : INK} />
+            <SailboatHull cx={CX} cy={CY} length={HULL_LENGTH} />
+            <Sail mastTop={mastTop} mastBase={hull.mastBase} boomEnd={boomEnd} etat={enZoneInterdite ? "faseille" : "bon"} />
+            <Boom from={hull.mastBase} to={boomEnd} />
+            <circle cx={hull.bow.x} cy={hull.bow.y} r={5} fill={enZoneInterdite ? DANGER : atteint ? SUCCESS : INK} />
           </g>
         </svg>
       </div>

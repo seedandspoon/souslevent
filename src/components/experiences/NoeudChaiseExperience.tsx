@@ -6,74 +6,60 @@ import { ChevronLeft, ChevronRight, RotateCcw, Gauge, Check } from "lucide-react
 import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
+import { Rope, RopeEnd, DepthCrossing } from "@/components/nautical-visuals";
 
-const INK = "var(--color-ink)";
-const ACCENT = "var(--color-accent)";
+// Référence officielle de la skill "nautical-pedagogical-visuals" —
+// voir .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de
+// modifier ce fichier ou d'en créer un nouveau du même genre. Ce nœud
+// sert de cas de validation pour toute future représentation de nœud.
 
-const DORMANT = { d: "M150,20 L150,120", color: INK, width: 4.5 };
-const TAIL_STRAIGHT = { d: "M150,120 L150,235", color: ACCENT, width: 4 };
-const LOOP_WITH_TAIL = {
-  d: "M150,120 C185,128 185,168 150,160 C115,168 115,128 150,120 L150,180",
-  color: ACCENT,
-  width: 4,
-};
-const THROUGH_LOOP = { d: "M150,180 C172,165 172,130 150,112", color: ACCENT, width: 4 };
-const AROUND_DORMANT = {
-  d: "M150,112 C176,102 176,76 150,66 C124,76 124,102 150,109",
-  color: ACCENT,
-  width: 4,
-};
-const BACK_THROUGH = { d: "M150,109 C130,125 130,160 150,180 L150,242", color: ACCENT, width: 4 };
+const DORMANT_D = "M150,20 L150,120";
+const TAIL_STRAIGHT_D = "M150,120 L150,235";
+const LOOP_WITH_TAIL_D = "M150,120 C185,128 185,168 150,160 C115,168 115,128 150,120 L150,180";
+const THROUGH_LOOP_D = "M150,180 C172,165 172,130 150,112";
+const AROUND_DORMANT_D = "M150,112 C176,102 176,76 150,66 C124,76 124,102 150,109";
+const BACK_THROUGH_D = "M150,109 C130,125 130,160 150,180 L150,242";
 
-type PathSpec = { d: string; color: string; width: number };
+const DORMANT_STYLE = { color: "var(--color-ink)", width: 4.5 };
+const COURANT_STYLE = { color: "var(--color-accent)", width: 4 };
 
 interface Step {
   titre: string;
   description: string;
-  statiques: PathSpec[];
-  animees: PathSpec[];
+  statiques: string[]; // paths "courant" déjà posés, statiques
+  animee?: string; // path "courant" qui se dessine à cette étape
+  dormantCrossing?: boolean; // à partir de cette étape, le dormant croise AROUND_DORMANT
   serrage?: boolean;
 }
 
 const STEPS: Step[] = [
-  {
-    titre: "Position initiale",
-    description: "Le cordage pend, prêt à être façonné.",
-    statiques: [],
-    animees: [DORMANT, TAIL_STRAIGHT],
-  },
-  {
-    titre: "Créer la première boucle",
-    description: "Une boucle se forme sur le dormant.",
-    statiques: [DORMANT],
-    animees: [LOOP_WITH_TAIL],
-  },
-  {
-    titre: "Passer l'extrémité dans la boucle",
-    description: "Le courant remonte à travers la boucle.",
-    statiques: [DORMANT, LOOP_WITH_TAIL],
-    animees: [THROUGH_LOOP],
-  },
+  { titre: "Position initiale", description: "Le cordage pend, prêt à être façonné.", statiques: [], animee: TAIL_STRAIGHT_D },
+  { titre: "Créer la première boucle", description: "Une boucle se forme sur le dormant.", statiques: [], animee: LOOP_WITH_TAIL_D },
+  { titre: "Passer l'extrémité dans la boucle", description: "Le courant remonte à travers la boucle.", statiques: [LOOP_WITH_TAIL_D], animee: THROUGH_LOOP_D },
   {
     titre: "Passer autour du dormant",
-    description: "Il fait le tour du dormant.",
-    statiques: [DORMANT, LOOP_WITH_TAIL, THROUGH_LOOP],
-    animees: [AROUND_DORMANT],
+    description: "Il fait le tour du dormant : regarde bien, il passe devant.",
+    statiques: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D],
+    dormantCrossing: true,
   },
   {
     titre: "Repasser dans la boucle",
     description: "Puis redescend dans la boucle de départ.",
-    statiques: [DORMANT, LOOP_WITH_TAIL, THROUGH_LOOP, AROUND_DORMANT],
-    animees: [BACK_THROUGH],
+    statiques: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D],
+    animee: BACK_THROUGH_D,
+    dormantCrossing: true,
   },
   {
     titre: "Serrer",
     description: "Le nœud se resserre : une boucle fixe qui ne glisse pas.",
-    statiques: [DORMANT, LOOP_WITH_TAIL, THROUGH_LOOP, AROUND_DORMANT, BACK_THROUGH],
-    animees: [],
+    statiques: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D, BACK_THROUGH_D],
+    dormantCrossing: true,
     serrage: true,
   },
 ];
+
+// Position y du bout libre (courant) à chaque étape, pour RopeEnd.
+const BOUT_LIBRE_Y = [235, 180, 112, 109, 242, 242];
 
 const ORDRE_CORRECT = [1, 2, 3, 4, 5];
 const LABELS_CHECK = STEPS.map((s) => s.titre);
@@ -167,29 +153,30 @@ export function NoeudChaiseExperience() {
             transition={{ duration: 0.6 }}
             style={{ transformOrigin: "150px 140px" }}
           >
-            {step.statiques.map((p, i) => (
-              <path key={`s-${i}`} d={p.d} fill="none" stroke={p.color} strokeWidth={p.width} strokeLinecap="round" />
-            ))}
-            {step.animees.map((p, i) => (
-              <motion.path
-                key={`a-${current}-${i}-${replayCount}`}
-                d={p.d}
-                fill="none"
-                stroke={p.color}
-                strokeWidth={p.width}
-                strokeLinecap="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration, ease: "easeInOut" }}
+            {step.dormantCrossing ? (
+              <DepthCrossing
+                under={DORMANT_D}
+                over={AROUND_DORMANT_D}
+                underStyle={DORMANT_STYLE}
+                overStyle={COURANT_STYLE}
+                animateOver={current === 3}
+                duration={duration}
+                replayKey={replayCount}
               />
+            ) : (
+              <Rope d={DORMANT_D} role="dormant" animate={current === 0} duration={duration} replayKey={replayCount} />
+            )}
+
+            {step.statiques.map((d, i) => (
+              <Rope key={`s-${i}`} d={d} role="courant" />
             ))}
+            {step.animee && <Rope d={step.animee} role="courant" animate duration={duration} replayKey={`${current}-${replayCount}`} />}
+
+            {!step.serrage && <RopeEnd at={{ x: 150, y: BOUT_LIBRE_Y[current] }} />}
           </motion.g>
+
           {step.serrage && (
-            <motion.g
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.3 }}
-            >
+            <motion.g initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, duration: 0.3 }}>
               <circle cx={230} cy={90} r={16} fill="var(--color-success)" />
               <path d="M223,90 L228,96 L238,84" stroke="white" strokeWidth={3} fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </motion.g>
@@ -215,20 +202,10 @@ export function NoeudChaiseExperience() {
         >
           <ChevronLeft size={16} />
         </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => setReplayCount((c) => c + 1)}
-          aria-label="Rejouer"
-        >
+        <Button variant="secondary" size="sm" onClick={() => setReplayCount((c) => c + 1)} aria-label="Rejouer">
           <RotateCcw size={15} />
         </Button>
-        <Button
-          variant={slow ? "primary" : "secondary"}
-          size="sm"
-          onClick={() => setSlow((v) => !v)}
-          aria-label="Ralenti"
-        >
+        <Button variant={slow ? "primary" : "secondary"} size="sm" onClick={() => setSlow((v) => !v)} aria-label="Ralenti">
           <Gauge size={15} />
         </Button>
         <Button
