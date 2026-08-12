@@ -46,14 +46,12 @@ export function SailboatDiagram({
   bowMarkerColor?: string | null;
 }) {
   const hull = getHullGeometry(cx, cy, hullLength);
-  const mastTop = { x: hull.mastBase.x, y: hull.mastBase.y - hullLength * 0.2 };
-  // Le point de vit-de-mulet (pivot de la bôme) est décalé du mât d'un
-  // petit écart fixe : le mât et la bôme sont dessinés dans la même
-  // couleur (structure fixe), donc sans cet écart, une bôme presque
-  // bordée (petit angle) se confond visuellement avec le mât — même si
-  // l'angle est correct, la bôme cesse d'être identifiable comme une
-  // pièce à part. L'écart reste lisible à n'importe quel angle de bôme.
-  const boomPivot = { x: hull.mastBase.x + boomSign * hullLength * 0.05, y: hull.mastBase.y };
+  // Le mât est un point unique : vu de dessus, un mât vertical se projette
+  // en un point, jamais en un segment (un trait faisait croire à une pièce
+  // qui a une longueur propre, ce qui n'a pas de sens dans cette vue).
+  // La bôme pivote directement à ce point.
+  const mast = hull.mastBase;
+  const boomPivot = mast;
   // Longueur de bôme mesurée pour atteindre franchement vers la poupe
   // (proportion réaliste : le mât est à ~32% de la coque depuis la proue,
   // la bôme doit couvrir la majeure partie du reste vers l'arrière, sinon
@@ -67,12 +65,13 @@ export function SailboatDiagram({
   };
 
   // Le foc reste toujours devant le mât, jamais dans la zone de la
-  // grand-voile/bôme : point de drisse (head) proche du haut du mât plutôt
-  // que du pied, guindant court et angle d'écoute freiné par rapport à la
-  // bôme, pour que l'écoute (clew) ne balaie jamais aussi loin en arrière
-  // que le point de vit-de-mulet — sinon les deux voiles se superposent
-  // visuellement quel que soit l'angle (bug corrigé ici).
-  const jibHead = { x: mastTop.x + boomSign * hullLength * 0.02, y: mastTop.y + hullLength * 0.06 };
+  // grand-voile/bôme : point de drisse (head) légèrement décalé du mât
+  // (juste assez pour rester lisible comme point distinct), guindant court
+  // et angle d'écoute freiné par rapport à la bôme, pour que l'écoute
+  // (clew) ne balaie jamais aussi loin en arrière que le mât — sinon les
+  // deux voiles se superposent visuellement quel que soit l'angle (bug
+  // corrigé plus haut).
+  const jibHead = { x: mast.x + boomSign * hullLength * 0.02, y: mast.y - hullLength * 0.03 };
   const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.04 };
   const jibFootLength = hullLength * 0.24;
   const jibAngleDeg = boomAngleDeg * 0.6;
@@ -97,9 +96,9 @@ export function SailboatDiagram({
           <Jib head={jibHead} tack={jibTack} footLength={jibFootLength} angleDeg={jibAngleDeg} sign={boomSign} etat={jibEtat ?? mainsailEtat} />
         )}
 
-        <line x1={mastTop.x} y1={mastTop.y} x2={hull.mastBase.x} y2={hull.mastBase.y} stroke="var(--color-ink)" strokeWidth={4} strokeLinecap="round" />
-        <Sail mastTop={mastTop} mastBase={boomPivot} boomEnd={boomEnd} etat={mainsailEtat} sign={boomSign} />
+        <Sail mast={mast} boomEnd={boomEnd} etat={mainsailEtat} sign={boomSign} />
         <Boom from={boomPivot} to={boomEnd} />
+        <circle cx={mast.x} cy={mast.y} r={5} fill="var(--color-ink)" />
 
         {bowMarkerColor && <circle cx={hull.bow.x} cy={hull.bow.y} r={6} fill={bowMarkerColor} />}
       </g>
