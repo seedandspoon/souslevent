@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { Timer } from "lucide-react";
 import type { QuizItem } from "@/content/types";
 import { Illustration } from "@/components/illustrations/registry";
+import { OrderedStepsCheck } from "@/components/interactive/OrderedStepsCheck";
 import { shuffle } from "@/lib/quizSession";
 
 function ChoiceList({
@@ -236,6 +237,13 @@ export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (co
         <>
           <p className="text-[15px] font-medium text-ink mb-4">{item.enonce}</p>
           <AssociationPairs paires={item.paires} onAnswer={handleAnswer} />
+        </>
+      )}
+
+      {item.type === "ordre-etapes" && (
+        <>
+          <p className="text-[15px] font-medium text-ink mb-4">{item.titre}</p>
+          <OrderedStepsCheck steps={item.etapes} showSuccessBanner={false} onComplete={handleAnswer} />
         </>
       )}
 
