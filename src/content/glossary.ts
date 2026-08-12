@@ -266,6 +266,7 @@ export const glossary: GlossaryTerm[] = [
     definition: "Manœuvre qui consiste à changer d'amure en passant par le vent arrière.",
     categorie: "Manœuvres",
     termesAssociesIds: ["g-virement", "g-amure"],
+    lessonId: "l3-empannage",
   },
   {
     id: "g-virement",
@@ -273,6 +274,7 @@ export const glossary: GlossaryTerm[] = [
     definition: "Manœuvre qui consiste à changer d'amure en passant par le lit du vent (face au vent).",
     categorie: "Manœuvres",
     termesAssociesIds: ["g-empannage", "g-amure"],
+    lessonId: "l3-virement-de-bord",
   },
   {
     id: "g-ris",
@@ -280,6 +282,7 @@ export const glossary: GlossaryTerm[] = [
     definition: "Réduction de la surface de la grand-voile, en la repliant partiellement, pour naviguer par vent fort.",
     categorie: "Manœuvres",
     termesAssociesIds: ["g-grand-voile"],
+    lessonId: "l3-reduire-la-toile",
   },
   {
     id: "g-vhf",
@@ -287,6 +290,7 @@ export const glossary: GlossaryTerm[] = [
     definition: "Radio marine à très haute fréquence, utilisée pour communiquer et lancer un appel de détresse en mer.",
     categorie: "Sécurité",
     termesAssociesIds: ["g-mayday", "g-panpan"],
+    lessonId: "l6-alerte-vhf",
   },
   {
     id: "g-mayday",
@@ -294,6 +298,7 @@ export const glossary: GlossaryTerm[] = [
     definition: "Signal international de détresse par radio (VHF), utilisé uniquement en cas de danger grave et imminent pour la vie ou le bateau.",
     categorie: "Sécurité",
     termesAssociesIds: ["g-vhf", "g-panpan"],
+    lessonId: "l6-alerte-vhf",
   },
   {
     id: "g-panpan",
@@ -301,6 +306,7 @@ export const glossary: GlossaryTerm[] = [
     definition: "Signal d'urgence par radio (VHF), pour une situation urgente mais qui ne met pas immédiatement en jeu la vie ou le bateau.",
     categorie: "Sécurité",
     termesAssociesIds: ["g-vhf", "g-mayday"],
+    lessonId: "l6-alerte-vhf",
   },
   {
     id: "g-homme-a-la-mer",
@@ -308,6 +314,7 @@ export const glossary: GlossaryTerm[] = [
     definition: "Situation d'urgence où une personne tombe à l'eau ; déclenche une procédure de récupération immédiate.",
     categorie: "Sécurité",
     termesAssociesIds: ["g-gilet"],
+    lessonId: "l6-homme-a-la-mer",
   },
   {
     id: "g-gilet",
@@ -315,6 +322,47 @@ export const glossary: GlossaryTerm[] = [
     definition: "Équipement de sécurité individuel obligatoire à bord, à porter selon les conditions et la réglementation en vigueur.",
     categorie: "Sécurité",
     termesAssociesIds: ["g-homme-a-la-mer"],
+    lessonId: "l6-equipement-de-securite",
+  },
+  {
+    id: "g-carte-marine",
+    terme: "Carte marine",
+    definition: "Carte représentant les profondeurs, la côte, les dangers et les aides à la navigation, indispensable pour se repérer en mer.",
+    categorie: "Navigation",
+    termesAssociesIds: ["g-cap"],
+    lessonId: "l4-lire-une-carte",
+  },
+  {
+    id: "g-balisage-laterale",
+    terme: "Balisage latéral",
+    definition: "Marques colorées (rouges et vertes) qui signalent les limites d'un chenal, à laisser d'un côté ou de l'autre selon le sens de navigation.",
+    categorie: "Navigation",
+    termesAssociesIds: ["g-tribord", "g-babord"],
+    lessonId: "l4-balisage",
+  },
+  {
+    id: "g-maree-courant",
+    terme: "Marée et courant",
+    definition: "La marée fait varier la hauteur d'eau et génère des courants qui peuvent faire dériver un bateau ou influencer un mouillage.",
+    categorie: "Navigation",
+    termesAssociesIds: ["g-derive"],
+    lessonId: "l4-mouillage",
+  },
+  {
+    id: "g-beaufort",
+    terme: "Échelle de Beaufort",
+    definition: "Échelle qui classe la force du vent de 0 (calme plat) à 12 (ouragan), à partir de l'observation de l'état de la mer.",
+    categorie: "Météo",
+    termesAssociesIds: [],
+    lessonId: "l5-echelle-de-beaufort",
+  },
+  {
+    id: "g-feux-navigation",
+    terme: "Feux de navigation",
+    definition: "Feux réglementaires (vert à tribord, rouge à bâbord, blancs à l'avant et à l'arrière) qui signalent de nuit la direction d'un bateau.",
+    categorie: "Sécurité",
+    termesAssociesIds: ["g-tribord", "g-babord"],
+    lessonId: "l7-feux-de-navigation",
   },
 ];
 

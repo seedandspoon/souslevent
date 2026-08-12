@@ -62,7 +62,34 @@ export const concepts: Concept[] = [
   { id: "c-barre", titre: "La barre", skillTag: "manoeuvres", glossaryTermId: "g-barre" },
   { id: "c-safran", titre: "Le safran", skillTag: "manoeuvres", glossaryTermId: "g-safran" },
 
-  // Aperçus (approfondis dans les niveaux suivants, utilisés par certains quiz)
+  // Niveau 3 — Manœuvrer
+  { id: "c-virement", titre: "Le virement de bord", skillTag: "manoeuvres", glossaryTermId: "g-virement" },
+  { id: "c-empannage", titre: "L'empannage", skillTag: "manoeuvres", glossaryTermId: "g-empannage" },
+  { id: "c-prise-de-ris", titre: "Prendre un ris", skillTag: "manoeuvres", glossaryTermId: "g-ris" },
+  { id: "c-communication-equipage", titre: "La communication à bord", skillTag: "manoeuvres" },
+
+  // Niveau 4 — Naviguer
+  { id: "c-carte-marine", titre: "Lire une carte marine", skillTag: "navigation", glossaryTermId: "g-carte-marine" },
+  { id: "c-derive-navigation", titre: "La dérive (cap et route)", skillTag: "navigation", glossaryTermId: "g-derive" },
+  { id: "c-balisage-laterale", titre: "Le balisage latéral", skillTag: "navigation", glossaryTermId: "g-balisage-laterale" },
+  { id: "c-maree-courant", titre: "Marée et courant", skillTag: "navigation", glossaryTermId: "g-maree-courant" },
+
+  // Niveau 5 — Météo
+  { id: "c-beaufort", titre: "L'échelle de Beaufort", skillTag: "meteo", glossaryTermId: "g-beaufort" },
+  { id: "c-lire-le-ciel", titre: "Lire le ciel", skillTag: "meteo" },
+  { id: "c-bulletin-meteo", titre: "Le bulletin météo", skillTag: "meteo" },
+
+  // Niveau 6 — Sécurité
+  { id: "c-equipement-securite", titre: "L'équipement de sécurité", skillTag: "securite", glossaryTermId: "g-gilet" },
+  { id: "c-homme-a-la-mer", titre: "Homme à la mer", skillTag: "securite", glossaryTermId: "g-homme-a-la-mer" },
+  { id: "c-alerte-vhf", titre: "Alerter par VHF", skillTag: "securite", glossaryTermId: "g-vhf" },
+
+  // Niveau 7 — Règles de navigation
+  { id: "c-priorite-voilier-moteur", titre: "Priorité voilier / bateau à moteur", skillTag: "navigation" },
+  { id: "c-feux-navigation", titre: "Les feux de navigation", skillTag: "navigation", glossaryTermId: "g-feux-navigation" },
+
+  // Utilisés dès le Niveau 1 par certains quiz, approfondis plus tard
+  // (c-priorite-amures : Niveau 7 ; c-reduire-toile : Niveau 6)
   { id: "c-priorite-amures", titre: "Priorité entre deux voiliers", skillTag: "navigation" },
   { id: "c-reduire-toile", titre: "Réduire la toile par vent fort", skillTag: "securite" },
 ];
