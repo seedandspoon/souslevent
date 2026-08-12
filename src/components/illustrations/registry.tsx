@@ -5,6 +5,7 @@ import { WindApparentReal, PortStarboard, ForeAftBeam, TackDiagram } from "./Win
 import { PointsOfSailWheel, QuizPointOfSailBeam } from "./PointsOfSailWheel";
 import { SailsOverview, MainsailParts, SheetHalyard, WinchDiagram, TillerWheel } from "./GearDiagrams";
 import { KnotFigureEight, KnotBowline, KnotHalfHitch, KnotRoundTurn, KnotCleat } from "./KnotDiagrams";
+import { WindSimulator } from "./WindSimulator";
 
 const registry: Record<string, ComponentType> = {
   "boat-parts": () => <BoatSide showLabels />,
@@ -14,6 +15,7 @@ const registry: Record<string, ComponentType> = {
   "fore-aft-beam": ForeAftBeam,
   "tack-diagram": TackDiagram,
   "points-of-sail-wheel": PointsOfSailWheel,
+  "wind-simulator-allures": WindSimulator,
   "sails-overview": SailsOverview,
   "mainsail-parts": MainsailParts,
   "sheet-halyard": SheetHalyard,

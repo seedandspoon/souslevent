@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Anchor, ChevronRight, Flame, Sparkles } from "lucide-react";
+import { Anchor, ChevronRight, Flame, Sparkles, Wind } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { SkillBar } from "@/components/ui/SkillBar";
@@ -121,6 +121,14 @@ export default function AccueilPage() {
             </div>
           </Card>
         )}
+
+        <LinkButton href="/simulateur" size="lg" variant="secondary" className="w-full justify-between">
+          <span className="flex items-center gap-2">
+            <Wind size={20} className="text-brand-500" />
+            Simulateur des allures
+          </span>
+          <ChevronRight size={18} />
+        </LinkButton>
 
         <LinkButton href="/bord" size="lg" variant="secondary" className="w-full justify-between">
           <span className="flex items-center gap-2">

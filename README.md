@@ -28,8 +28,8 @@ npm run lint    # ESLint
 
 ```
 src/
-  app/            Écrans (App Router) : accueil, apprendre, quiz, bord, nœuds, glossaire, profil
-  components/      Composants UI, illustrations SVG, quiz, leçons
+  app/            Écrans (App Router) : accueil, apprendre, simulateur, quiz, bord, nœuds, glossaire, profil
+  components/      Composants UI, illustrations SVG (dont le simulateur interactif d'allures), quiz, leçons
   content/         Contenu pédagogique typé (niveaux, leçons, quiz, nœuds, glossaire, fiches)
   lib/             Moteur de révision espacée (SRS), stockage Dexie, logique de progression
 ```

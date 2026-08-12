@@ -238,12 +238,12 @@ export const level1Lessons: Lesson[] = [
       {
         type: "texte",
         contenu:
-          "L'allure est l'angle entre la direction suivie par le bateau et la direction du vent réel. Chaque allure a un nom, du plus proche au plus éloigné du vent.",
+          "L'allure est l'angle entre le cap du bateau et la direction du vent réel. Il n'y a pas de position fixe à retenir par cœur : c'est en tournant autour du vent que chaque allure se découvre. Le vent souffle depuis le haut du schéma ci-dessous — fais glisser le bateau autour du cercle et observe comment l'allure change.",
       },
-      { type: "schema", illustration: "points-of-sail-wheel", legende: "La rose des allures" },
+      { type: "schema", illustration: "wind-simulator-allures", legende: "Fais tourner le bateau pour découvrir les 6 allures" },
       {
         type: "etapes",
-        titre: "Les allures, du plus près au plus loin du vent",
+        titre: "Récap : les allures, du plus près au plus loin du vent",
         items: [
           "Le près : on navigue au plus proche possible du vent, juste à la limite du lit du vent.",
           "Le bon plein : un peu plus ouvert que le près, allure rapide et confortable.",
