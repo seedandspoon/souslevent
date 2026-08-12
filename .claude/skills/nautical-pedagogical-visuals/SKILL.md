@@ -136,14 +136,22 @@ géométrique abstrait. Elle n'appartient qu'à la grand-voile : le foc n'a
 pas de bôme, son bord libre (la chute) flotte sans spar, ce qui est en soi
 une différence visuelle utile entre les deux voiles.
 
-Le foc/génois suit les mêmes règles que la grand-voile (surface remplie,
-ventre qui change avec l'état) mais avec sa propre géométrie : point
-d'amure à l'étai/la proue, point de drisse près du haut du mât, point
-d'écoute libre qui pivote avec le réglage — jamais un simple triangle
-identique à la grand-voile redimensionné. Les deux voiles changent
-d'état (gonflée/faseille/trop bordée) ensemble et de façon cohérente
-quand le bateau change de cap ou d'allure : c'est cette réaction commune
-au même vent qui les fait comprendre comme deux pièces du même bateau.
+Vu de dessus, le mât est un **point**, jamais un segment — un mât vertical
+se projette en un point dans cette vue, un trait laisserait croire à une
+pièce qui a sa propre longueur. La bôme pivote directement à ce point ; la
+grand-voile part de ce même point et s'ouvre vers le bout de bôme.
+
+Le foc/génois suit la même grammaire que la grand-voile — un point fixe
+(l'amure, à l'étai/la proue) et un point mobile (l'écoute) reliés par une
+surface remplie — mais **sans point de drisse représenté** : un troisième
+coin près du mât n'apporte pas d'information utile, seulement une forme
+plus dure à lire. Ce qui doit rester lisible d'un coup d'œil pour les deux
+voiles : l'orientation (le bord entre les deux points) indique tribord/
+bâbord et bordé/choqué ; le gonflement (le côté arrondi) indique que la
+voile porte plutôt qu'elle ne faseille. Les deux voiles changent d'état
+(gonflée/faseille/trop bordée) ensemble et de façon cohérente quand le
+bateau change de cap ou d'allure : c'est cette réaction commune au même
+vent qui les fait comprendre comme deux pièces du même bateau.
 
 ## Profondeur — dessus / dessous
 

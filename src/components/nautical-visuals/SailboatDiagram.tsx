@@ -64,15 +64,15 @@ export function SailboatDiagram({
     y: boomPivot.y + boomLen * Math.cos(boomRad),
   };
 
-  // Point d'amure (tack) à la proue, point de drisse (head) juste devant
-  // le mât. Le point d'écoute (clew) est calculé directement par rapport
-  // au mât plutôt qu'en pivotant depuis l'amure : sinon il reste collé à
-  // la proue et le foc paraît réduit à ses deux points d'attache, sans
-  // voile visible entre eux. Il se règle (t) comme la bôme — plus la
-  // grand-voile est choquée, plus l'écoute du foc part vers l'arrière et
-  // vers l'extérieur — mais reste toujours en-deçà de la bôme pour que
-  // les deux voiles ne se superposent pas.
-  const jibHead = { x: mast.x + boomSign * hullLength * 0.02, y: mast.y - hullLength * 0.03 };
+  // Le foc suit la même grammaire que la grand-voile : un point fixe
+  // (l'amure, à la proue) et un point mobile (l'écoute) — pas de point de
+  // drisse représenté, il n'apportait pas d'information utile. Le point
+  // d'écoute est calculé par rapport au mât plutôt qu'en pivotant depuis
+  // l'amure : sinon il reste collé à la proue et le foc paraît réduit à
+  // deux points d'attache, sans voile visible entre eux. Il se règle (t)
+  // comme la bôme — plus la grand-voile est choquée, plus l'écoute du foc
+  // part vers l'arrière et vers l'extérieur — mais reste toujours en-deçà
+  // de la bôme pour que les deux voiles ne se superposent pas.
   const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.04 };
   const t = Math.min(1, Math.max(0, (boomAngleDeg - 10) / 68));
   const jibClew = {
@@ -96,9 +96,7 @@ export function SailboatDiagram({
       <g transform={`rotate(${headingDeg} ${cx} ${cy})`}>
         <SailboatHull cx={cx} cy={cy} length={hullLength} />
 
-        {showJib && (
-          <Jib head={jibHead} tack={jibTack} clew={jibClew} sign={boomSign} etat={jibEtat ?? mainsailEtat} />
-        )}
+        {showJib && <Jib tack={jibTack} clew={jibClew} sign={boomSign} etat={jibEtat ?? mainsailEtat} />}
 
         <Sail mast={mast} boomEnd={boomEnd} etat={mainsailEtat} sign={boomSign} />
         <Boom from={boomPivot} to={boomEnd} />
