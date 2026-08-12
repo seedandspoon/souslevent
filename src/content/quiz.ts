@@ -241,6 +241,25 @@ export const quizItems: QuizItem[] = [
     reponse: true,
     explication: "Dès que le moteur propulse le bateau, le voilier perd la priorité qu'il aurait eue à la voile seule.",
   },
+  {
+    id: "qz-ordre-virement",
+    type: "ordre-etapes",
+    conceptIds: ["c-virement"],
+    titre: "Le virement de bord",
+    etapes: [
+      "Vérifier que la route est dégagée",
+      "Annoncer : « Paré à virer ? / Je vire ! »",
+      "Pousser doucement la barre sous le vent",
+      "Ouvrir le taquet de l'écoute bordée",
+      "Choquer l'écoute à la main, progressivement",
+      "Attraper la nouvelle écoute dès que le génois passe de l'autre côté",
+      "Border à la main puis terminer au winch",
+      "Bloquer l'écoute dans son taquet",
+      "Stabiliser le cap sur la nouvelle amure",
+    ],
+    explication:
+      "Barre et écoute s'enchaînent : on tourne le bateau, on relâche l'ancienne écoute au bon moment, on attrape et on borde la nouvelle, puis on stabilise. Se répéter jusqu'à ce que l'ordre devienne un réflexe.",
+  },
 ];
 
 export function getQuizItemsByConcepts(conceptIds: string[]): QuizItem[] {

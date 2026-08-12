@@ -2,37 +2,32 @@
 
 import { useState } from "react";
 import clsx from "clsx";
-import { Check } from "lucide-react";
 import { useAngleDrag } from "@/lib/interactions/useAngleDrag";
 import { amurePourCap, distanceAuVent, normalize360, type Amure } from "@/lib/interactions/angle";
-import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
-import { OrderedStepsCheck } from "@/components/interactive/OrderedStepsCheck";
 import { Button } from "@/components/ui/Button";
+import { DragSlider } from "@/components/interactive/DragSlider";
+import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
 import { SailboatDiagram } from "@/components/nautical-visuals";
 import { BRAND, INK } from "@/components/nautical-visuals/tokens";
-
-// Les mêmes étapes que la leçon "Le virement de bord" (Niveau 3), pour
-// l'exercice « à toi de vérifier » après une manœuvre réussie — assez
-// détaillées pour s'entraîner comme si on était seule à bord.
-const ETAPES_VIREMENT = [
-  "Vérifier que la route est dégagée",
-  "Annoncer : « Paré à virer ? / Je vire ! »",
-  "Pousser doucement la barre sous le vent",
-  "Ouvrir le taquet de l'écoute bordée",
-  "Choquer l'écoute à la main, progressivement",
-  "Attraper la nouvelle écoute dès que le génois passe de l'autre côté",
-  "Border à la main puis terminer au winch",
-  "Bloquer l'écoute dans son taquet",
-  "Stabiliser le cap sur la nouvelle amure",
-];
+import type { EtatVoile } from "@/components/nautical-visuals/Sail";
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" — voir
 // .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de modifier
-// ce fichier. Le virement se joue en deux gestes distincts et volontai-
-// rement découplés : la barre (glisser le bateau, la grand-voile suit
-// automatiquement) et l'écoute de génois (un geste explicite de
-// l'équipier, via jibSignOverride) — c'est ce décalage possible entre
-// les deux qui rend visible l'erreur "génois resté à contre".
+// ce fichier.
+//
+// Chaque étape détaillée de la leçon "Le virement de bord" a ici sa
+// propre interaction — pas un seul geste générique pour toute la
+// manœuvre : glisser le bateau (barre), taper (annoncer, ouvrir le
+// taquet, attraper l'écoute, bloquer), glisser un curseur (choquer,
+// border). La grand-voile suit le cap automatiquement ; le génois suit
+// sa propre progression (jibSignOverride) pour rester décorrélé de la
+// barre — c'est ce décalage possible qui rend l'erreur "génois resté à
+// contre" visible si on tourne sans gérer l'écoute.
+//
+// L'exercice de mémorisation "remets les étapes dans l'ordre" ne vit
+// plus ici : il a été déplacé dans Quiz (voir qz-ordre-virement dans
+// content/quiz.ts) pour servir de révision indépendante de la
+// manipulation.
 
 const CX = 200;
 const CY = 210;
@@ -41,6 +36,27 @@ const DIAL_R = 160;
 const PRES_ANGLE = 45;
 const ZONE_INTERDITE_MAX = 40; // même borne que ALLURES "face-au-vent" (angle.ts)
 const TOLERANCE_ARRIVEE = 10;
+const SEUIL_SLIDER = 90;
+const SEUIL_BORDAGE_VISUEL = 60;
+
+type StepId = "route" | "annonce" | "barre" | "taquet" | "choquer" | "attraper" | "border" | "bloquer" | "stabiliser";
+
+interface StepDef {
+  id: StepId;
+  label: string;
+}
+
+const STEP_ORDER: StepDef[] = [
+  { id: "route", label: "Vérifier que la route est dégagée" },
+  { id: "annonce", label: "Annoncer : « Paré à virer ? / Je vire ! »" },
+  { id: "barre", label: "Pousser doucement la barre sous le vent" },
+  { id: "taquet", label: "Ouvrir le taquet de l'écoute bordée" },
+  { id: "choquer", label: "Choquer l'écoute à la main, progressivement" },
+  { id: "attraper", label: "Attraper la nouvelle écoute" },
+  { id: "border", label: "Border à la main puis terminer au winch" },
+  { id: "bloquer", label: "Bloquer l'écoute dans son taquet" },
+  { id: "stabiliser", label: "Stabiliser le cap sur la nouvelle amure" },
+];
 
 function amureLabel(amure: Amure): string {
   return amure === "babord" ? "bâbord" : amure === "tribord" ? "tribord" : "";
@@ -49,8 +65,6 @@ function amureLabel(amure: Amure): string {
 function boomSignForHeading(headingDeg: number): 1 | -1 {
   return normalize360(headingDeg) < 180 ? 1 : -1;
 }
-
-type Phase = "pret" | "annonce" | "en-cours" | "reussi";
 
 export function VirementExperience() {
   const [startSign, setStartSign] = useState<1 | -1>(1);
@@ -63,28 +77,47 @@ export function VirementExperience() {
 
   const { angle: heading, setAngle: setHeading, svgRef, handlers } = useAngleDrag(startHeading, { x: CX, y: CY });
   const [jibSign, setJibSign] = useState<1 | -1>(startJibSign);
-  const [phase, setPhase] = useState<Phase>("pret");
-  const [showCheck, setShowCheck] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [choqueSlider, setChoqueSlider] = useState(0);
+  const [borderSlider, setBorderSlider] = useState(0);
 
   const currentAmure = amurePourCap(heading);
   const enZoneInterdite = distanceAuVent(heading) < ZONE_INTERDITE_MAX;
-  const genoisACcontre = currentAmure === targetAmure && jibSign === startJibSign;
-  const arrivee =
-    currentAmure === targetAmure && Math.abs(distanceAuVent(heading) - PRES_ANGLE) <= TOLERANCE_ARRIVEE;
+  const arrivee = currentAmure === targetAmure && Math.abs(distanceAuVent(heading) - PRES_ANGLE) <= TOLERANCE_ARRIVEE;
+  const step = STEP_ORDER[stepIndex]?.id;
+  const termine = stepIndex >= STEP_ORDER.length;
 
-  // Transition vers "reussi" ajustée pendant le rendu plutôt que dans un
-  // effet (évite un cycle de rendu superflu) : dès que le bateau est
-  // arrivé au près sur la nouvelle amure avec le génois du bon côté, la
-  // manœuvre est terminée.
-  if (phase === "en-cours" && arrivee && jibSign === targetJibSign) {
-    setPhase("reussi");
+  // Avancées automatiques ajustées pendant le rendu plutôt que dans un
+  // effet (évite un cycle de rendu superflu) : chaque étape "physique" se
+  // termine dès que son seuil est atteint, sans validation manuelle.
+  if (step === "barre" && enZoneInterdite) {
+    setStepIndex(3);
+  } else if (step === "choquer" && choqueSlider >= SEUIL_SLIDER) {
+    setStepIndex(5);
+  } else if (step === "border" && borderSlider >= SEUIL_SLIDER) {
+    setStepIndex(7);
+  } else if (step === "stabiliser" && arrivee) {
+    setStepIndex(9);
   }
 
   const boomSign = boomSignForHeading(heading);
   const d = distanceAuVent(heading);
   const boomAngle = Math.min(72, Math.max(16, d * 0.75));
-  const mainsailEtat = enZoneInterdite ? "faseille" : "bon";
-  const jibEtat = enZoneInterdite || genoisACcontre ? "faseille" : "bon";
+  const mainsailEtat: EtatVoile = enZoneInterdite ? "faseille" : "bon";
+  const jibEtat: EtatVoile =
+    stepIndex < 6
+      ? enZoneInterdite || jibSign === startJibSign
+        ? "faseille"
+        : "bon"
+      : stepIndex === 6
+        ? borderSlider < SEUIL_BORDAGE_VISUEL
+          ? "faseille"
+          : "bon"
+        : enZoneInterdite
+          ? "faseille"
+          : "bon";
+
+  const dragActif = stepIndex >= 2 && !termine;
 
   function recommencer() {
     const nextSign = (startSign * -1) as 1 | -1;
@@ -93,18 +126,10 @@ export function VirementExperience() {
     setStartSign(nextSign);
     setHeading(nextStartHeading);
     setJibSign(nextStartAmure === "babord" ? 1 : -1);
-    setPhase("pret");
-    setShowCheck(false);
+    setStepIndex(0);
+    setChoqueSlider(0);
+    setBorderSlider(0);
   }
-
-  const message =
-    phase === "en-cours"
-      ? genoisACcontre
-        ? { tone: "warning" as const, titre: "Le génois est resté à contre", detail: "Change l'écoute pour qu'il porte à nouveau de l'autre côté." }
-        : enZoneInterdite
-          ? { tone: "neutral" as const, titre: "Tu traverses le lit du vent", detail: "Les voiles faseillent : c'est normal ici, continue le mouvement." }
-          : null
-      : null;
 
   return (
     <div className="flex flex-col gap-4">
@@ -117,8 +142,8 @@ export function VirementExperience() {
         <svg
           ref={svgRef}
           viewBox="0 0 400 400"
-          className={clsx("w-full max-h-80 mx-auto select-none", phase === "en-cours" && "touch-none cursor-grab active:cursor-grabbing")}
-          {...(phase === "en-cours" ? handlers : {})}
+          className={clsx("w-full max-h-72 mx-auto select-none", dragActif && "touch-none cursor-grab active:cursor-grabbing")}
+          {...(dragActif ? handlers : {})}
         >
           <rect x={0} y={0} width={400} height={400} fill="transparent" />
           <circle cx={CX} cy={CY} r={DIAL_R} fill="none" stroke={BRAND} strokeWidth={1.5} strokeDasharray="3 6" opacity={0.35} />
@@ -141,57 +166,110 @@ export function VirementExperience() {
         </svg>
       </div>
 
-      {phase === "pret" && (
-        <div className="flex flex-col items-center gap-3 text-center">
-          <p className="text-sm text-ink">Le bateau est au près, {amureLabel(startAmure)} amure. Tu vas virer de bord.</p>
-          <Button onClick={() => setPhase("annonce")}>Paré à virer ?</Button>
-        </div>
+      <ol className="flex flex-col gap-1">
+        {STEP_ORDER.map((s, i) => {
+          const fait = i < stepIndex || termine;
+          const actif = i === stepIndex && !termine;
+          return (
+            <li
+              key={s.id}
+              className={clsx(
+                "flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm transition-colors",
+                fait && "text-ink-soft",
+                actif && "bg-brand-50 text-ink font-medium",
+                !fait && !actif && "text-ink-soft opacity-50"
+              )}
+            >
+              <span
+                className={clsx(
+                  "w-5 h-5 rounded-full text-[11px] flex items-center justify-center shrink-0",
+                  fait && "bg-success text-white",
+                  actif && "bg-brand-500 text-white",
+                  !fait && !actif && "bg-surface-2 text-ink-soft"
+                )}
+              >
+                {fait ? "✓" : i + 1}
+              </span>
+              {s.label}
+            </li>
+          );
+        })}
+      </ol>
+
+      {step === "route" && (
+        <Button className="w-full" onClick={() => setStepIndex(1)}>
+          C&apos;est dégagé
+        </Button>
       )}
 
-      {phase === "annonce" && (
-        <div className="flex flex-col items-center gap-3 text-center">
-          <p className="text-sm text-ink">« Paré ! » confirme l&apos;équipage.</p>
-          <Button onClick={() => setPhase("en-cours")}>Je vire !</Button>
-        </div>
+      {step === "annonce" && (
+        <Button className="w-full" onClick={() => setStepIndex(2)}>
+          Annoncer et virer
+        </Button>
       )}
 
-      {phase === "en-cours" && (
-        <div className="flex flex-col gap-3">
-          <p className="text-center text-sm text-ink-soft">Fais glisser le bateau pour le faire pivoter jusqu&apos;à l&apos;autre amure.</p>
-          {message && <FeedbackBanner tone={message.tone} titre={message.titre} detail={message.detail} />}
-          {genoisACcontre && (
-            <Button variant="secondary" onClick={() => setJibSign(targetJibSign)}>
-              Changer l&apos;écoute du génois
-            </Button>
+      {step === "barre" && (
+        <p className="text-center text-sm text-ink-soft">Fais glisser le bateau pour pousser la barre sous le vent.</p>
+      )}
+
+      {step === "taquet" && (
+        <Button className="w-full" onClick={() => setStepIndex(4)}>
+          Ouvrir le taquet
+        </Button>
+      )}
+
+      {step === "choquer" && (
+        <DragSlider value={choqueSlider} onChange={setChoqueSlider} leftLabel="Bordée" rightLabel="Choquée" tone="accent" />
+      )}
+
+      {step === "attraper" && (
+        <div className="flex flex-col items-center gap-2">
+          <Button
+            className="w-full"
+            disabled={currentAmure !== targetAmure}
+            onClick={() => {
+              setJibSign(targetJibSign);
+              setStepIndex(6);
+            }}
+          >
+            Attraper la nouvelle écoute
+          </Button>
+          {currentAmure !== targetAmure && (
+            <p className="text-xs text-ink-soft text-center">Continue à tourner jusqu&apos;à ce que le génois passe de l&apos;autre côté.</p>
           )}
         </div>
       )}
 
-      {phase === "reussi" && (
+      {step === "border" && (
+        <DragSlider value={borderSlider} onChange={setBorderSlider} leftLabel="Choquée" rightLabel="Bien bordée" tone="brand" />
+      )}
+
+      {step === "bloquer" && (
+        <Button className="w-full" onClick={() => setStepIndex(8)}>
+          Bloquer l&apos;écoute
+        </Button>
+      )}
+
+      {step === "stabiliser" && (
+        <p className="text-center text-sm text-ink-soft">Continue à tourner jusqu&apos;au près, sur la nouvelle amure.</p>
+      )}
+
+      {dragActif && step !== "barre" && step !== "stabiliser" && (
+        <p className="text-center text-xs text-ink-soft">👆 Le bateau reste manipulable à tout moment.</p>
+      )}
+
+      {termine && (
         <div className="flex flex-col gap-3">
           <FeedbackBanner
             tone="success"
             titre="Virement réussi !"
             detail={`Tu es maintenant ${amureLabel(targetAmure)} amure, au près.`}
           />
-          {!showCheck && (
-            <Button size="lg" className="w-full" onClick={() => setShowCheck(true)}>
-              <Check size={16} />À toi de vérifier
-            </Button>
-          )}
-          {showCheck && (
-            <OrderedStepsCheck
-              steps={ETAPES_VIREMENT}
-              successDetail="Tu as reconstitué le virement de bord, du début à la fin."
-            />
-          )}
-          <Button variant="secondary" onClick={recommencer}>
-            Refaire un virement
-          </Button>
+          <Button onClick={recommencer}>Refaire un virement</Button>
         </div>
       )}
 
-      {phase !== "pret" && phase !== "reussi" && (
+      {!termine && stepIndex > 0 && (
         <button onClick={recommencer} className="text-center text-xs text-ink-soft underline underline-offset-2">
           Recommencer
         </button>

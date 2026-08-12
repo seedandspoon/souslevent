@@ -54,7 +54,8 @@ export type QuizType =
   | "vrai-faux"
   | "association"
   | "reconnaissance"
-  | "scenario";
+  | "scenario"
+  | "ordre-etapes";
 
 export interface QuizItemBase {
   id: string;
@@ -98,12 +99,21 @@ export interface QuizScenario extends QuizItemBase {
   reponseIndex: number;
 }
 
+export interface QuizOrdreEtapes extends QuizItemBase {
+  type: "ordre-etapes";
+  titre: string;
+  // Dans l'ordre correct ; affichées mélangées, à retrouver en touchant
+  // du début à la fin (voir OrderedStepsCheck).
+  etapes: string[];
+}
+
 export type QuizItem =
   | QuizQCM
   | QuizVraiFaux
   | QuizAssociation
   | QuizReconnaissance
-  | QuizScenario;
+  | QuizScenario
+  | QuizOrdreEtapes;
 
 export interface Knot {
   id: string;

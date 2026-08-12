@@ -14,15 +14,25 @@ import { FeedbackBanner } from "./FeedbackBanner";
  */
 export function OrderedStepsCheck({
   steps,
+  title = "Remets les étapes dans l'ordre",
   instructions = "Touche les étapes dans le bon ordre, du début à la fin.",
   successTitre = "Bravo !",
   successDetail,
+  showSuccessBanner = true,
+  onComplete,
 }: {
   /** Libellés des étapes, déjà dans l'ordre correct. */
   steps: string[];
+  title?: string;
   instructions?: string;
   successTitre?: string;
   successDetail?: string;
+  /** Désactive la bannière de succès interne, quand un conteneur (ex. le
+   * quiz) affiche déjà son propre retour une fois la réponse validée. */
+  showSuccessBanner?: boolean;
+  /** Appelé une fois toutes les étapes retrouvées ; `correctFirstTry` est
+   * faux si au moins une erreur a été commise en cours de route. */
+  onComplete?: (correctFirstTry: boolean) => void;
 }) {
   const [shuffled] = useState(() => {
     const idx = steps.map((_, i) => i);
@@ -34,23 +44,29 @@ export function OrderedStepsCheck({
   });
   const [placed, setPlaced] = useState<number[]>([]);
   const [erreur, setErreur] = useState<number | null>(null);
+  const [eutErreur, setEutErreur] = useState(false);
   const termine = placed.length === steps.length;
 
   function tap(stepIndex: number) {
     if (placed.includes(stepIndex) || termine) return;
     const attendu = placed.length;
     if (stepIndex === attendu) {
-      setPlaced([...placed, stepIndex]);
+      const nouveauPlaced = [...placed, stepIndex];
+      setPlaced(nouveauPlaced);
       setErreur(null);
+      if (nouveauPlaced.length === steps.length) {
+        onComplete?.(!eutErreur);
+      }
     } else {
       setErreur(stepIndex);
+      setEutErreur(true);
       setTimeout(() => setErreur(null), 450);
     }
   }
 
   return (
     <div className="rounded-xl border border-border p-4">
-      <p className="text-sm font-semibold text-ink mb-1">À toi !</p>
+      <p className="text-sm font-semibold text-ink mb-1">{title}</p>
       <p className="text-xs text-ink-soft mb-3">{instructions}</p>
       <div className="flex flex-col gap-2">
         {shuffled.map((stepIndex) => {
@@ -78,7 +94,7 @@ export function OrderedStepsCheck({
           );
         })}
       </div>
-      {termine && (
+      {termine && showSuccessBanner && (
         <div className="mt-3">
           <FeedbackBanner tone="success" titre={successTitre} detail={successDetail} />
         </div>
