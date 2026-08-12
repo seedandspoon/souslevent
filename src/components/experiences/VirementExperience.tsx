@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { useAngleDrag } from "@/lib/interactions/useAngleDrag";
 import { amurePourCap, distanceAuVent, normalize360, type Amure } from "@/lib/interactions/angle";
 import { Button } from "@/components/ui/Button";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
@@ -14,17 +13,20 @@ import type { EtatVoile } from "@/components/nautical-visuals/Sail";
 // .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de modifier
 // ce fichier.
 //
-// La barre est le seul geste continu (glisser le bateau) : on l'amorce
-// et on peut la corriger à tout instant. Tout le reste — annoncer, ouvrir
-// le taquet, choquer, attraper la nouvelle écoute, border, bloquer — est
-// un geste ponctuel (un tap), déclenché en regardant le bateau plutôt
-// qu'en réglant un curseur détaché de ce qu'on voit : ça reproduit le vrai
-// rythme de la manœuvre (barre en continu, gestes d'écoute au bon
-// moment) plutôt qu'une succession d'étapes qui figent le bateau. La
+// Le dessin du bateau n'est plus manipulable directement : la barre est un
+// geste ponctuel (un tap sur « Pousse la barre sous le vent ») qui lance
+// une rotation animée et automatique jusqu'au près sur l'autre bord — ça
+// évite de faire glisser la coque à la souris/au doigt, un geste qui ne
+// correspond à aucun geste réel du dériveur. Pendant que le bateau tourne
+// tout seul, l'attention reste sur l'écoute : ouvrir le taquet, choquer
+// (un tap, c'est instantané à la main), attraper la nouvelle écoute
+// (bloqué tant que le génois n'a pas réellement traversé), border (une
+// vraie manivelle de winch à plusieurs tours, pas un simple tap — border
+// demande un effort, contrairement à choquer), puis bloquer. La
 // grand-voile suit le cap automatiquement ; le génois suit sa propre
 // progression (jibSignOverride) pour rester décorrélé de la barre — ce
 // décalage possible rend l'erreur "génois resté à contre" visible si on
-// tourne sans gérer l'écoute.
+// ne le rebordait pas.
 //
 // L'exercice de mémorisation "remets les étapes dans l'ordre" ne vit
 // plus ici : il a été déplacé dans Quiz (voir qz-ordre-virement dans
@@ -38,6 +40,8 @@ const DIAL_R = 160;
 const PRES_ANGLE = 45;
 const ZONE_INTERDITE_MAX = 40; // même borne que ALLURES "face-au-vent" (angle.ts)
 const TOLERANCE_ARRIVEE = 10;
+const ROTATION_DUREE_MS = 5000;
+const TOURS_WINCH = 3;
 
 type StepId = "route" | "annonce" | "barre" | "taquet" | "choquer" | "attraper" | "border" | "bloquer" | "stabiliser";
 
@@ -66,6 +70,12 @@ function boomSignForHeading(headingDeg: number): 1 | -1 {
   return normalize360(headingDeg) < 180 ? 1 : -1;
 }
 
+// Accélère puis ralentit, comme une vraie poussée de barre plutôt qu'une
+// rotation à vitesse constante.
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
 export function VirementExperience() {
   const [startSign, setStartSign] = useState<1 | -1>(1);
   const startHeading = -PRES_ANGLE * startSign;
@@ -75,9 +85,16 @@ export function VirementExperience() {
   const startJibSign: 1 | -1 = startAmure === "babord" ? 1 : -1;
   const targetJibSign: 1 | -1 = targetAmure === "babord" ? 1 : -1;
 
-  const { angle: heading, setAngle: setHeading, svgRef, handlers } = useAngleDrag(startHeading, { x: CX, y: CY });
+  const [heading, setHeading] = useState(startHeading);
   const [jibSign, setJibSign] = useState<1 | -1>(startJibSign);
   const [stepIndex, setStepIndex] = useState(0);
+  const [virant, setVirant] = useState(false);
+  const [toursWinch, setToursWinch] = useState(0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+  }, []);
 
   const currentAmure = amurePourCap(heading);
   const enZoneInterdite = distanceAuVent(heading) < ZONE_INTERDITE_MAX;
@@ -87,9 +104,9 @@ export function VirementExperience() {
 
   // Avancée automatique ajustée pendant le rendu plutôt que dans un effet
   // (évite un cycle de rendu superflu) : seule l'étape "barre" se termine
-  // toute seule, dès que le bateau entre dans la zone interdite. Toutes
-  // les autres étapes attendent un tap — un geste ponctuel décidé en
-  // regardant le bateau, pas un seuil physique automatique.
+  // toute seule, dès que le bateau entre dans la zone interdite pendant
+  // la rotation animée. Toutes les autres étapes attendent un geste — un
+  // tap ou un tour de manivelle décidé en regardant le bateau.
   if (step === "barre" && enZoneInterdite) {
     setStepIndex(3);
   } else if (step === "stabiliser" && arrivee) {
@@ -100,15 +117,44 @@ export function VirementExperience() {
   const d = distanceAuVent(heading);
   const boomAngle = Math.min(72, Math.max(16, d * 0.75));
   const mainsailEtat: EtatVoile = enZoneInterdite ? "faseille" : "bon";
-  // Le génois faseille tant qu'il n'a pas été choqué puis rebordé sur la
-  // nouvelle amure (stepIndex >= 7 = étape "border" faite) ; entre-temps,
-  // même s'il a déjà basculé de côté (jibSign === targetJibSign), il reste
-  // "faseille" tant qu'on ne l'a pas rebordé.
-  const jibEtat: EtatVoile = enZoneInterdite || jibSign === startJibSign || stepIndex < 7 ? "faseille" : "bon";
+  // Le génois est bien réglé au départ (bon), faseille dès qu'on l'a
+  // choqué et jusqu'à ce qu'il soit rebordé au winch sur la nouvelle
+  // amure (étapes "attraper" et "border" = stepIndex 5 et 6), et faseille
+  // aussi ponctuellement si le bateau pointe trop près du vent, quelle
+  // que soit l'écoute.
+  const jibEtat: EtatVoile = enZoneInterdite || (stepIndex >= 5 && stepIndex < 7) ? "faseille" : "bon";
 
-  const dragActif = stepIndex >= 2 && !termine;
+  function pousserLaBarre() {
+    if (virant) return;
+    setVirant(true);
+    const depart = startHeading;
+    const cible = targetHeading;
+    const t0 = performance.now();
+    function frame(now: number) {
+      const t = Math.min(1, (now - t0) / ROTATION_DUREE_MS);
+      setHeading(depart + (cible - depart) * easeInOutCubic(t));
+      if (t < 1) {
+        rafRef.current = requestAnimationFrame(frame);
+      } else {
+        rafRef.current = null;
+        setVirant(false);
+      }
+    }
+    rafRef.current = requestAnimationFrame(frame);
+  }
+
+  function tournerLaManivelle() {
+    const prochain = toursWinch + 1;
+    setToursWinch(prochain);
+    if (prochain >= TOURS_WINCH) {
+      setStepIndex(7);
+    }
+  }
 
   function recommencer() {
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    rafRef.current = null;
+    setVirant(false);
     const nextSign = (startSign * -1) as 1 | -1;
     const nextStartHeading = -PRES_ANGLE * nextSign;
     const nextStartAmure = amurePourCap(nextStartHeading);
@@ -116,6 +162,7 @@ export function VirementExperience() {
     setHeading(nextStartHeading);
     setJibSign(nextStartAmure === "babord" ? 1 : -1);
     setStepIndex(0);
+    setToursWinch(0);
   }
 
   return (
@@ -126,12 +173,7 @@ export function VirementExperience() {
       </p>
 
       <div className="rounded-2xl bg-brand-50 py-3">
-        <svg
-          ref={svgRef}
-          viewBox="0 0 400 400"
-          className={clsx("w-full max-h-72 mx-auto select-none", dragActif && "touch-none cursor-grab active:cursor-grabbing")}
-          {...(dragActif ? handlers : {})}
-        >
+        <svg viewBox="0 0 400 400" className="w-full max-h-72 mx-auto select-none">
           <rect x={0} y={0} width={400} height={400} fill="transparent" />
           <circle cx={CX} cy={CY} r={DIAL_R} fill="none" stroke={BRAND} strokeWidth={1.5} strokeDasharray="3 6" opacity={0.35} />
           <path
@@ -196,7 +238,9 @@ export function VirementExperience() {
       )}
 
       {step === "barre" && (
-        <p className="text-center text-sm text-ink-soft">Fais glisser le bateau pour pousser la barre sous le vent.</p>
+        <Button className="w-full" onClick={pousserLaBarre} disabled={virant}>
+          Pousser la barre sous le vent
+        </Button>
       )}
 
       {step === "taquet" && (
@@ -230,9 +274,34 @@ export function VirementExperience() {
       )}
 
       {step === "border" && (
-        <Button className="w-full" onClick={() => setStepIndex(7)}>
-          Border l&apos;écoute
-        </Button>
+        <div className="flex flex-col items-center gap-2">
+          <Button className="w-full" onClick={tournerLaManivelle}>
+            <span className="inline-flex items-center gap-2">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                style={{ transform: `rotate(${toursWinch * 130}deg)`, transition: "transform 200ms ease-out" }}
+              >
+                <circle cx="12" cy="12" r="7" />
+                <line x1="12" y1="12" x2="19" y2="12" />
+              </svg>
+              Tourner la manivelle du winch
+            </span>
+          </Button>
+          <div className="flex items-center gap-1.5">
+            {Array.from({ length: TOURS_WINCH }, (_, i) => (
+              <span key={i} className={clsx("w-2 h-2 rounded-full", i < toursWinch ? "bg-brand-500" : "bg-surface-2")} />
+            ))}
+          </div>
+          <p className="text-xs text-ink-soft text-center">
+            {toursWinch === 0 ? "Border demande de la force : plusieurs tours de winch." : `Encore ${TOURS_WINCH - toursWinch} tour${TOURS_WINCH - toursWinch > 1 ? "s" : ""}.`}
+          </p>
+        </div>
       )}
 
       {step === "bloquer" && (
@@ -242,11 +311,7 @@ export function VirementExperience() {
       )}
 
       {step === "stabiliser" && (
-        <p className="text-center text-sm text-ink-soft">Continue à tourner jusqu&apos;au près, sur la nouvelle amure.</p>
-      )}
-
-      {dragActif && step !== "barre" && step !== "stabiliser" && (
-        <p className="text-center text-xs text-ink-soft">👆 Le bateau reste manipulable à tout moment.</p>
+        <p className="text-center text-sm text-ink-soft">Le bateau termine sa rotation jusqu&apos;au près, sur la nouvelle amure.</p>
       )}
 
       {termine && (
