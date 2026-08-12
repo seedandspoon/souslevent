@@ -12,14 +12,18 @@ import { SailboatDiagram } from "@/components/nautical-visuals";
 import { BRAND, INK } from "@/components/nautical-visuals/tokens";
 
 // Les mêmes étapes que la leçon "Le virement de bord" (Niveau 3), pour
-// l'exercice « à toi de vérifier » après une manœuvre réussie.
+// l'exercice « à toi de vérifier » après une manœuvre réussie — assez
+// détaillées pour s'entraîner comme si on était seule à bord.
 const ETAPES_VIREMENT = [
   "Vérifier que la route est dégagée",
-  "Annoncer : « Paré à virer ? »",
-  "Pousser doucement la barre",
-  "Passer face au vent",
-  "Changer l'écoute du génois",
-  "Stabiliser sur la nouvelle amure",
+  "Annoncer : « Paré à virer ? / Je vire ! »",
+  "Pousser doucement la barre sous le vent",
+  "Ouvrir le taquet de l'écoute bordée",
+  "Choquer l'écoute à la main, progressivement",
+  "Attraper la nouvelle écoute dès que le génois passe de l'autre côté",
+  "Border à la main puis terminer au winch",
+  "Bloquer l'écoute dans son taquet",
+  "Stabiliser le cap sur la nouvelle amure",
 ];
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" — voir
