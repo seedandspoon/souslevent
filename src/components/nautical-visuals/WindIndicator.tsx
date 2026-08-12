@@ -1,39 +1,48 @@
-import { BRAND } from "./tokens";
+import { BRAND, polar, type Point } from "./tokens";
 
 /**
- * Flèche de vent — TOUJOURS à dessiner hors du <g> qui fait tourner le
- * bateau (repère du monde), sinon elle perd son rôle de référence stable.
- * Une seule convention dans toute l'app : épaisse, longue, séparée du
- * bateau. `angleDeg` = direction vers laquelle souffle le vent, 0 = vers
- * le bas (convention "0 = vent du haut" utilisée dans les expériences).
+ * Flèche de vent — calculée en coordonnées polaires directement autour du
+ * centre réel du bateau (`center`), jamais par rotation rigide de toute la
+ * flèche autour d'un pivot distant : au-delà de ~90°, cette dernière
+ * approche fait pointer la pointe à l'opposé du bateau (bug corrigé ici).
+ * Seule la petite pointe de flèche (déjà positionnée à `head`) est
+ * tournée sur elle-même pour s'orienter localement le long du fût.
  */
 export function WindIndicator({
-  tipX,
-  tipY,
+  center,
   angleDeg = 0,
-  length = 60,
+  distance = 90,
+  headGap = 24,
   label = true,
 }: {
-  tipX: number;
-  tipY: number;
+  center: Point;
   angleDeg?: number;
-  length?: number;
+  distance?: number;
+  headGap?: number;
   label?: boolean;
 }) {
+  const tail = polar(center, angleDeg, distance);
+  const head = polar(center, angleDeg, headGap);
+  // Le fût s'arrête un peu avant `head` pour laisser la place à la pointe.
+  const shaftEnd = polar(center, angleDeg, headGap + 14);
+
   return (
-    <g transform={`rotate(${angleDeg} ${tipX} ${tipY})`}>
-      <line x1={tipX} y1={tipY - length} x2={tipX} y2={tipY - 12} stroke={BRAND} strokeWidth={4} />
-      <path d={`M${tipX - 8},${tipY - 12} L${tipX + 8},${tipY - 12} L${tipX},${tipY + 4} Z`} fill={BRAND} />
+    <g>
+      <line x1={tail.x} y1={tail.y} x2={shaftEnd.x} y2={shaftEnd.y} stroke={BRAND} strokeWidth={4} strokeLinecap="round" />
+      <path
+        d={`M${head.x - 8},${head.y - 12} L${head.x + 8},${head.y - 12} L${head.x},${head.y + 4} Z`}
+        fill={BRAND}
+        transform={`rotate(${angleDeg} ${head.x} ${head.y})`}
+      />
       {label && (
         <text
-          x={tipX}
-          y={tipY - length - 6}
+          x={tail.x}
+          y={tail.y - 10}
           textAnchor="middle"
           fontSize={12}
           fontWeight={600}
           fill={BRAND}
           fontFamily="var(--font-sans), sans-serif"
-          transform={`rotate(${-angleDeg} ${tipX} ${tipY - length - 6})`}
         >
           Vent
         </text>

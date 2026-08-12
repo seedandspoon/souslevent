@@ -14,8 +14,8 @@ import { INK, BRAND, SUCCESS, DANGER } from "@/components/nautical-visuals/token
 // modifier ce fichier ou d'en créer un nouveau du même genre.
 
 const CX = 200;
-const CY = 200;
-const HULL_LENGTH = 130;
+const CY = 210;
+const HULL_LENGTH = 190;
 
 const CIBLES = ALLURES.filter((a) => a.id !== "face-au-vent");
 
@@ -96,11 +96,11 @@ export function AlluresExperience() {
           <rect x={0} y={0} width={400} height={400} fill="transparent" />
 
           {/* Cercle de manipulation */}
-          <circle cx={CX} cy={CY} r={148} fill="none" stroke={BRAND} strokeWidth={1.5} strokeDasharray="3 6" opacity={0.35} />
+          <circle cx={CX} cy={CY} r={160} fill="none" stroke={BRAND} strokeWidth={1.5} strokeDasharray="3 6" opacity={0.35} />
 
           {/* Lit du vent (zone interdite) */}
           <path
-            d={`M${CX},${CY} L${CX - 148 * Math.sin((40 * Math.PI) / 180)},${CY - 148 * Math.cos((40 * Math.PI) / 180)} A148,148 0 0 1 ${CX + 148 * Math.sin((40 * Math.PI) / 180)},${CY - 148 * Math.cos((40 * Math.PI) / 180)} Z`}
+            d={`M${CX},${CY} L${CX - 160 * Math.sin((40 * Math.PI) / 180)},${CY - 160 * Math.cos((40 * Math.PI) / 180)} A160,160 0 0 1 ${CX + 160 * Math.sin((40 * Math.PI) / 180)},${CY - 160 * Math.cos((40 * Math.PI) / 180)} Z`}
             fill={INK}
             opacity={0.06}
           />
@@ -113,7 +113,6 @@ export function AlluresExperience() {
             boomAngleDeg={boomAngle}
             boomSign={sign}
             mainsailEtat={enZoneInterdite ? "faseille" : "bon"}
-            windTipY={70}
             bowMarkerColor={enZoneInterdite ? DANGER : atteint ? SUCCESS : INK}
           />
         </svg>

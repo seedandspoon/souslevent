@@ -19,8 +19,8 @@ const ALLURES_CHIPS = [
 ];
 
 const CX = 200;
-const CY = 200;
-const HULL_LENGTH = 130;
+const CY = 210;
+const HULL_LENGTH = 210;
 const TOLERANCE = 12;
 
 export function ReglageVoileExperience() {
@@ -71,7 +71,6 @@ export function ReglageVoileExperience() {
             boomAngleDeg={boomAngle}
             boomSign={1}
             mainsailEtat={etat}
-            windTipY={70}
             windAngleDeg={-chip.windAngle}
           />
         </svg>

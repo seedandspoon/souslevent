@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ACCENT, BRAND, DANGER, type Point } from "./tokens";
+import { ACCENT, BRAND, DANGER, INK, type Point } from "./tokens";
 import type { EtatVoile } from "./Sail";
 
 /**
@@ -58,6 +58,9 @@ export function Jib({
       d={`M${head.x},${head.y} Q${milieu.x + sign * belly},${milieu.y} ${clew.x},${clew.y} L${tack.x},${tack.y} Z`}
       fill={color}
       opacity={0.55}
+      stroke={INK}
+      strokeWidth={1.25}
+      strokeOpacity={0.5}
     />
   );
 }

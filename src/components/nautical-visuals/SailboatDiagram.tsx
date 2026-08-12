@@ -27,8 +27,7 @@ export function SailboatDiagram({
   jibEtat,
   showJib = true,
   showWind = true,
-  windTipY,
-  windLength = 52,
+  windDistance,
   windAngleDeg = 0,
   bowMarkerColor = null,
 }: {
@@ -42,8 +41,7 @@ export function SailboatDiagram({
   jibEtat?: EtatVoile;
   showJib?: boolean;
   showWind?: boolean;
-  windTipY?: number;
-  windLength?: number;
+  windDistance?: number;
   windAngleDeg?: number;
   bowMarkerColor?: string | null;
 }) {
@@ -66,20 +64,28 @@ export function SailboatDiagram({
     y: boomPivot.y + boomLen * Math.cos(boomRad),
   };
 
-  // Le point de drisse (head) est pris au niveau du pied de mât plutôt
-  // qu'en haut : en vue de dessus, c'est la distance mât-proue qui donne
-  // au guindant du foc sa vraie longueur (le "haut" du mât n'ajoute rien
-  // en projection). Léger décalage sous le vent pour éviter un guindant
-  // parfaitement confondu avec l'axe central du bateau.
-  const jibHead = { x: hull.mastBase.x + boomSign * hullLength * 0.04, y: hull.mastBase.y };
-  const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.09 };
-  const jibFootLength = hullLength * 0.55;
-  const jibAngleDeg = boomAngleDeg * 0.85;
+  // Le foc reste toujours devant le mât, jamais dans la zone de la
+  // grand-voile/bôme : point de drisse (head) proche du haut du mât plutôt
+  // que du pied, guindant court et angle d'écoute freiné par rapport à la
+  // bôme, pour que l'écoute (clew) ne balaie jamais aussi loin en arrière
+  // que le point de vit-de-mulet — sinon les deux voiles se superposent
+  // visuellement quel que soit l'angle (bug corrigé ici).
+  const jibHead = { x: mastTop.x + boomSign * hullLength * 0.02, y: mastTop.y + hullLength * 0.06 };
+  const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.12 };
+  const jibFootLength = hullLength * 0.34;
+  const jibAngleDeg = boomAngleDeg * 0.6;
+
+  // Distance de la queue de la flèche au centre du bateau — assez loin
+  // pour rester hors de la coque à n'importe quel angle de vent, voir
+  // WindIndicator.tsx (calcul polaire autour de `center`, plus de pivot
+  // distant fixe).
+  const windTailDistance = windDistance ?? hullLength * 0.94;
+  const windHeadGap = hullLength * 0.54;
 
   return (
     <>
       {showWind && (
-        <WindIndicator tipX={cx} tipY={windTipY ?? cy - hullLength * 0.54} length={windLength} angleDeg={windAngleDeg} />
+        <WindIndicator center={{ x: cx, y: cy }} distance={windTailDistance} headGap={windHeadGap} angleDeg={windAngleDeg} />
       )}
 
       <g transform={`rotate(${headingDeg} ${cx} ${cy})`}>
@@ -90,7 +96,7 @@ export function SailboatDiagram({
         )}
 
         <line x1={mastTop.x} y1={mastTop.y} x2={hull.mastBase.x} y2={hull.mastBase.y} stroke="var(--color-ink)" strokeWidth={4} strokeLinecap="round" />
-        <Sail mastTop={mastTop} mastBase={boomPivot} boomEnd={boomEnd} etat={mainsailEtat} />
+        <Sail mastTop={mastTop} mastBase={boomPivot} boomEnd={boomEnd} etat={mainsailEtat} sign={boomSign} />
         <Boom from={boomPivot} to={boomEnd} />
 
         {bowMarkerColor && <circle cx={hull.bow.x} cy={hull.bow.y} r={6} fill={bowMarkerColor} />}
