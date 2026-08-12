@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
-import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
-import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
+import { OrderedStepsCheck } from "@/components/interactive/OrderedStepsCheck";
 import { Rope, RopeEnd, DepthCrossing } from "@/components/nautical-visuals";
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" —
@@ -67,72 +66,9 @@ const STEPS: Step[] = [
 // Position y du bout libre (courant) à chaque étape, pour RopeEnd.
 const BOUT_LIBRE_Y = [235, 180, 112, 109, 242, 242];
 
-const ORDRE_CORRECT = [1, 2, 3, 4, 5];
-const LABELS_CHECK = STEPS.map((s) => s.titre);
-
-function VerificationFinale() {
-  const [shuffled] = useState(() => {
-    const idx = [...ORDRE_CORRECT];
-    for (let i = idx.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [idx[i], idx[j]] = [idx[j], idx[i]];
-    }
-    return idx;
-  });
-  const [placed, setPlaced] = useState<number[]>([]);
-  const [erreur, setErreur] = useState<number | null>(null);
-  const termine = placed.length === ORDRE_CORRECT.length;
-
-  function tap(stepIndex: number) {
-    if (placed.includes(stepIndex) || termine) return;
-    const attendu = ORDRE_CORRECT[placed.length];
-    if (stepIndex === attendu) {
-      setPlaced([...placed, stepIndex]);
-      setErreur(null);
-    } else {
-      setErreur(stepIndex);
-      setTimeout(() => setErreur(null), 450);
-    }
-  }
-
-  return (
-    <div className="rounded-xl border border-border p-4">
-      <p className="text-sm font-semibold text-ink mb-1">À toi !</p>
-      <p className="text-xs text-ink-soft mb-3">Touche les étapes dans le bon ordre, du début à la fin.</p>
-      <div className="flex flex-col gap-2">
-        {shuffled.map((stepIndex) => {
-          const rang = placed.indexOf(stepIndex);
-          const estPlacee = rang !== -1;
-          return (
-            <button
-              key={stepIndex}
-              onClick={() => tap(stepIndex)}
-              disabled={estPlacee}
-              className={clsx(
-                "text-left text-sm rounded-lg border px-3 py-2.5 transition-colors flex items-center gap-2.5",
-                estPlacee && "border-success bg-success-soft text-ink",
-                !estPlacee && erreur === stepIndex && "border-danger bg-danger-soft text-ink",
-                !estPlacee && erreur !== stepIndex && "border-border bg-surface hover:border-brand-300"
-              )}
-            >
-              {estPlacee && (
-                <span className="w-5 h-5 rounded-full bg-success text-white text-xs flex items-center justify-center shrink-0">
-                  {rang + 1}
-                </span>
-              )}
-              {LABELS_CHECK[stepIndex]}
-            </button>
-          );
-        })}
-      </div>
-      {termine && (
-        <div className="mt-3">
-          <FeedbackBanner tone="success" titre="Bravo !" detail="Tu as reconstitué le mouvement du nœud de chaise." />
-        </div>
-      )}
-    </div>
-  );
-}
+// "Position initiale" (étape 0) n'est pas une action à retrouver, seulement
+// le point de départ : la vérification ne porte que sur les 5 gestes réels.
+const LABELS_CHECK = STEPS.slice(1).map((s) => s.titre);
 
 export function NoeudChaiseExperience() {
   const [current, setCurrent] = useState(0);
@@ -215,7 +151,9 @@ export function NoeudChaiseExperience() {
         </Button>
       )}
 
-      {showCheck && <VerificationFinale />}
+      {showCheck && (
+        <OrderedStepsCheck steps={LABELS_CHECK} successDetail="Tu as reconstitué le mouvement du nœud de chaise." />
+      )}
     </div>
   );
 }

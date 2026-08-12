@@ -2,12 +2,25 @@
 
 import { useState } from "react";
 import clsx from "clsx";
+import { Check } from "lucide-react";
 import { useAngleDrag } from "@/lib/interactions/useAngleDrag";
 import { amurePourCap, distanceAuVent, normalize360, type Amure } from "@/lib/interactions/angle";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
+import { OrderedStepsCheck } from "@/components/interactive/OrderedStepsCheck";
 import { Button } from "@/components/ui/Button";
 import { SailboatDiagram } from "@/components/nautical-visuals";
 import { BRAND, INK } from "@/components/nautical-visuals/tokens";
+
+// Les mêmes étapes que la leçon "Le virement de bord" (Niveau 3), pour
+// l'exercice « à toi de vérifier » après une manœuvre réussie.
+const ETAPES_VIREMENT = [
+  "Vérifier que la route est dégagée",
+  "Annoncer : « Paré à virer ? »",
+  "Pousser doucement la barre",
+  "Passer face au vent",
+  "Changer l'écoute du génois",
+  "Stabiliser sur la nouvelle amure",
+];
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" — voir
 // .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de modifier
@@ -47,6 +60,7 @@ export function VirementExperience() {
   const { angle: heading, setAngle: setHeading, svgRef, handlers } = useAngleDrag(startHeading, { x: CX, y: CY });
   const [jibSign, setJibSign] = useState<1 | -1>(startJibSign);
   const [phase, setPhase] = useState<Phase>("pret");
+  const [showCheck, setShowCheck] = useState(false);
 
   const currentAmure = amurePourCap(heading);
   const enZoneInterdite = distanceAuVent(heading) < ZONE_INTERDITE_MAX;
@@ -76,6 +90,7 @@ export function VirementExperience() {
     setHeading(nextStartHeading);
     setJibSign(nextStartAmure === "babord" ? 1 : -1);
     setPhase("pret");
+    setShowCheck(false);
   }
 
   const message =
@@ -155,7 +170,20 @@ export function VirementExperience() {
             titre="Virement réussi !"
             detail={`Tu es maintenant ${amureLabel(targetAmure)} amure, au près.`}
           />
-          <Button onClick={recommencer}>Refaire un virement</Button>
+          {!showCheck && (
+            <Button size="lg" className="w-full" onClick={() => setShowCheck(true)}>
+              <Check size={16} />À toi de vérifier
+            </Button>
+          )}
+          {showCheck && (
+            <OrderedStepsCheck
+              steps={ETAPES_VIREMENT}
+              successDetail="Tu as reconstitué le virement de bord, du début à la fin."
+            />
+          )}
+          <Button variant="secondary" onClick={recommencer}>
+            Refaire un virement
+          </Button>
         </div>
       )}
 
