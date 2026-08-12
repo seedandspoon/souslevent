@@ -6,16 +6,17 @@ import { Jib } from "./Jib";
 
 /**
  * Le voilier de référence de l'application — coque, grand-voile ET
- * foc/génois par défaut (voir SKILL.md, règle "le voilier de référence
- * porte deux voiles"). Point d'entrée pour toute nouvelle expérience avec
- * un bateau : compose ce composant plutôt que réassembler les primitives
- * à la main.
+ * génois par défaut (voir SKILL.md, règle "le voilier de référence porte
+ * deux voiles" ; le génois est la voile d'avant par défaut, plus grande
+ * et plus courante que le foc — voir le glossaire pour la distinction).
+ * Point d'entrée pour toute nouvelle expérience avec un bateau : compose
+ * ce composant plutôt que réassembler les primitives à la main.
  *
  * Ni mât ni bôme dessinés séparément : seules les deux surfaces de voile
  * sont visibles. Leur propre bord (mât→bôme pour la GV, amure→écoute pour
- * le foc) porte déjà l'information d'orientation (tribord/bâbord, bordé/
- * choqué), et leur gonflement porte l'information de portance — un spar
- * ou un point en plus n'ajoutait rien à retenir.
+ * le génois) porte déjà l'information d'orientation (tribord/bâbord,
+ * bordé/choqué), et leur gonflement porte l'information de portance — un
+ * spar ou un point en plus n'ajoutait rien à retenir.
  *
  * Tout est piloté par props pour rester réutilisable par les futures
  * expériences (virement, empannage, priorités...) : cap, angle de bôme,
@@ -51,12 +52,12 @@ export function SailboatDiagram({
   windAngleDeg?: number;
   bowMarkerColor?: string | null;
   /**
-   * 0 = foc du même côté que la bôme (cas général). 1 = foc "en ciseaux"
-   * du côté opposé (papillon/goose-wing, vent arrière) — le vent poussant
-   * de face, écarter les deux voiles capte le vent symétriquement plutôt
-   * que de laisser le foc masqué derrière la grand-voile. Valeurs
-   * intermédiaires pour une transition continue plutôt qu'un basculement
-   * brutal quand on approche le vent arrière.
+   * 0 = génois du même côté que la bôme (cas général). 1 = génois "en
+   * ciseaux" du côté opposé (papillon/goose-wing, vent arrière) — le vent
+   * poussant de face, écarter les deux voiles capte le vent symétriquement
+   * plutôt que de laisser le génois masqué derrière la grand-voile.
+   * Valeurs intermédiaires pour une transition continue plutôt qu'un
+   * basculement brutal quand on approche le vent arrière.
    */
   jibOppositeAmount?: number;
 }) {
@@ -79,19 +80,19 @@ export function SailboatDiagram({
     y: boomPivot.y + boomLen * Math.cos(boomRad),
   };
 
-  // Le foc suit la même grammaire que la grand-voile : un point fixe
+  // Le génois suit la même grammaire que la grand-voile : un point fixe
   // (l'amure, à la proue) et un point mobile (l'écoute) — pas de point de
   // drisse représenté, il n'apportait pas d'information utile. Les deux
   // voiles étant généralement bordées au même angle l'une que l'autre,
   // l'écoute pivote depuis l'amure au MÊME angle que la bôme (boomRad) :
-  // le bord amure→écoute du foc reste ainsi parallèle au bord mât→bôme de
-  // la grand-voile à tout instant, au lieu de dériver indépendamment.
+  // le bord amure→écoute du génois reste ainsi parallèle au bord mât→bôme
+  // de la grand-voile à tout instant, au lieu de dériver indépendamment.
   //
   // Exception volontaire : à l'approche du vent arrière (jibOppositeAmount
-  // > 0), le foc bascule progressivement du côté opposé à la bôme — la
+  // > 0), le génois bascule progressivement du côté opposé à la bôme — la
   // configuration "en ciseaux" réelle en navigation. `jibSign` passe donc
   // en continu de `boomSign` (même côté) à `-boomSign` (côté opposé), avec
-  // un point médian où le foc se retrouve carré dans l'axe.
+  // un point médian où le génois se retrouve carré dans l'axe.
   const t = Math.min(1, Math.max(0, (boomAngleDeg - 10) / 68));
   const jibSign = boomSign * (1 - 2 * jibOppositeAmount);
   const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.04 };

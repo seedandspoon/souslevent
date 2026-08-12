@@ -61,7 +61,7 @@ export const level2Lessons: Lesson[] = [
     ],
     questionInline: {
       enonce: "Tu veux hisser la grand-voile avant de partir. Quel cordage utilises-tu ?",
-      options: ["L'écoute de grand-voile", "La drisse de grand-voile", "La drisse de foc", "Le hale-bas"],
+      options: ["L'écoute de grand-voile", "La drisse de grand-voile", "La drisse de génois", "Le hale-bas"],
       reponseIndex: 1,
       explication: "Hisser une voile se fait toujours avec sa drisse.",
     },

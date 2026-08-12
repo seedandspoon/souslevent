@@ -3,7 +3,10 @@ import { ACCENT, BRAND, DANGER, INK, type Point } from "./tokens";
 import type { EtatVoile } from "./Sail";
 
 /**
- * Foc/génois — même grammaire que la grand-voile (voir Sail.tsx) : un
+ * Génois — voile d'avant par défaut du voilier de référence (plus grande
+ * et plus fréquente en école de voile que le foc, qu'elle recouvre en
+ * partie ; voir le glossaire pour la distinction réelle entre les deux).
+ * Même grammaire que la grand-voile (voir Sail.tsx) : un
  * point fixe (l'amure, à la proue) et un point mobile (l'écoute), reliés
  * par une surface remplie. Pas de point de drisse représenté — il
  * n'ajoutait pas d'information utile, seulement un troisième coin à
@@ -21,7 +24,7 @@ export function Jib({
 }: {
   tack: Point;
   clew: Point;
-  // Continu plutôt que strictement 1 | -1 : autour de 0, le foc bascule
+  // Continu plutôt que strictement 1 | -1 : autour de 0, le génois bascule
   // en douceur de son côté habituel vers le côté opposé (voir
   // SailboatDiagram, `jibOppositeAmount`, cas du vent arrière).
   sign: number;

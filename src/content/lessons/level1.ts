@@ -281,9 +281,9 @@ export const level1Lessons: Lesson[] = [
       {
         type: "texte",
         contenu:
-          "La grand-voile est la voile principale, hissée le long du mât et de la bôme. Le foc et le génois sont les voiles d'avant : le génois est plus grand et recouvre en partie la grand-voile, le foc est plus petit.",
+          "La grand-voile est la voile principale, hissée le long du mât et de la bôme. Le génois est la voile d'avant par défaut sur la plupart des voiliers : elle recouvre en partie la grand-voile. Le foc est une voile d'avant plus petite, qui ne la recouvre pas.",
       },
-      { type: "schema", illustration: "sails-overview", legende: "Grand-voile, foc/génois et spinnaker" },
+      { type: "schema", illustration: "sails-overview", legende: "Grand-voile, génois/foc et spinnaker" },
       {
         type: "texte",
         contenu:
@@ -292,14 +292,14 @@ export const level1Lessons: Lesson[] = [
       {
         type: "erreurs",
         items: [
-          "Confondre foc et génois : le génois est plus grand et recouvre une partie de la grand-voile.",
+          "Confondre génois et foc : le génois est plus grand et recouvre une partie de la grand-voile.",
           "Croire que le spinnaker s'utilise au près : il est réservé aux allures portantes.",
         ],
       },
     ],
     questionInline: {
       enonce: "Quelle voile est la mieux adaptée pour naviguer vent arrière avec un maximum de toile ?",
-      options: ["Le foc", "Le génois", "Le spinnaker", "La grand-voile seule"],
+      options: ["Le génois", "Le foc", "Le spinnaker", "La grand-voile seule"],
       reponseIndex: 2,
       explication: "Le spinnaker est conçu pour les allures portantes comme le vent arrière.",
     },

@@ -21,7 +21,7 @@ export function getHullGeometry(cx: number, cy: number, length = 132): HullGeome
     stern: { x: cx, y: cy + length / 2 },
     // Le pied de mât se place à ~32% de la longueur depuis la proue —
     // proportion réaliste d'un sloop, laissant assez de place devant pour
-    // le foc et assez de coque derrière pour que la bôme atteigne
+    // le génois et assez de coque derrière pour que la bôme atteigne
     // franchement vers la poupe (voir SailboatDiagram, longueur de bôme).
     mastBase: { x: cx, y: cy - length * 0.18 },
     cockpit: { x: cx, y: cy + length * 0.28 },

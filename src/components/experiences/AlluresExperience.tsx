@@ -40,7 +40,7 @@ export function AlluresExperience() {
   const boomAngle = Math.min(72, Math.max(16, d * 0.75));
   const sign = amure === "babord" ? 1 : -1;
 
-  // À l'approche du vent arrière, le foc bascule progressivement du côté
+  // À l'approche du vent arrière, le génois bascule progressivement du côté
   // opposé à la bôme (configuration "en ciseaux") — transition continue
   // entre le début du grand largue (140°) et le vent arrière (170°),
   // mêmes bornes que les points de repère du cadran.

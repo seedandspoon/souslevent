@@ -8,7 +8,7 @@ import { SailboatDiagram } from "@/components/nautical-visuals";
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" — voir
 // .claude/skills/nautical-pedagogical-visuals/SKILL.md. Le voilier de
-// référence porte grand-voile ET foc/génois par défaut ; ici, seul le
+// référence porte grand-voile ET génois par défaut ; ici, seul le
 // réglage de la grand-voile est piloté par le curseur pour l'instant,
 // mais les deux voiles doivent rester visibles et identifiables.
 

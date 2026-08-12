@@ -45,7 +45,7 @@ export const concepts: Concept[] = [
 
   // Niveau 1 — Les voiles
   { id: "c-grand-voile-notion", titre: "La grand-voile", skillTag: "manoeuvres", glossaryTermId: "g-grand-voile" },
-  { id: "c-foc-notion", titre: "Le foc / génois", skillTag: "manoeuvres", glossaryTermId: "g-foc" },
+  { id: "c-foc-notion", titre: "Le génois / foc", skillTag: "manoeuvres", glossaryTermId: "g-foc" },
   { id: "c-spi-notion", titre: "Le spinnaker", skillTag: "manoeuvres", glossaryTermId: "g-spi" },
 
   // Niveau 2 — Grand-voile

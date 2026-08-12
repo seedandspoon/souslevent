@@ -81,7 +81,7 @@ export const glossary: GlossaryTerm[] = [
   {
     id: "g-etai",
     terme: "Étai",
-    definition: "Câble qui va du mât vers l'avant du bateau et maintient le mât ; le foc ou génois y est souvent fixé.",
+    definition: "Câble qui va du mât vers l'avant du bateau et maintient le mât ; le génois ou foc y est souvent fixé.",
     categorie: "Bateau",
     termesAssociesIds: ["g-mat", "g-foc", "g-haubans"],
   },
@@ -206,8 +206,8 @@ export const glossary: GlossaryTerm[] = [
   },
   {
     id: "g-foc",
-    terme: "Foc / génois (jib / genoa)",
-    definition: "Voile d'avant, fixée sur l'étai. Le génois est plus grand et recouvre en partie la grand-voile ; le foc est plus petit.",
+    terme: "Génois / foc (genoa / jib)",
+    definition: "Voile d'avant, fixée sur l'étai. Le génois — la voile d'avant par défaut sur la plupart des voiliers — est plus grand et recouvre en partie la grand-voile ; le foc est plus petit.",
     categorie: "Voiles",
     termesAssociesIds: ["g-grand-voile", "g-etai"],
     lessonId: "l1-les-voiles",

@@ -27,7 +27,7 @@ export function BoatSide({
       <line x1={190} y1={128} x2={275} y2={128} stroke={stroke("bome")} strokeWidth={is("bome") ? 7 : 5} strokeLinecap="round" />
       {/* Grand-voile (silhouette légère) */}
       <path d="M191,25 L191,126 L272,126 Z" fill={BRAND} opacity={0.12} />
-      {/* Foc (silhouette légère) */}
+      {/* Génois (silhouette légère) */}
       <path d="M188,32 L188,138 L355,138 Z" fill={BRAND} opacity={0.08} />
       {/* Cockpit */}
       <rect

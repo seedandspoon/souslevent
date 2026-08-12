@@ -103,7 +103,7 @@ const belly = etat === "bon" ? 30 : etat === "freine" ? 6 : 20; // px d'offset
 />
 ```
 
-Le foc suit la même grammaire — un point fixe (l'amure, à la proue) et un
+Le génois suit la même grammaire — un point fixe (l'amure, à la proue) et un
 point mobile (l'écoute), reliés par la même forme de quad — **sans point
 de drisse représenté** : un troisième coin près du mât n'ajoute pas
 d'information utile, seulement une forme plus dure à lire. Le point

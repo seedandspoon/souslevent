@@ -84,27 +84,33 @@ n'importe quel angle de rotation, c'est elle qui porte l'information
 d'orientation, pas une flèche annexe.
 
 Parties à distinguer visuellement (pas seulement nommables) : coque, mât,
-grand-voile, foc/génois, bôme, barre/safran. Voir la recette de coque et le
+grand-voile, génois, bôme, barre/safran. Voir la recette de coque et le
 gabarit de proportions dans `references/svg-techniques.md`.
 
 ### Règle : le voilier de référence porte deux voiles
 
 Le voilier pédagogique standard de l'application se représente **avec sa
-grand-voile ET sa voile d'avant (foc/génois)**, pas une seule. C'est la
-valeur par défaut de `SailboatDiagram` — ne dessine une seule voile que
-lorsque la notion étudiée porte volontairement sur une voile précise
-(ex. une leçon dédiée uniquement au réglage du foc). Dans tous les autres
-cas, les deux voiles sont présentes, même si l'interaction ne permet de
-régler que l'une des deux pour l'instant : la priorité est que
-l'utilisateur apprenne sur la silhouette réelle d'un voilier, pas sur une
-version simplifiée à une seule voile qui ne correspond à rien en
-navigation.
+grand-voile ET sa voile d'avant**, pas une seule. C'est la valeur par
+défaut de `SailboatDiagram` — ne dessine une seule voile que lorsque la
+notion étudiée porte volontairement sur une voile précise (ex. une leçon
+dédiée uniquement au réglage du génois). Dans tous les autres cas, les
+deux voiles sont présentes, même si l'interaction ne permet de régler que
+l'une des deux pour l'instant : la priorité est que l'utilisateur
+apprenne sur la silhouette réelle d'un voilier, pas sur une version
+simplifiée à une seule voile qui ne correspond à rien en navigation.
+
+Le **génois** est la voile d'avant par défaut de ce voilier de référence
+(à partir de maintenant, terme par défaut dans tout le code et le
+contenu) — plus grande et plus courante en école de voile que le foc,
+qu'elle recouvre en partie. Ne parler de "foc" que là où le contenu
+explique volontairement la distinction réelle entre les deux (voir le
+glossaire, entrée "Génois / foc").
 
 Position relative, non négociable :
 - **Grand-voile** : derrière le mât, le long de la bôme — le guindant
   colle au mât, la bordure colle à la bôme.
-- **Foc/génois** : devant le mât, attaché à l'étai (le câble qui va du
-  mât vers la proue) — jamais attaché à la bôme, qui n'appartient qu'à la
+- **Génois** : devant le mât, attaché à l'étai (le câble qui va du mât
+  vers la proue) — jamais attaché à la bôme, qui n'appartient qu'à la
   grand-voile.
 
 Les deux voiles doivent réagir ensemble et de façon cohérente au même
@@ -134,7 +140,7 @@ Dans `SailboatDiagram` (le voilier de référence des expériences Allures et
 Réglage d'une voile), ni le mât ni la bôme ne sont dessinés comme des
 éléments à part — seules les deux surfaces de voile sont visibles.
 Chaque voile porte déjà l'information à elle seule par son propre bord
-(mât→bôme pour la GV, amure→écoute pour le foc, voir plus bas) : un spar
+(mât→bôme pour la GV, amure→écoute pour le génois, voir plus bas) : un spar
 ou un point en plus n'ajoutait rien à retenir, seulement une pièce de
 plus à interpréter. `Boom.tsx` (le spar physique, trait épais à bouts
 arrondis) reste un composant réutilisable pour une future expérience qui
@@ -145,7 +151,7 @@ Vu de dessus, le mât est de toute façon un **point**, jamais un segment —
 un mât vertical se projette en un point dans cette vue, un trait
 laisserait croire à une pièce qui a sa propre longueur.
 
-Le foc/génois suit la même grammaire que la grand-voile — un point fixe
+Le génois suit la même grammaire que la grand-voile — un point fixe
 (l'amure, à l'étai/la proue) et un point mobile (l'écoute) reliés par une
 surface remplie — mais **sans point de drisse représenté** : un troisième
 coin près du mât n'apporte pas d'information utile, seulement une forme
@@ -158,7 +164,7 @@ bateau change de cap ou d'allure : c'est cette réaction commune au même
 vent qui les fait comprendre comme deux pièces du même bateau.
 
 Exception volontaire à "même côté que la bôme" : à l'approche du vent
-arrière, le foc bascule progressivement du côté opposé (configuration "en
+arrière, le génois bascule progressivement du côté opposé (configuration "en
 ciseaux"/papillon, réelle en navigation pour capter le vent
 symétriquement). Transition continue plutôt qu'un basculement brutal —
 voir `SailboatDiagram`, prop `jibOppositeAmount` (0 = même côté, 1 =
@@ -237,19 +243,22 @@ redessiner un bateau/une voile/un vent en SVG brut à chaque fois — c'est ce
 qui garantit que la convention reste cohérente dans le temps sans qu'il
 faille relire cette skill à chaque diagramme.
 
-- **`SailboatDiagram`** — le voilier complet et composable : coque, mât,
-  bôme, grand-voile, foc, vent, tout piloté par props (cap, angle de
-  bôme/côté sous le vent, état de chaque voile). **Point d'entrée par
-  défaut pour toute nouvelle expérience avec un bateau** — compose les
-  primitives ci-dessous plutôt que de les assembler à la main à chaque
-  fois. Affiche les deux voiles par défaut (`showJib` à `false` pour les
-  cas volontairement à une seule voile, voir règle ci-dessus).
+- **`SailboatDiagram`** — le voilier complet et composable : coque,
+  grand-voile, génois, vent, tout piloté par props (cap, angle de
+  bôme/côté sous le vent, état de chaque voile). Ni mât ni bôme dessinés
+  à part (voir "La voile et la bôme" ci-dessus) — `Boom` reste disponible
+  pour une future expérience qui isolerait volontairement la bôme.
+  **Point d'entrée par défaut pour toute nouvelle expérience avec un
+  bateau** — compose les primitives ci-dessous plutôt que de les
+  assembler à la main à chaque fois. Affiche les deux voiles par défaut
+  (`showJib` à `false` pour les cas volontairement à une seule voile,
+  voir règle ci-dessus).
 - **`SailboatHull`** — coque + orientation (asymétrie proue/poupe), point
   d'ancrage pour mât et safran.
 - **`WindIndicator`** — flèche de vent world-frame, longueur/angle en props.
 - **`Sail`** — surface de grand-voile réactive (angle de bôme, état
   bon/trop-bordée/pas-assez-bordée en props → forme et couleur en découlent).
-- **`Jib`** — surface de foc/génois réactive, même logique d'état que
+- **`Jib`** — surface de génois réactive, même logique d'état que
   `Sail` mais géométrie propre (attaché à l'étai, devant le mât, pas de
   bôme).
 - **`Boom`** — spar physique, pivote autour du point de mât.
