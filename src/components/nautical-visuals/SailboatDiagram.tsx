@@ -3,14 +3,19 @@ import { SailboatHull } from "./SailboatHull";
 import { WindIndicator } from "./WindIndicator";
 import { Sail, type EtatVoile } from "./Sail";
 import { Jib } from "./Jib";
-import { Boom } from "./Boom";
 
 /**
- * Le voilier de référence de l'application — coque, mât, bôme,
- * grand-voile ET foc/génois par défaut (voir SKILL.md, règle "le voilier
- * de référence porte deux voiles"). Point d'entrée pour toute nouvelle
- * expérience avec un bateau : compose ce composant plutôt que
- * réassembler les primitives à la main.
+ * Le voilier de référence de l'application — coque, grand-voile ET
+ * foc/génois par défaut (voir SKILL.md, règle "le voilier de référence
+ * porte deux voiles"). Point d'entrée pour toute nouvelle expérience avec
+ * un bateau : compose ce composant plutôt que réassembler les primitives
+ * à la main.
+ *
+ * Ni mât ni bôme dessinés séparément : seules les deux surfaces de voile
+ * sont visibles. Leur propre bord (mât→bôme pour la GV, amure→écoute pour
+ * le foc) porte déjà l'information d'orientation (tribord/bâbord, bordé/
+ * choqué), et leur gonflement porte l'information de portance — un spar
+ * ou un point en plus n'ajoutait rien à retenir.
  *
  * Tout est piloté par props pour rester réutilisable par les futures
  * expériences (virement, empannage, priorités...) : cap, angle de bôme,
@@ -98,8 +103,6 @@ export function SailboatDiagram({
         {showJib && <Jib tack={jibTack} clew={jibClew} sign={boomSign} etat={jibEtat ?? mainsailEtat} />}
 
         <Sail mast={mast} boomEnd={boomEnd} etat={mainsailEtat} sign={boomSign} />
-        <Boom from={boomPivot} to={boomEnd} />
-        <circle cx={mast.x} cy={mast.y} r={5} fill="var(--color-ink)" />
 
         {bowMarkerColor && <circle cx={hull.bow.x} cy={hull.bow.y} r={6} fill={bowMarkerColor} />}
       </g>

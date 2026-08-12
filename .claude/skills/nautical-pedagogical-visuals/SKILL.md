@@ -130,16 +130,20 @@ doit changer réellement selon l'état :
 - pas assez bordée → faseille, animation de flottement (oscillation légère
   du contour), couleur accent.
 
-La bôme est un **spar physique** (trait épais avec bouts arrondis, pas une
-ligne fine) — elle doit se lire comme une pièce rigide, pas comme un axe
-géométrique abstrait. Elle n'appartient qu'à la grand-voile : le foc n'a
-pas de bôme, son bord libre (la chute) flotte sans spar, ce qui est en soi
-une différence visuelle utile entre les deux voiles.
+Dans `SailboatDiagram` (le voilier de référence des expériences Allures et
+Réglage d'une voile), ni le mât ni la bôme ne sont dessinés comme des
+éléments à part — seules les deux surfaces de voile sont visibles.
+Chaque voile porte déjà l'information à elle seule par son propre bord
+(mât→bôme pour la GV, amure→écoute pour le foc, voir plus bas) : un spar
+ou un point en plus n'ajoutait rien à retenir, seulement une pièce de
+plus à interpréter. `Boom.tsx` (le spar physique, trait épais à bouts
+arrondis) reste un composant réutilisable pour une future expérience qui
+isolerait volontairement la bôme comme objet d'étude — mais ce n'est plus
+le défaut du voilier de référence.
 
-Vu de dessus, le mât est un **point**, jamais un segment — un mât vertical
-se projette en un point dans cette vue, un trait laisserait croire à une
-pièce qui a sa propre longueur. La bôme pivote directement à ce point ; la
-grand-voile part de ce même point et s'ouvre vers le bout de bôme.
+Vu de dessus, le mât est de toute façon un **point**, jamais un segment —
+un mât vertical se projette en un point dans cette vue, un trait
+laisserait croire à une pièce qui a sa propre longueur.
 
 Le foc/génois suit la même grammaire que la grand-voile — un point fixe
 (l'amure, à l'étai/la proue) et un point mobile (l'écoute) reliés par une
