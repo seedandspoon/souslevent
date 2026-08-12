@@ -8,31 +8,25 @@ import type { EtatVoile } from "./Sail";
  * d'amure à la proue, point de drisse près du mât, point d'écoute libre
  * qui pivote), et pas de bôme puisque le foc n'en a pas. Voir SKILL.md
  * section "La voile et la bôme".
+ *
+ * Le point d'écoute (clew) est calculé par l'appelant (voir
+ * SailboatDiagram) — il doit se trouver nettement en arrière du mât, pas
+ * collé à la proue, sinon le foc paraît réduit à deux points (amure +
+ * drisse) sans vraie voile entre les trois coins.
  */
 export function Jib({
   head,
   tack,
-  footLength,
-  angleDeg,
+  clew,
   sign,
   etat,
 }: {
   head: Point;
   tack: Point;
-  footLength: number;
-  angleDeg: number;
+  clew: Point;
   sign: 1 | -1;
   etat: EtatVoile;
 }) {
-  // Le point d'écoute (clew) pivote depuis le point d'amure (tack, fixe à
-  // la proue) et s'étend vers l'arrière — c'est la longueur réelle du
-  // guindant (head-tack, le long de l'étai) qui donne au foc sa vraie
-  // surface ; un guindant trop court écrase le triangle en un fin coin.
-  const rad = (angleDeg * Math.PI) / 180;
-  const clew: Point = {
-    x: tack.x + sign * footLength * Math.sin(rad),
-    y: tack.y + footLength * Math.cos(rad),
-  };
   const milieu = { x: (head.x + clew.x) / 2, y: (head.y + clew.y) / 2 };
 
   if (etat === "faseille") {
