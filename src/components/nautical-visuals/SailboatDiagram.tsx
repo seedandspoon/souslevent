@@ -37,6 +37,7 @@ export function SailboatDiagram({
   windAngleDeg = 0,
   bowMarkerColor = null,
   jibOppositeAmount = 0,
+  jibSignOverride,
 }: {
   cx: number;
   cy: number;
@@ -60,6 +61,15 @@ export function SailboatDiagram({
    * basculement brutal quand on approche le vent arrière.
    */
   jibOppositeAmount?: number;
+  /**
+   * Découple le côté du génois de `boomSign` : le génois suit sa propre
+   * consigne au lieu de basculer automatiquement avec la bôme. Sert à
+   * représenter un génois resté à contre le temps que l'équipier change
+   * l'écoute pendant un virement — la grand-voile croise avec le cap, le
+   * génois attend un geste explicite. Omettre pour le comportement par
+   * défaut (génois lié à la bôme).
+   */
+  jibSignOverride?: 1 | -1;
 }) {
   const hull = getHullGeometry(cx, cy, hullLength);
   // Le mât est un point unique : vu de dessus, un mât vertical se projette
@@ -94,7 +104,7 @@ export function SailboatDiagram({
   // en continu de `boomSign` (même côté) à `-boomSign` (côté opposé), avec
   // un point médian où le génois se retrouve carré dans l'axe.
   const t = Math.min(1, Math.max(0, (boomAngleDeg - 10) / 68));
-  const jibSign = boomSign * (1 - 2 * jibOppositeAmount);
+  const jibSign = jibSignOverride ?? boomSign * (1 - 2 * jibOppositeAmount);
   const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.04 };
   const jibLen = hullLength * (0.32 + 0.18 * t);
   const jibClew = {

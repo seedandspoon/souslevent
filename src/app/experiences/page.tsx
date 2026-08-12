@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Compass, Wind, Link2 } from "lucide-react";
+import { ChevronRight, Compass, Wind, Link2, RotateCw } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 
@@ -19,6 +19,12 @@ const PILOTES = [
     description: "Borde et choque l'écoute jusqu'à trouver le bon réglage.",
   },
   {
+    href: "/experiences/virement",
+    icon: RotateCw,
+    titre: "Le virement de bord",
+    description: "Annonce, barre et changement d'écoute : vire sans te faire surprendre par le génois.",
+  },
+  {
     href: "/experiences/noeud-chaise",
     icon: Link2,
     titre: "Le nœud de chaise",
@@ -34,7 +40,7 @@ export default function ExperiencesPage() {
       </Badge>
       <h1 className="text-2xl font-semibold text-ink mb-1">Apprendre en manipulant</h1>
       <p className="text-sm text-ink-soft mb-6">
-        Trois expériences pour tester une autre façon d&apos;apprendre la voile : en faisant, pas seulement en lisant.
+        Des expériences pour tester une autre façon d&apos;apprendre la voile : en faisant, pas seulement en lisant.
       </p>
 
       <div className="flex flex-col gap-3">
