@@ -66,18 +66,17 @@ export function SailboatDiagram({
 
   // Le foc suit la même grammaire que la grand-voile : un point fixe
   // (l'amure, à la proue) et un point mobile (l'écoute) — pas de point de
-  // drisse représenté, il n'apportait pas d'information utile. Le point
-  // d'écoute est calculé par rapport au mât plutôt qu'en pivotant depuis
-  // l'amure : sinon il reste collé à la proue et le foc paraît réduit à
-  // deux points d'attache, sans voile visible entre eux. Il se règle (t)
-  // comme la bôme — plus la grand-voile est choquée, plus l'écoute du foc
-  // part vers l'arrière et vers l'extérieur — mais reste toujours en-deçà
-  // de la bôme pour que les deux voiles ne se superposent pas.
-  const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.04 };
+  // drisse représenté, il n'apportait pas d'information utile. Les deux
+  // voiles étant généralement bordées au même angle l'une que l'autre,
+  // l'écoute pivote depuis l'amure au MÊME angle que la bôme (boomRad) :
+  // le bord amure→écoute du foc reste ainsi parallèle au bord mât→bôme de
+  // la grand-voile à tout instant, au lieu de dériver indépendamment.
   const t = Math.min(1, Math.max(0, (boomAngleDeg - 10) / 68));
+  const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.04 };
+  const jibLen = hullLength * (0.32 + 0.18 * t);
   const jibClew = {
-    x: mast.x + boomSign * hullLength * (0.06 + 0.2 * t),
-    y: mast.y + hullLength * (0.05 + 0.09 * t),
+    x: jibTack.x + boomSign * jibLen * Math.sin(boomRad),
+    y: jibTack.y + jibLen * Math.cos(boomRad),
   };
 
   // Distance de la queue de la flèche au centre du bateau — assez loin
