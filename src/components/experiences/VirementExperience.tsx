@@ -5,7 +5,6 @@ import clsx from "clsx";
 import { useAngleDrag } from "@/lib/interactions/useAngleDrag";
 import { amurePourCap, distanceAuVent, normalize360, type Amure } from "@/lib/interactions/angle";
 import { Button } from "@/components/ui/Button";
-import { DragSlider } from "@/components/interactive/DragSlider";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
 import { SailboatDiagram } from "@/components/nautical-visuals";
 import { BRAND, INK } from "@/components/nautical-visuals/tokens";
@@ -15,14 +14,17 @@ import type { EtatVoile } from "@/components/nautical-visuals/Sail";
 // .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de modifier
 // ce fichier.
 //
-// Chaque étape détaillée de la leçon "Le virement de bord" a ici sa
-// propre interaction — pas un seul geste générique pour toute la
-// manœuvre : glisser le bateau (barre), taper (annoncer, ouvrir le
-// taquet, attraper l'écoute, bloquer), glisser un curseur (choquer,
-// border). La grand-voile suit le cap automatiquement ; le génois suit
-// sa propre progression (jibSignOverride) pour rester décorrélé de la
-// barre — c'est ce décalage possible qui rend l'erreur "génois resté à
-// contre" visible si on tourne sans gérer l'écoute.
+// La barre est le seul geste continu (glisser le bateau) : on l'amorce
+// et on peut la corriger à tout instant. Tout le reste — annoncer, ouvrir
+// le taquet, choquer, attraper la nouvelle écoute, border, bloquer — est
+// un geste ponctuel (un tap), déclenché en regardant le bateau plutôt
+// qu'en réglant un curseur détaché de ce qu'on voit : ça reproduit le vrai
+// rythme de la manœuvre (barre en continu, gestes d'écoute au bon
+// moment) plutôt qu'une succession d'étapes qui figent le bateau. La
+// grand-voile suit le cap automatiquement ; le génois suit sa propre
+// progression (jibSignOverride) pour rester décorrélé de la barre — ce
+// décalage possible rend l'erreur "génois resté à contre" visible si on
+// tourne sans gérer l'écoute.
 //
 // L'exercice de mémorisation "remets les étapes dans l'ordre" ne vit
 // plus ici : il a été déplacé dans Quiz (voir qz-ordre-virement dans
@@ -36,8 +38,6 @@ const DIAL_R = 160;
 const PRES_ANGLE = 45;
 const ZONE_INTERDITE_MAX = 40; // même borne que ALLURES "face-au-vent" (angle.ts)
 const TOLERANCE_ARRIVEE = 10;
-const SEUIL_SLIDER = 90;
-const SEUIL_BORDAGE_VISUEL = 60;
 
 type StepId = "route" | "annonce" | "barre" | "taquet" | "choquer" | "attraper" | "border" | "bloquer" | "stabiliser";
 
@@ -51,7 +51,7 @@ const STEP_ORDER: StepDef[] = [
   { id: "annonce", label: "Annoncer : « Paré à virer ? / Je vire ! »" },
   { id: "barre", label: "Pousser doucement la barre sous le vent" },
   { id: "taquet", label: "Ouvrir le taquet de l'écoute bordée" },
-  { id: "choquer", label: "Choquer l'écoute à la main, progressivement" },
+  { id: "choquer", label: "Choquer l'écoute à la main" },
   { id: "attraper", label: "Attraper la nouvelle écoute" },
   { id: "border", label: "Border à la main puis terminer au winch" },
   { id: "bloquer", label: "Bloquer l'écoute dans son taquet" },
@@ -78,8 +78,6 @@ export function VirementExperience() {
   const { angle: heading, setAngle: setHeading, svgRef, handlers } = useAngleDrag(startHeading, { x: CX, y: CY });
   const [jibSign, setJibSign] = useState<1 | -1>(startJibSign);
   const [stepIndex, setStepIndex] = useState(0);
-  const [choqueSlider, setChoqueSlider] = useState(0);
-  const [borderSlider, setBorderSlider] = useState(0);
 
   const currentAmure = amurePourCap(heading);
   const enZoneInterdite = distanceAuVent(heading) < ZONE_INTERDITE_MAX;
@@ -87,15 +85,13 @@ export function VirementExperience() {
   const step = STEP_ORDER[stepIndex]?.id;
   const termine = stepIndex >= STEP_ORDER.length;
 
-  // Avancées automatiques ajustées pendant le rendu plutôt que dans un
-  // effet (évite un cycle de rendu superflu) : chaque étape "physique" se
-  // termine dès que son seuil est atteint, sans validation manuelle.
+  // Avancée automatique ajustée pendant le rendu plutôt que dans un effet
+  // (évite un cycle de rendu superflu) : seule l'étape "barre" se termine
+  // toute seule, dès que le bateau entre dans la zone interdite. Toutes
+  // les autres étapes attendent un tap — un geste ponctuel décidé en
+  // regardant le bateau, pas un seuil physique automatique.
   if (step === "barre" && enZoneInterdite) {
     setStepIndex(3);
-  } else if (step === "choquer" && choqueSlider >= SEUIL_SLIDER) {
-    setStepIndex(5);
-  } else if (step === "border" && borderSlider >= SEUIL_SLIDER) {
-    setStepIndex(7);
   } else if (step === "stabiliser" && arrivee) {
     setStepIndex(9);
   }
@@ -104,18 +100,11 @@ export function VirementExperience() {
   const d = distanceAuVent(heading);
   const boomAngle = Math.min(72, Math.max(16, d * 0.75));
   const mainsailEtat: EtatVoile = enZoneInterdite ? "faseille" : "bon";
-  const jibEtat: EtatVoile =
-    stepIndex < 6
-      ? enZoneInterdite || jibSign === startJibSign
-        ? "faseille"
-        : "bon"
-      : stepIndex === 6
-        ? borderSlider < SEUIL_BORDAGE_VISUEL
-          ? "faseille"
-          : "bon"
-        : enZoneInterdite
-          ? "faseille"
-          : "bon";
+  // Le génois faseille tant qu'il n'a pas été choqué puis rebordé sur la
+  // nouvelle amure (stepIndex >= 7 = étape "border" faite) ; entre-temps,
+  // même s'il a déjà basculé de côté (jibSign === targetJibSign), il reste
+  // "faseille" tant qu'on ne l'a pas rebordé.
+  const jibEtat: EtatVoile = enZoneInterdite || jibSign === startJibSign || stepIndex < 7 ? "faseille" : "bon";
 
   const dragActif = stepIndex >= 2 && !termine;
 
@@ -127,8 +116,6 @@ export function VirementExperience() {
     setHeading(nextStartHeading);
     setJibSign(nextStartAmure === "babord" ? 1 : -1);
     setStepIndex(0);
-    setChoqueSlider(0);
-    setBorderSlider(0);
   }
 
   return (
@@ -219,7 +206,9 @@ export function VirementExperience() {
       )}
 
       {step === "choquer" && (
-        <DragSlider value={choqueSlider} onChange={setChoqueSlider} leftLabel="Bordée" rightLabel="Choquée" tone="accent" />
+        <Button className="w-full" onClick={() => setStepIndex(5)}>
+          Choquer l&apos;écoute
+        </Button>
       )}
 
       {step === "attraper" && (
@@ -241,7 +230,9 @@ export function VirementExperience() {
       )}
 
       {step === "border" && (
-        <DragSlider value={borderSlider} onChange={setBorderSlider} leftLabel="Choquée" rightLabel="Bien bordée" tone="brand" />
+        <Button className="w-full" onClick={() => setStepIndex(7)}>
+          Border l&apos;écoute
+        </Button>
       )}
 
       {step === "bloquer" && (
