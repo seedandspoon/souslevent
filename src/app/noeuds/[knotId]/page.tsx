@@ -2,11 +2,12 @@
 
 import { useParams, notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, AlertTriangle } from "lucide-react";
+import { ChevronLeft, AlertTriangle, Hand, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Illustration } from "@/components/illustrations/registry";
 import { getKnot } from "@/content/knots";
+import { KNOT_EXPERIENCE_LINKS } from "@/lib/experienceLinks";
 
 const DIFFICULTE_LABEL: Record<number, string> = { 1: "Facile", 2: "Intermédiaire", 3: "Avancé" };
 
@@ -32,6 +33,18 @@ export default function KnotPage() {
       </div>
 
       <Illustration id={knot.illustration} />
+
+      {KNOT_EXPERIENCE_LINKS[knot.id] && (
+        <Link href={KNOT_EXPERIENCE_LINKS[knot.id].href}>
+          <div className="rounded-xl bg-brand-700 p-4 flex items-center gap-3 hover:opacity-95 transition-opacity mt-4">
+            <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+              <Hand size={16} className="text-white" />
+            </div>
+            <p className="text-sm font-medium text-white flex-1">{KNOT_EXPERIENCE_LINKS[knot.id].label}</p>
+            <ArrowRight size={16} className="text-white/70 shrink-0" />
+          </div>
+        </Link>
+      )}
 
       <Card className="p-5 mt-5">
         <p className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-2">Utilité</p>

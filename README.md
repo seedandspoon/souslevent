@@ -28,10 +28,10 @@ npm run lint    # ESLint
 
 ```
 src/
-  app/            Écrans (App Router) : accueil, apprendre, simulateur, quiz, bord, nœuds, glossaire, profil
-  components/      Composants UI, illustrations SVG (dont le simulateur interactif d'allures), quiz, leçons
+  app/            Écrans (App Router) : accueil, apprendre, expériences, quiz, bord, nœuds, glossaire, profil
+  components/      Composants UI, illustrations SVG, expériences interactives (voiles, allures, nœuds), quiz, leçons
   content/         Contenu pédagogique typé (niveaux, leçons, quiz, nœuds, glossaire, fiches)
-  lib/             Moteur de révision espacée (SRS), stockage Dexie, logique de progression
+  lib/             Moteur de révision espacée (SRS), stockage Dexie, logique de progression, interactions au clic-glissé
 ```
 
 ## Contenu et périmètre du MVP

@@ -2,12 +2,12 @@ import { IllustrationFrame, Label, INK, BRAND, ACCENT, BRAND_SOFT } from "./shar
 
 export function SailsOverview() {
   return (
-    <IllustrationFrame label="Grand-voile, foc/génois et spinnaker" viewBox="0 0 400 210">
+    <IllustrationFrame label="Grand-voile, génois/foc et spinnaker" viewBox="0 0 400 210">
       <path d="M70,30 L70,150 L128,150 Z" fill={BRAND} opacity={0.25} stroke={INK} strokeWidth={2} />
       <Label x={99} y={175}>Grand-voile</Label>
 
       <path d="M195,60 L195,150 L237,150 Z" fill={BRAND} opacity={0.25} stroke={INK} strokeWidth={2} />
-      <Label x={216} y={175}>Foc / génois</Label>
+      <Label x={216} y={175}>Génois / foc</Label>
 
       <path d="M330,55 Q378,100 332,152 Q288,100 330,55 Z" fill={ACCENT} opacity={0.3} stroke={INK} strokeWidth={2} />
       <Label x={330} y={175}>Spinnaker</Label>
