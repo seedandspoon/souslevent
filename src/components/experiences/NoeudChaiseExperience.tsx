@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, RotateCcw, Gauge, Check } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
@@ -12,9 +12,13 @@ import { Rope, RopeEnd, DepthCrossing } from "@/components/nautical-visuals";
 // voir .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de
 // modifier ce fichier ou d'en créer un nouveau du même genre. Ce nœud
 // sert de cas de validation pour toute future représentation de nœud.
+//
+// Chaque étape est un dessin statique et complet — pas une animation de
+// tracé : c'est plus proche d'un schéma qu'on trouve en ligne (une image
+// fixe par étape) que d'une manipulation continue, qui s'est révélée trop
+// difficile à suivre en pratique.
 
 const DORMANT_D = "M150,20 L150,120";
-const TAIL_STRAIGHT_D = "M150,120 L150,235";
 const LOOP_WITH_TAIL_D = "M150,120 C185,128 185,168 150,160 C115,168 115,128 150,120 L150,180";
 const THROUGH_LOOP_D = "M150,180 C172,165 172,130 150,112";
 const AROUND_DORMANT_D = "M150,112 C176,102 176,76 150,66 C124,76 124,102 150,109";
@@ -26,33 +30,35 @@ const COURANT_STYLE = { color: "var(--color-accent)", width: 4 };
 interface Step {
   titre: string;
   description: string;
-  statiques: string[]; // paths "courant" déjà posés, statiques
-  animee?: string; // path "courant" qui se dessine à cette étape
-  dormantCrossing?: boolean; // à partir de cette étape, le dormant croise AROUND_DORMANT
+  courantPaths: string[]; // tout le brin courant visible à cette étape, dessiné statiquement
+  dormantCrossing?: boolean; // le dormant est croisé par-dessus par AROUND_DORMANT_D
   serrage?: boolean;
 }
 
 const STEPS: Step[] = [
-  { titre: "Position initiale", description: "Le cordage pend, prêt à être façonné.", statiques: [], animee: TAIL_STRAIGHT_D },
-  { titre: "Créer la première boucle", description: "Une boucle se forme sur le dormant.", statiques: [], animee: LOOP_WITH_TAIL_D },
-  { titre: "Passer l'extrémité dans la boucle", description: "Le courant remonte à travers la boucle.", statiques: [LOOP_WITH_TAIL_D], animee: THROUGH_LOOP_D },
+  { titre: "Position initiale", description: "Le cordage pend, prêt à être façonné.", courantPaths: ["M150,120 L150,235"] },
+  { titre: "Créer la première boucle", description: "Une boucle se forme sur le dormant.", courantPaths: [LOOP_WITH_TAIL_D] },
+  {
+    titre: "Passer l'extrémité dans la boucle",
+    description: "Le courant remonte à travers la boucle.",
+    courantPaths: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D],
+  },
   {
     titre: "Passer autour du dormant",
     description: "Il fait le tour du dormant : regarde bien, il passe devant.",
-    statiques: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D],
+    courantPaths: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D],
     dormantCrossing: true,
   },
   {
     titre: "Repasser dans la boucle",
     description: "Puis redescend dans la boucle de départ.",
-    statiques: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D],
-    animee: BACK_THROUGH_D,
+    courantPaths: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D, BACK_THROUGH_D],
     dormantCrossing: true,
   },
   {
     titre: "Serrer",
     description: "Le nœud se resserre : une boucle fixe qui ne glisse pas.",
-    statiques: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D, BACK_THROUGH_D],
+    courantPaths: [LOOP_WITH_TAIL_D, THROUGH_LOOP_D, BACK_THROUGH_D],
     dormantCrossing: true,
     serrage: true,
   },
@@ -130,58 +136,48 @@ function VerificationFinale() {
 
 export function NoeudChaiseExperience() {
   const [current, setCurrent] = useState(0);
-  const [replayCount, setReplayCount] = useState(0);
-  const [slow, setSlow] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
 
   const step = STEPS[current];
-  const duration = slow ? 2.4 : 1;
 
   function goTo(index: number) {
     setCurrent(index);
-    setReplayCount((c) => c + 1);
     setShowCheck(false);
   }
 
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-2xl bg-brand-50 py-4">
-        <svg viewBox="0 0 300 280" className="w-full max-h-72 mx-auto">
-          <motion.g
-            key={step.serrage ? `tighten-${replayCount}` : "rope"}
-            animate={step.serrage ? { scale: [1, 0.92, 1] } : {}}
-            transition={{ duration: 0.6 }}
-            style={{ transformOrigin: "150px 140px" }}
+        <AnimatePresence mode="wait">
+          <motion.svg
+            key={current}
+            viewBox="0 0 300 280"
+            className="w-full max-h-72 mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
           >
             {step.dormantCrossing ? (
-              <DepthCrossing
-                under={DORMANT_D}
-                over={AROUND_DORMANT_D}
-                underStyle={DORMANT_STYLE}
-                overStyle={COURANT_STYLE}
-                animateOver={current === 3}
-                duration={duration}
-                replayKey={replayCount}
-              />
+              <DepthCrossing under={DORMANT_D} over={AROUND_DORMANT_D} underStyle={DORMANT_STYLE} overStyle={COURANT_STYLE} />
             ) : (
-              <Rope d={DORMANT_D} role="dormant" animate={current === 0} duration={duration} replayKey={replayCount} />
+              <Rope d={DORMANT_D} role="dormant" />
             )}
 
-            {step.statiques.map((d, i) => (
-              <Rope key={`s-${i}`} d={d} role="courant" />
+            {step.courantPaths.map((d, i) => (
+              <Rope key={i} d={d} role="courant" />
             ))}
-            {step.animee && <Rope d={step.animee} role="courant" animate duration={duration} replayKey={`${current}-${replayCount}`} />}
 
             {!step.serrage && <RopeEnd at={{ x: 150, y: BOUT_LIBRE_Y[current] }} />}
-          </motion.g>
 
-          {step.serrage && (
-            <motion.g initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, duration: 0.3 }}>
-              <circle cx={230} cy={90} r={16} fill="var(--color-success)" />
-              <path d="M223,90 L228,96 L238,84" stroke="white" strokeWidth={3} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </motion.g>
-          )}
-        </svg>
+            {step.serrage && (
+              <g>
+                <circle cx={230} cy={90} r={16} fill="var(--color-success)" />
+                <path d="M223,90 L228,96 L238,84" stroke="white" strokeWidth={3} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </g>
+            )}
+          </motion.svg>
+        </AnimatePresence>
       </div>
 
       <div className="text-center">
@@ -201,12 +197,6 @@ export function NoeudChaiseExperience() {
           aria-label="Étape précédente"
         >
           <ChevronLeft size={16} />
-        </Button>
-        <Button variant="secondary" size="sm" onClick={() => setReplayCount((c) => c + 1)} aria-label="Rejouer">
-          <RotateCcw size={15} />
-        </Button>
-        <Button variant={slow ? "primary" : "secondary"} size="sm" onClick={() => setSlow((v) => !v)} aria-label="Ralenti">
-          <Gauge size={15} />
         </Button>
         <Button
           variant="secondary"

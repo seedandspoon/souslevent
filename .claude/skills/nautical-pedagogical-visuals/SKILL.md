@@ -267,8 +267,11 @@ Détails de props et exemples d'usage : `references/svg-techniques.md`.
   `ReglageVoileExperience.tsx` — références officielles pour le voilier à
   deux voiles (`SailboatDiagram`). Regarde-les en premier pour un exemple
   vivant de chaque convention bateau/voiles/vent.
-- `NoeudChaiseExperience.tsx` et le prototype
-  `KnotPrototypeBowline.tsx`/`knotRig.ts` — chantier nœuds en pause,
-  volontairement laissé de côté pour l'instant (visuel jugé pas encore
-  compréhensible). Ne pas y toucher tant que ce n'est pas rouvert
-  explicitement.
+- `NoeudChaiseExperience.tsx` — un dessin statique et complet par étape
+  (pas une animation de tracé), navigation Précédent/Suivant, plus
+  l'exercice de vérification "À toi !". La version précédente animait le
+  cordage en continu (tracé progressif + scrubbing) : jugée trop difficile
+  à suivre, elle a été abandonnée au profit de cette version étape par
+  étape. Le prototype `KnotPrototypeBowline.tsx`/`knotRig.ts` (cordage
+  continu, contrôles Regarder/Comprendre/Faire) a été retiré du code pour
+  la même raison — ne pas le recréer sans une nouvelle demande explicite.

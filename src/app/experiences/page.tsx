@@ -22,7 +22,7 @@ const PILOTES = [
     href: "/experiences/noeud-chaise",
     icon: Link2,
     titre: "Le nœud de chaise",
-    description: "Une démonstration animée, étape par étape.",
+    description: "Un schéma clair à chaque étape, du début au nœud serré.",
   },
 ];
 
@@ -53,20 +53,6 @@ export default function ExperiencesPage() {
           </Link>
         ))}
       </div>
-
-      <p className="text-xs font-medium text-ink-soft uppercase tracking-wide mt-8 mb-2">En test</p>
-      <Link href="/experiences/knot-prototype">
-        <Card className="p-4 flex items-center gap-3 border-dashed hover:border-brand-300 transition-colors">
-          <div className="w-11 h-11 rounded-full bg-surface-2 flex items-center justify-center shrink-0">
-            <Link2 size={20} className="text-ink-soft" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-medium text-ink text-sm">Nœud de chaise — cordage continu</p>
-            <p className="text-xs text-ink-soft mt-0.5">Prototype isolé, pas encore intégré au parcours.</p>
-          </div>
-          <ChevronRight size={16} className="text-ink-soft shrink-0" />
-        </Card>
-      </Link>
     </main>
   );
 }
