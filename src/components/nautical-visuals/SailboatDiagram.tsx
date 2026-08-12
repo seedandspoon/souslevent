@@ -35,6 +35,7 @@ export function SailboatDiagram({
   windDistance,
   windAngleDeg = 0,
   bowMarkerColor = null,
+  jibOppositeAmount = 0,
 }: {
   cx: number;
   cy: number;
@@ -49,6 +50,15 @@ export function SailboatDiagram({
   windDistance?: number;
   windAngleDeg?: number;
   bowMarkerColor?: string | null;
+  /**
+   * 0 = foc du même côté que la bôme (cas général). 1 = foc "en ciseaux"
+   * du côté opposé (papillon/goose-wing, vent arrière) — le vent poussant
+   * de face, écarter les deux voiles capte le vent symétriquement plutôt
+   * que de laisser le foc masqué derrière la grand-voile. Valeurs
+   * intermédiaires pour une transition continue plutôt qu'un basculement
+   * brutal quand on approche le vent arrière.
+   */
+  jibOppositeAmount?: number;
 }) {
   const hull = getHullGeometry(cx, cy, hullLength);
   // Le mât est un point unique : vu de dessus, un mât vertical se projette
@@ -76,11 +86,18 @@ export function SailboatDiagram({
   // l'écoute pivote depuis l'amure au MÊME angle que la bôme (boomRad) :
   // le bord amure→écoute du foc reste ainsi parallèle au bord mât→bôme de
   // la grand-voile à tout instant, au lieu de dériver indépendamment.
+  //
+  // Exception volontaire : à l'approche du vent arrière (jibOppositeAmount
+  // > 0), le foc bascule progressivement du côté opposé à la bôme — la
+  // configuration "en ciseaux" réelle en navigation. `jibSign` passe donc
+  // en continu de `boomSign` (même côté) à `-boomSign` (côté opposé), avec
+  // un point médian où le foc se retrouve carré dans l'axe.
   const t = Math.min(1, Math.max(0, (boomAngleDeg - 10) / 68));
+  const jibSign = boomSign * (1 - 2 * jibOppositeAmount);
   const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.04 };
   const jibLen = hullLength * (0.32 + 0.18 * t);
   const jibClew = {
-    x: jibTack.x + boomSign * jibLen * Math.sin(boomRad),
+    x: jibTack.x + jibSign * jibLen * Math.sin(boomRad),
     y: jibTack.y + jibLen * Math.cos(boomRad),
   };
 
@@ -100,7 +117,7 @@ export function SailboatDiagram({
       <g transform={`rotate(${headingDeg} ${cx} ${cy})`}>
         <SailboatHull cx={cx} cy={cy} length={hullLength} />
 
-        {showJib && <Jib tack={jibTack} clew={jibClew} sign={boomSign} etat={jibEtat ?? mainsailEtat} />}
+        {showJib && <Jib tack={jibTack} clew={jibClew} sign={jibSign} etat={jibEtat ?? mainsailEtat} />}
 
         <Sail mast={mast} boomEnd={boomEnd} etat={mainsailEtat} sign={boomSign} />
 

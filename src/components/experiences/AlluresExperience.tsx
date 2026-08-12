@@ -40,6 +40,12 @@ export function AlluresExperience() {
   const boomAngle = Math.min(72, Math.max(16, d * 0.75));
   const sign = amure === "babord" ? 1 : -1;
 
+  // À l'approche du vent arrière, le foc bascule progressivement du côté
+  // opposé à la bôme (configuration "en ciseaux") — transition continue
+  // entre le début du grand largue (140°) et le vent arrière (170°),
+  // mêmes bornes que les points de repère du cadran.
+  const jibOppositeAmount = Math.min(1, Math.max(0, (d - 140) / 30));
+
   // Dès que le bateau bouge, on efface les réponses pour forcer une
   // nouvelle observation plutôt que de garder un signal vert/rouge périmé.
   useEffect(() => {
@@ -116,6 +122,7 @@ export function AlluresExperience() {
             boomSign={sign}
             mainsailEtat={enZoneInterdite ? "faseille" : "bon"}
             bowMarkerColor={enZoneInterdite ? DANGER : INK}
+            jibOppositeAmount={jibOppositeAmount}
           />
         </svg>
       </div>

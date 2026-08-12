@@ -13,7 +13,20 @@ import type { EtatVoile } from "./Sail";
  * faseille. Toujours pas de bôme : la chute flotte sans spar, seule
  * différence structurelle avec la grand-voile.
  */
-export function Jib({ tack, clew, sign, etat }: { tack: Point; clew: Point; sign: 1 | -1; etat: EtatVoile }) {
+export function Jib({
+  tack,
+  clew,
+  sign,
+  etat,
+}: {
+  tack: Point;
+  clew: Point;
+  // Continu plutôt que strictement 1 | -1 : autour de 0, le foc bascule
+  // en douceur de son côté habituel vers le côté opposé (voir
+  // SailboatDiagram, `jibOppositeAmount`, cas du vent arrière).
+  sign: number;
+  etat: EtatVoile;
+}) {
   const milieu = { x: (tack.x + clew.x) / 2, y: (tack.y + clew.y) / 2 };
 
   if (etat === "faseille") {

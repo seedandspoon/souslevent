@@ -157,6 +157,15 @@ voile porte plutôt qu'elle ne faseille. Les deux voiles changent d'état
 bateau change de cap ou d'allure : c'est cette réaction commune au même
 vent qui les fait comprendre comme deux pièces du même bateau.
 
+Exception volontaire à "même côté que la bôme" : à l'approche du vent
+arrière, le foc bascule progressivement du côté opposé (configuration "en
+ciseaux"/papillon, réelle en navigation pour capter le vent
+symétriquement). Transition continue plutôt qu'un basculement brutal —
+voir `SailboatDiagram`, prop `jibOppositeAmount` (0 = même côté, 1 =
+opposé). N'implémenter ce basculement que si l'expérience couvre
+effectivement le vent arrière (ce n'est pas le cas de Réglage d'une
+voile, dont les allures ne vont pas jusque-là).
+
 ## Profondeur — dessus / dessous
 
 C'est le point le plus important pour les cordages et les nœuds, et le plus
