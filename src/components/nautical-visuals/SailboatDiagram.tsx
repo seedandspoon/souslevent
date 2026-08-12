@@ -54,10 +54,12 @@ export function SailboatDiagram({
   // l'angle est correct, la bôme cesse d'être identifiable comme une
   // pièce à part. L'écart reste lisible à n'importe quel angle de bôme.
   const boomPivot = { x: hull.mastBase.x + boomSign * hullLength * 0.05, y: hull.mastBase.y };
-  // Longueur de bôme mesurée pour rester dans des proportions crédibles :
-  // trop longue, elle dépasse largement le maître-bau même à angle modéré
-  // et se lit comme disproportionnée par rapport à la coque.
-  const boomLen = hullLength * 0.42;
+  // Longueur de bôme mesurée pour atteindre franchement vers la poupe
+  // (proportion réaliste : le mât est à ~32% de la coque depuis la proue,
+  // la bôme doit couvrir la majeure partie du reste vers l'arrière, sinon
+  // l'arrière de la coque reste vide et l'ensemble mât+bôme paraît mal
+  // placé — trop proche de la proue).
+  const boomLen = hullLength * 0.59;
   const boomRad = (boomAngleDeg * Math.PI) / 180;
   const boomEnd = {
     x: boomPivot.x + boomSign * boomLen * Math.sin(boomRad),
@@ -71,8 +73,8 @@ export function SailboatDiagram({
   // que le point de vit-de-mulet — sinon les deux voiles se superposent
   // visuellement quel que soit l'angle (bug corrigé ici).
   const jibHead = { x: mastTop.x + boomSign * hullLength * 0.02, y: mastTop.y + hullLength * 0.06 };
-  const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.12 };
-  const jibFootLength = hullLength * 0.34;
+  const jibTack = { x: hull.bow.x, y: hull.bow.y + hullLength * 0.04 };
+  const jibFootLength = hullLength * 0.24;
   const jibAngleDeg = boomAngleDeg * 0.6;
 
   // Distance de la queue de la flèche au centre du bateau — assez loin
