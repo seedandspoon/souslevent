@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { useAngleDrag } from "@/lib/interactions/useAngleDrag";
 import { allurePourCap, amurePourCap, distanceAuVent, ALLURES, type Amure } from "@/lib/interactions/angle";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
 import { SailboatDiagram } from "@/components/nautical-visuals";
-import { INK, BRAND, SUCCESS, DANGER, polar } from "@/components/nautical-visuals/tokens";
+import { INK, BRAND, DANGER, polar } from "@/components/nautical-visuals/tokens";
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" —
 // voir .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de
@@ -48,10 +48,14 @@ export function AlluresExperience() {
 
   // Dès que le bateau bouge, on efface les réponses pour forcer une
   // nouvelle observation plutôt que de garder un signal vert/rouge périmé.
-  useEffect(() => {
+  // Ajustement pendant le rendu plutôt qu'un effet, pour éviter un cycle de
+  // rendu superflu (cf. https://react.dev/learn/you-might-not-need-an-effect).
+  const [prevAngle, setPrevAngle] = useState(angle);
+  if (angle !== prevAngle) {
+    setPrevAngle(angle);
     setSelectedAllure(null);
     setSelectedAmure(null);
-  }, [angle]);
+  }
 
   const message = useMemo(() => {
     if (enZoneInterdite) return "La voile ne peut pas porter : tu es dans le lit du vent.";
@@ -156,7 +160,7 @@ export function AlluresExperience() {
       {mode === "defi" && (
         <div className="flex flex-col gap-3">
           <p className="text-center text-sm text-ink-soft">
-            Fais glisser le bateau, puis identifie l'allure et l'amure.
+            Fais glisser le bateau, puis identifie l&apos;allure et l&apos;amure.
           </p>
 
           <div className="grid grid-cols-2 gap-2">
