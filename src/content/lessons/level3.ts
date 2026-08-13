@@ -21,8 +21,8 @@ export const level3Lessons: Lesson[] = [
         items: [
           "Vérifie que la route est dégagée, devant et sur les côtés.",
           "Repère le nouveau cap visé, et identifie l'écoute de génois actuellement bordée : c'est elle qu'il va falloir choquer.",
-          "Annonce, même seule à voix haute : « Paré à virer ? » — et attends ta propre confirmation mentale « Paré ! » avant de continuer. Ce cycle annonce → confirmation → action (voir la leçon sur la communication à bord) évite de lancer la manœuvre sur une impulsion, même sans équipage pour te répondre.",
-          "Seulement une fois « paré », annonce « Je vire ! » : c'est ce mot qui déclenche le geste, pas avant.",
+          "Annonce : « Paré à virer ? » — et attends la réponse « Paré ! » de l'équipage avant de continuer.",
+          "Une fois cette confirmation reçue, annonce « Je vire ! » : c'est ce mot qui déclenche le geste, pas avant (voir la leçon sur la communication à bord pour le cycle complet annonce → confirmation → action).",
         ],
       },
       {
@@ -101,7 +101,7 @@ export const level3Lessons: Lesson[] = [
           "Vérifie que personne n'est sur la trajectoire de la bôme, ni dans le cockpit ni sur le pont avant.",
           "Repère le nouveau cap visé : vent arrière, puis la même allure sur l'autre bord.",
           "Borde la grand-voile vers l'axe du bateau, pour limiter la course que la bôme va prendre en traversant — c'est le geste qui change tout, à faire avant de toucher la barre.",
-          "Annonce, même seule à voix haute : « Paré à empanner ? » — et attends ta confirmation « Paré ! » avant de continuer. Même réflexe qu'au virement (voir la leçon sur la communication à bord) : jamais d'empannage lancé sur une impulsion.",
+          "Annonce : « Paré à empanner ? » — et attends la réponse « Paré ! » de l'équipage avant de continuer. Même réflexe qu'au virement (voir la leçon sur la communication à bord) : jamais d'empannage lancé sur une impulsion.",
         ],
       },
       {

@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { amurePourCap, distanceAuVent, normalize360, type Amure } from "@/lib/interactions/angle";
 import { Button } from "@/components/ui/Button";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
+import { GuidedStepsProgress } from "@/components/interactive/GuidedStepsProgress";
 import { enregistrerReponse } from "@/lib/progress";
 import { SailboatDiagram } from "@/components/nautical-visuals";
 import { BRAND, INK } from "@/components/nautical-visuals/tokens";
@@ -219,35 +220,7 @@ export function VirementExperience() {
         </svg>
       </div>
 
-      <ol className="flex flex-col gap-1">
-        {STEP_ORDER.map((s, i) => {
-          const fait = i < stepIndex || termine;
-          const actif = i === stepIndex && !termine;
-          return (
-            <li
-              key={s.id}
-              className={clsx(
-                "flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm transition-colors",
-                fait && "text-ink-soft",
-                actif && "bg-brand-50 text-ink font-medium",
-                !fait && !actif && "text-ink-soft opacity-50"
-              )}
-            >
-              <span
-                className={clsx(
-                  "w-5 h-5 rounded-full text-[11px] flex items-center justify-center shrink-0",
-                  fait && "bg-success text-white",
-                  actif && "bg-brand-500 text-white",
-                  !fait && !actif && "bg-surface-2 text-ink-soft"
-                )}
-              >
-                {fait ? "✓" : i + 1}
-              </span>
-              {s.label}
-            </li>
-          );
-        })}
-      </ol>
+      <GuidedStepsProgress steps={STEP_ORDER} currentIndex={stepIndex} termine={termine} />
 
       {step === "route" && (
         <Button className="w-full" onClick={() => setStepIndex(1)}>
