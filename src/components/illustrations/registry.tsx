@@ -3,9 +3,10 @@ import { BoatSide } from "./BoatSide";
 import { HeelDiagram } from "./HeelDiagram";
 import { WindApparentReal, PortStarboard, ForeAftBeam, TackDiagram } from "./WindDiagrams";
 import { PointsOfSailWheel, QuizPointOfSailBeam } from "./PointsOfSailWheel";
-import { SailsOverview, MainsailParts, SheetHalyard, WinchDiagram, TillerWheel } from "./GearDiagrams";
+import { SailsOverview, MainsailParts, SheetHalyard, WinchDiagram, TillerWheel, TelltaleTrimDiagram } from "./GearDiagrams";
 import { KnotFigureEight, KnotBowline, KnotHalfHitch, KnotRoundTurn, KnotCleat } from "./KnotDiagrams";
-import { EmpannageBoomSweep } from "./ManeuverDiagrams";
+import { EmpannageBoomSweep, VirementGeometrie, PriseDeRisDiagram } from "./ManeuverDiagrams";
+import { BuoyageLateralDiagram, CapRouteDiagram, MouillageDiagram, FeuxNavigationDiagram } from "./NavigationDiagrams";
 
 const registry: Record<string, ComponentType> = {
   "boat-parts": () => <BoatSide showLabels />,
@@ -15,12 +16,19 @@ const registry: Record<string, ComponentType> = {
   "fore-aft-beam": ForeAftBeam,
   "tack-diagram": TackDiagram,
   "empannage-boom-sweep": EmpannageBoomSweep,
+  "virement-geometrie": VirementGeometrie,
+  "prise-de-ris": PriseDeRisDiagram,
+  "buoyage-lateral": BuoyageLateralDiagram,
+  "cap-route": CapRouteDiagram,
+  "mouillage-schema": MouillageDiagram,
+  "feux-navigation": FeuxNavigationDiagram,
   "points-of-sail-wheel": PointsOfSailWheel,
   "sails-overview": SailsOverview,
   "mainsail-parts": MainsailParts,
   "sheet-halyard": SheetHalyard,
   "winch-diagram": WinchDiagram,
   "tiller-wheel": TillerWheel,
+  "telltale-trim": TelltaleTrimDiagram,
 
   "quiz-point-of-sail-beam": QuizPointOfSailBeam,
   "quiz-boat-part-boom": () => <BoatSide highlight="bome" />,

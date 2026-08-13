@@ -108,6 +108,11 @@ export const level7Lessons: Lesson[] = [
           "De nuit, les feux de navigation permettent de savoir de loin dans quelle direction va un bateau, et donc d'anticiper une priorité.",
       },
       {
+        type: "schema",
+        illustration: "feux-navigation",
+        legende: "Chaque feu n'est visible que dans son secteur : vert à tribord, rouge à bâbord, blanc à la poupe — les trois se complètent sur 360°.",
+      },
+      {
         type: "etapes",
         titre: "Les feux principaux à connaître",
         items: [

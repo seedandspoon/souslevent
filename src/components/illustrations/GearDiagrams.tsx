@@ -1,4 +1,4 @@
-import { IllustrationFrame, Label, INK, BRAND, ACCENT, BRAND_SOFT } from "./shared";
+import { IllustrationFrame, Label, INK, BRAND, ACCENT, BRAND_SOFT, SUCCESS, DANGER } from "./shared";
 
 export function SailsOverview() {
   return (
@@ -116,6 +116,91 @@ export function TillerWheel() {
         <Label x={300} y={30}>Roue</Label>
         <Label x={300} y={185} size={11} fill={BRAND}>Sens direct</Label>
       </g>
+    </IllustrationFrame>
+  );
+}
+
+type TelltaleState = "flotte" | "colle";
+
+function Telltale({ x, y, state, mirror }: { x: number; y: number; state: TelltaleState; mirror?: boolean }) {
+  const s = mirror ? -1 : 1;
+  if (state === "colle") {
+    return (
+      <path
+        d={`M${x},${y} Q${x + s * 20},${y + 38} ${x + s * 8},${y + 76}`}
+        fill="none"
+        stroke={SUCCESS}
+        strokeWidth={2.5}
+        strokeLinecap="round"
+      />
+    );
+  }
+  return (
+    <path
+      d={`M${x},${y} L${x + s * 16},${y + 12} L${x + s * 2},${y + 24} L${x + s * 18},${y + 38} L${x + s * 2},${y + 50} L${x + s * 16},${y + 62}`}
+      fill="none"
+      stroke={DANGER}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  );
+}
+
+function TelltalePanel({
+  cx,
+  windward,
+  leeward,
+  titre,
+  bon,
+}: {
+  cx: number;
+  windward: TelltaleState;
+  leeward: TelltaleState;
+  titre: string;
+  bon?: boolean;
+}) {
+  return (
+    <g>
+      <rect x={cx - 58} y={6} width={116} height={192} rx={12} fill={bon ? SUCCESS : DANGER} opacity={0.1} />
+      <line x1={cx} y1={20} x2={cx} y2={46} stroke={BRAND} strokeWidth={3} markerEnd="url(#arrow-telltale)" />
+      <path d={`M${cx},52 Q${cx + 34},112 ${cx},172`} fill="none" stroke={INK} strokeWidth={2.5} />
+      <Telltale x={cx - 6} y={58} state={windward} mirror />
+      <Telltale x={cx + 10} y={58} state={leeward} />
+      <Label x={cx} y={214} size={12} weight={700} fill={bon ? SUCCESS : DANGER}>{titre}</Label>
+    </g>
+  );
+}
+
+/**
+ * Les penons donnent le signal de réglage le plus fin, avant même que la
+ * forme de la voile change visiblement. La coque de la voile (le trait
+ * central) reste identique dans les 3 panneaux : seul le comportement des
+ * penons change, c'est tout le point du schéma. Vérifié : un penon qui
+ * flotte / décroche du côté au vent signale une voile pas assez bordée ;
+ * un penon qui flotte du côté sous le vent signale une voile trop
+ * bordée ; les deux qui collent, bien à plat dans le sens du vent,
+ * signalent un réglage optimal.
+ */
+export function TelltaleTrimDiagram() {
+  return (
+    <IllustrationFrame
+      label="Un penon qui flotte au vent : pas assez bordée. Les deux qui collent : bien réglée. Un penon qui flotte sous le vent : trop bordée."
+      viewBox="0 0 400 230"
+    >
+      <defs>
+        <marker id="arrow-telltale" markerWidth={8} markerHeight={8} refX={4} refY={4} orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill={BRAND} />
+        </marker>
+      </defs>
+
+      <TelltalePanel cx={68} windward="flotte" leeward="colle" titre="Pas assez bordée" />
+      <TelltalePanel cx={200} windward="colle" leeward="colle" titre="Bien réglée" bon />
+      <TelltalePanel cx={332} windward="colle" leeward="flotte" titre="Trop bordée" />
+
+      <Label x={200} y={16} size={10} weight={500} fill={BRAND}>Vent</Label>
+      <Label x={178} y={48} size={9} weight={500} fill={INK} anchor="end">au vent</Label>
+      <Label x={222} y={48} size={9} weight={500} fill={INK} anchor="start">sous le vent</Label>
     </IllustrationFrame>
   );
 }

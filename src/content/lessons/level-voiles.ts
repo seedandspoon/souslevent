@@ -26,6 +26,11 @@ export const levelVoilesLessons: Lesson[] = [
         ],
       },
       {
+        type: "schema",
+        illustration: "telltale-trim",
+        legende: "Un penon qui flotte du côté au vent : pas assez bordée. Les deux qui collent : bien réglée. Un penon qui flotte du côté sous le vent : trop bordée.",
+      },
+      {
         type: "etapes",
         titre: "Reconnaître les 3 états d'une voile",
         items: [

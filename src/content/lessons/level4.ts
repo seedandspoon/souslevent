@@ -70,6 +70,11 @@ export const level4Lessons: Lesson[] = [
           "La dérive est l'écart entre le cap suivi et la route réelle, causé par le vent et le courant qui poussent le bateau de côté. Pour suivre une route précise, il faut parfois corriger en pointant le cap légèrement en amont de la direction voulue.",
       },
       {
+        type: "schema",
+        illustration: "cap-route",
+        legende: "Le cap pointé (pointillé) et la route réellement suivie (pleine) divergent sous l'effet du courant : l'écart entre les deux est la dérive.",
+      },
+      {
         type: "astuce",
         contenu:
           "Sur l'eau, comparer régulièrement un amer visé au début de la route avec sa position actuelle permet de repérer une dérive avant qu'elle ne s'accumule.",
@@ -107,6 +112,11 @@ export const level4Lessons: Lesson[] = [
         type: "texte",
         contenu:
           "Le balisage latéral signale les limites d'un chenal. En France, comme dans la plupart des eaux européennes (système IALA région A), la couleur indique de quel côté laisser la marque quand on remonte vers le port ou la terre, en venant du large.",
+      },
+      {
+        type: "schema",
+        illustration: "buoyage-lateral",
+        legende: "En revenant vers le port : les marques rouges cylindriques se laissent à bâbord, les marques vertes coniques à tribord.",
       },
       {
         type: "etapes",
@@ -155,6 +165,11 @@ export const level4Lessons: Lesson[] = [
         type: "texte",
         contenu:
           "Mouiller consiste à immobiliser le bateau en jetant l'ancre. Un bon mouillage dépend du fond, de la profondeur, et de la place laissée pour évoluer avec la marée et le vent.",
+      },
+      {
+        type: "schema",
+        illustration: "mouillage-schema",
+        legende: "La chaîne traîne au fond sur une bonne longueur avant de remonter à l'étrave : c'est ce qui tire l'ancre à l'horizontale plutôt que vers le haut.",
       },
       {
         type: "etapes",

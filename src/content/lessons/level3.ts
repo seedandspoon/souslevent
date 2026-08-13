@@ -16,6 +16,11 @@ export const level3Lessons: Lesson[] = [
           "Le virement de bord change d'amure en passant par le lit du vent. Voici le geste décomposé action par action, comme si tu devais tout faire seul : barre et écoute. Sur un bateau avec équipage, ces gestes se répartissent entre plusieurs personnes ; seul à bord, tu les enchaînes toi-même — c'est justement pour ça qu'ils doivent devenir un réflexe, à force de répétition.",
       },
       {
+        type: "schema",
+        illustration: "virement-geometrie",
+        legende: "Le bateau passe d'un cap bordé serré à l'autre en traversant le lit du vent — la zone à environ 45° de part et d'autre du vent où aucune voile ne porte.",
+      },
+      {
         type: "etapes",
         titre: "Avant de tourner",
         items: [
@@ -176,6 +181,11 @@ export const level3Lessons: Lesson[] = [
         type: "texte",
         contenu:
           "Quand le vent forcit, réduire la surface de voilure — prendre un ris — permet de garder un bateau plus stable et plus facile à barrer, plutôt que de naviguer avec trop de gîte. Voici le geste décomposé point par point sur la grand-voile, le cas le plus courant ; le principe (moins de voile dehors, mât en bas) est le même sur un génois à enrouleur, en tirant simplement sur l'écoute pendant qu'on choque la drisse.",
+      },
+      {
+        type: "schema",
+        illustration: "prise-de-ris",
+        legende: "Un ris pris : la voile est plus courte, et l'excédent de tissu est replié et attaché le long de la bôme par les garcettes.",
       },
       {
         type: "etapes",
