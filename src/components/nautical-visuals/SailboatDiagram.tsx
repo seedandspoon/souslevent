@@ -3,6 +3,8 @@ import { SailboatHull } from "./SailboatHull";
 import { WindIndicator } from "./WindIndicator";
 import { Sail, type EtatVoile } from "./Sail";
 import { Jib } from "./Jib";
+import { Boom } from "./Boom";
+import { MovementTrail } from "./MovementTrail";
 
 /**
  * Le voilier de référence de l'application — coque, grand-voile ET
@@ -38,6 +40,8 @@ export function SailboatDiagram({
   bowMarkerColor = null,
   jibOppositeAmount = 0,
   jibSignOverride,
+  showBoom = false,
+  boomTrailVisible = false,
 }: {
   cx: number;
   cy: number;
@@ -70,6 +74,22 @@ export function SailboatDiagram({
    * défaut (génois lié à la bôme).
    */
   jibSignOverride?: 1 | -1;
+  /**
+   * Dessine la bôme comme un spar physique séparé (voir Boom.tsx). Reste
+   * caché par défaut (le voilier de référence ne montre que les surfaces
+   * de voile, voir SKILL.md) — à activer volontairement pour une
+   * expérience qui isole la bôme comme objet d'étude (ex. l'empannage,
+   * où sa course d'un bord à l'autre est le risque à comprendre).
+   */
+  showBoom?: boolean;
+  /**
+   * Arc de balayage transitoire (accent, s'efface) entre les deux
+   * positions extrêmes de la bôme de part et d'autre de l'axe — signale
+   * ponctuellement qu'elle vient de traverser (empannage). À repasser à
+   * false peu après l'avoir affiché, jamais laissé permanent (voir
+   * MovementTrail.tsx).
+   */
+  boomTrailVisible?: boolean;
 }) {
   const hull = getHullGeometry(cx, cy, hullLength);
   // Le mât est un point unique : vu de dessus, un mât vertical se projette
@@ -112,6 +132,13 @@ export function SailboatDiagram({
     y: jibTack.y + jibLen * Math.cos(boomRad),
   };
 
+  // Trajectoire de la bôme d'un bord à l'autre, pour le sweep transitoire
+  // (empannage) : les deux positions extrêmes sont symétriques par rapport
+  // au mât, à la même distance (boomLen) — un arc qui bombe vers la poupe
+  // (là où la bôme balaie réellement) suffit, pas besoin de connaître son
+  // angle exact avant le passage.
+  const boomTrailPath = `M${boomPivot.x + boomLen * Math.sin(boomRad)},${boomEnd.y} Q${boomPivot.x},${boomPivot.y + boomLen * 1.15} ${boomPivot.x - boomLen * Math.sin(boomRad)},${boomEnd.y}`;
+
   // Distance de la queue de la flèche au centre du bateau — assez loin
   // pour rester hors de la coque à n'importe quel angle de vent, voir
   // WindIndicator.tsx (calcul polaire autour de `center`, plus de pivot
@@ -130,7 +157,9 @@ export function SailboatDiagram({
 
         {showJib && <Jib tack={jibTack} clew={jibClew} sign={jibSign} etat={jibEtat ?? mainsailEtat} />}
 
+        {showBoom && <Boom from={boomPivot} to={boomEnd} />}
         <Sail mast={mast} boomEnd={boomEnd} etat={mainsailEtat} sign={boomSign} />
+        {showBoom && <MovementTrail path={boomTrailPath} visible={boomTrailVisible} />}
 
         {bowMarkerColor && <circle cx={hull.bow.x} cy={hull.bow.y} r={6} fill={bowMarkerColor} />}
       </g>

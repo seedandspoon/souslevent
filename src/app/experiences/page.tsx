@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Compass, Wind, Link2, RotateCw } from "lucide-react";
+import { ChevronRight, Compass, Wind, Link2, RotateCw, ArrowLeftRight } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 
@@ -23,6 +23,12 @@ const PILOTES = [
     icon: RotateCw,
     titre: "Le virement de bord",
     description: "Annonce, barre et changement d'écoute : vire sans te faire surprendre par le génois.",
+  },
+  {
+    href: "/experiences/empannage",
+    icon: ArrowLeftRight,
+    titre: "L'empannage",
+    description: "Borde avant de tourner, puis reste à l'écart : la bôme traverse toute seule.",
   },
   {
     href: "/experiences/noeud-chaise",
