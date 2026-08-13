@@ -5,6 +5,7 @@ export const LESSON_EXPERIENCE_LINKS: Record<string, { href: string; label: stri
   "l1-les-allures": { href: "/experiences/allures", label: "Essayer en interactif" },
   "l2-ecoutes-et-drisses": { href: "/experiences/reglage-voile", label: "Essayer en interactif" },
   "l3-virement-de-bord": { href: "/experiences/virement", label: "Essayer en interactif" },
+  "l3-empannage": { href: "/experiences/empannage", label: "Essayer en interactif" },
 };
 
 export const KNOT_EXPERIENCE_LINKS: Record<string, { href: string; label: string }> = {

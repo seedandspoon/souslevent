@@ -21,7 +21,8 @@ export const level3Lessons: Lesson[] = [
         items: [
           "Vérifie que la route est dégagée, devant et sur les côtés.",
           "Repère le nouveau cap visé, et identifie l'écoute de génois actuellement bordée : c'est elle qu'il va falloir choquer.",
-          "Annonce, même seule à voix haute : « Paré à virer ? » puis « Je vire ! » — dire le geste avant de le faire aide à ne pas en sauter un.",
+          "Annonce, même seule à voix haute : « Paré à virer ? » — et attends ta propre confirmation mentale « Paré ! » avant de continuer. Ce cycle annonce → confirmation → action (voir la leçon sur la communication à bord) évite de lancer la manœuvre sur une impulsion, même sans équipage pour te répondre.",
+          "Seulement une fois « paré », annonce « Je vire ! » : c'est ce mot qui déclenche le geste, pas avant.",
         ],
       },
       {
@@ -79,38 +80,69 @@ export const level3Lessons: Lesson[] = [
     moduleId: "module-3-1",
     ordre: 2,
     titre: "L'empannage",
-    dureeMinutes: 5,
-    resume: "Changer d'amure en passant par le vent arrière — avec plus de vigilance.",
+    dureeMinutes: 7,
+    resume: "Changer d'amure en passant par le vent arrière, geste par geste — avec plus de vigilance.",
     conceptIds: ["c-empannage"],
     blocs: [
       {
         type: "texte",
         contenu:
-          "L'empannage change d'amure en passant par le vent arrière. Contrairement au virement, la bôme peut traverser rapidement et violemment si la manœuvre est mal maîtrisée : elle demande plus de vigilance.",
+          "L'empannage change d'amure en passant par le vent arrière — l'inverse du virement, qui passe par le lit du vent. Contrairement au virement, la bôme peut traverser rapidement et violemment si la manœuvre est mal maîtrisée : elle balaie toute la largeur du bateau derrière le mât, pas seulement un petit mouvement. C'est ce risque, plus que la manœuvre elle-même, qui exige de la préparer avant de tourner plutôt que de gérer l'écoute après coup comme au virement.",
+      },
+      {
+        type: "schema",
+        illustration: "empannage-boom-sweep",
+        legende: "La bôme balaie toute la largeur arrière du bateau au moment où elle traverse — personne ne doit s'y trouver.",
       },
       {
         type: "etapes",
-        titre: "Les étapes de l'empannage",
+        titre: "Avant d'empanner",
         items: [
-          "Préparation : personne sur la trajectoire de la bôme, border la grand-voile vers l'axe pour limiter sa course.",
-          "Annonce : « Paré à empanner ? » — attendre la confirmation.",
-          "Action : « J'empanne ! », amener doucement le vent arrière puis au-delà.",
-          "Passage de la bôme : elle traverse d'un bord à l'autre — rester baissé et à l'écart.",
-          "Reprise : choquer progressivement la grand-voile de l'autre côté, régler le génois.",
+          "Vérifie que personne n'est sur la trajectoire de la bôme, ni dans le cockpit ni sur le pont avant.",
+          "Repère le nouveau cap visé : vent arrière, puis la même allure sur l'autre bord.",
+          "Borde la grand-voile vers l'axe du bateau, pour limiter la course que la bôme va prendre en traversant — c'est le geste qui change tout, à faire avant de toucher la barre.",
+          "Annonce, même seule à voix haute : « Paré à empanner ? » — et attends ta confirmation « Paré ! » avant de continuer. Même réflexe qu'au virement (voir la leçon sur la communication à bord) : jamais d'empannage lancé sur une impulsion.",
+        ],
+      },
+      {
+        type: "etapes",
+        titre: "Le geste, point par point",
+        items: [
+          "Seulement une fois « paré », annonce « J'empanne ! » : c'est ce mot qui déclenche l'action, pas avant.",
+          "Amène doucement le vent arrière, puis au-delà, jusqu'à ce que la bôme traverse d'un bord à l'autre.",
+          "Au moment où elle traverse, reste baissée et à l'écart de sa trajectoire, même si tu l'as bordée au préalable : elle peut encore frapper fort et vite.",
+          "Une fois la bôme passée de l'autre côté, choque progressivement la grand-voile pour qu'elle reprenne sa forme sur la nouvelle amure.",
+          "Règle le génois sur la nouvelle amure — il bascule souvent tout seul en configuration « ciseaux » (papillon) à l'approche du vent arrière.",
+        ],
+      },
+      {
+        type: "etapes",
+        titre: "Une fois empanné",
+        items: [
+          "Stabilise le cap au vent arrière, sur la nouvelle amure.",
+          "Vérifie que la bôme est bien bordée et que rien ne traîne sur sa trajectoire avant de relâcher ton attention.",
+          "Si le vent forcit, pense à réduire la toile plutôt que d'enchaîner un autre empannage sans y être préparée.",
         ],
       },
       {
         type: "erreurs",
         items: [
           "Empanner sans border la grand-voile au préalable : la bôme prend toute sa course et frappe violemment.",
-          "Rester debout ou la tête dans la trajectoire de la bôme.",
+          "Rester debout ou la tête dans la trajectoire de la bôme, même « juste une seconde ».",
           "Empanner par vent fort sans avoir réduit la toile au préalable.",
+          "Empanner sans annoncer ni attendre de confirmation : personne n'a eu le temps de se mettre à l'écart de la bôme.",
+          "Laisser la barre livrée à elle-même après le passage : le bateau peut repartir à l'abattée et empanner une seconde fois, sans contrôle.",
         ],
       },
       {
         type: "astuce",
         contenu:
           "Par vent fort, il est souvent plus sûr de virer de bord (en passant par le lit du vent) que d'empanner, même si le trajet est plus long.",
+      },
+      {
+        type: "astuce",
+        contenu:
+          "Avant d'annoncer « Paré à empanner ? », jette un œil derrière toi : c'est le seul moment de la manœuvre où regarder où va le bateau ne suffit pas, il faut aussi regarder où est la bôme.",
       },
     ],
     questionInline: {

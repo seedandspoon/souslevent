@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Check, Lock, ChevronRight } from "lucide-react";
+import { Check, Lock, ChevronRight, Hand } from "lucide-react";
 import clsx from "clsx";
 import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { getAvailableLevelsWithContent } from "@/lib/curriculum";
 import { getModulesForLevel } from "@/content/levels";
@@ -19,6 +20,22 @@ export default function ApprendrePage() {
     <main className="mx-auto max-w-lg px-4 pt-8 pb-6">
       <h1 className="text-2xl font-semibold text-ink mb-1">Apprendre</h1>
       <p className="text-sm text-ink-soft mb-6">Ton parcours, niveau par niveau.</p>
+
+      <Link href="/experiences" className="block mb-5">
+        <div className="rounded-2xl p-4 flex items-center gap-3 bg-brand-700 hover:opacity-95 transition-opacity">
+          <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+            <Hand size={18} className="text-white" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <Badge tone="accent" className="mb-1">
+              Nouveau
+            </Badge>
+            <p className="text-sm font-medium text-white">Apprends en manipulant</p>
+            <p className="text-xs text-white/70 mt-0.5">Des expériences interactives pour compléter tes leçons</p>
+          </div>
+          <ChevronRight size={16} className="text-white/70 shrink-0" />
+        </div>
+      </Link>
 
       <div className="flex flex-col gap-5">
         {levels.map((level) => {

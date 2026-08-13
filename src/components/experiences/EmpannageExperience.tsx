@@ -15,10 +15,12 @@ import type { EtatVoile } from "@/components/nautical-visuals/Sail";
 //
 // L'empannage change d'amure par le vent arrière, symétrique du virement
 // (VirementExperience.tsx, même grammaire d'interaction : barre = tap qui
-// lance une rotation animée, gestes d'écoute = taps ponctuels décidés en
-// regardant le bateau). Ce qui change, c'est le risque : ici c'est la
-// bôme qui traverse d'un bord à l'autre, pas le génois qui faseille. Deux
-// conséquences dans l'interaction :
+// lance une rotation animée — assez lente pour avoir le temps de suivre
+// ce qui se passe —, gestes d'écoute = taps ponctuels décidés en
+// regardant le bateau ; même réflexe de sécurité annonce → confirmation
+// « Paré ! » → action avant de pouvoir lancer la barre). Ce qui change,
+// c'est le risque : ici c'est la bôme qui traverse d'un bord à l'autre,
+// pas le génois qui faseille. Deux conséquences dans l'interaction :
 // - un geste supplémentaire AVANT de tourner (border la grand-voile vers
 //   l'axe pour limiter la course de la bôme) — l'ordre inverse du
 //   virement, où on ne touche l'écoute qu'après avoir commencé à tourner ;
@@ -40,10 +42,19 @@ const DIAL_R = 160;
 const ALLURE_ANGLE = 20; // écart au vent arrière (180°) au départ/à l'arrivée
 const ZONE_BOME_MAX = 15; // demi-largeur de la zone où la bôme est en train de traverser
 const TOLERANCE_ARRIVEE = 10;
-const ROTATION_DUREE_MS = 5000;
+const ROTATION_DUREE_MS = 8000;
 const ALERTE_BOME_MS = 1300;
 
-type StepId = "prep-zone" | "border-avant" | "annonce" | "barre" | "passage-bome" | "choquer-gv" | "reglage-genois" | "stabiliser";
+type StepId =
+  | "prep-zone"
+  | "border-avant"
+  | "annonce"
+  | "confirmation"
+  | "barre"
+  | "passage-bome"
+  | "choquer-gv"
+  | "reglage-genois"
+  | "stabiliser";
 
 interface StepDef {
   id: StepId;
@@ -53,8 +64,9 @@ interface StepDef {
 const STEP_ORDER: StepDef[] = [
   { id: "prep-zone", label: "Vérifier que personne n'est sur la trajectoire de la bôme" },
   { id: "border-avant", label: "Border la grand-voile vers l'axe, pour limiter sa course" },
-  { id: "annonce", label: "Annoncer : « Paré à empanner ? / J'empanne ! »" },
-  { id: "barre", label: "Amener le vent arrière, puis au-delà" },
+  { id: "annonce", label: "Annoncer : « Paré à empanner ? »" },
+  { id: "confirmation", label: "Attendre la confirmation : « Paré ! »" },
+  { id: "barre", label: "Annoncer « J'empanne ! » et amener le vent arrière" },
   { id: "passage-bome", label: "Rester baissé et à l'écart pendant que la bôme traverse" },
   { id: "choquer-gv", label: "Choquer la grand-voile de l'autre côté" },
   { id: "reglage-genois", label: "Régler le génois sur la nouvelle amure" },
@@ -116,11 +128,11 @@ export function EmpannageExperience() {
   // l'autre côté — aucune des deux ne demande de geste, seulement de
   // rester à l'écart le temps que ça passe.
   if (step === "barre" && enZoneBome) {
-    setStepIndex(4);
-  } else if (step === "passage-bome" && !enZoneBome && currentAmure === targetAmure) {
     setStepIndex(5);
+  } else if (step === "passage-bome" && !enZoneBome && currentAmure === targetAmure) {
+    setStepIndex(6);
   } else if (step === "stabiliser" && arrivee) {
-    setStepIndex(8);
+    setStepIndex(9);
   }
 
   const boomSign = boomSignForHeading(heading);
@@ -129,7 +141,7 @@ export function EmpannageExperience() {
   // préparation jusqu'à ce qu'on la choque explicitement de l'autre côté
   // (étape "choquer-gv" pas encore tapée) — sinon l'angle suit le cap
   // normalement.
-  const gvTropBordee = gvBordeeAvant && stepIndex < 6;
+  const gvTropBordee = gvBordeeAvant && stepIndex < 7;
   const boomAngle = gvTropBordee ? 14 : Math.min(72, Math.max(16, d * 0.75));
   // "freine" (trop bordée, rouge) tant qu'elle reste ramenée vers l'axe en
   // portant : montre que ça freine le bateau, pas seulement que c'est
@@ -274,26 +286,32 @@ export function EmpannageExperience() {
 
       {step === "annonce" && (
         <Button className="w-full" onClick={() => setStepIndex(3)}>
-          Annoncer et empanner
+          Demander : « Paré à empanner ? »
+        </Button>
+      )}
+
+      {step === "confirmation" && (
+        <Button className="w-full" onClick={() => setStepIndex(4)}>
+          Répondre : « Paré ! »
         </Button>
       )}
 
       {step === "barre" && (
         <Button className="w-full" onClick={lancerEmpannage} disabled={empannant}>
-          Amener le vent arrière
+          « J&apos;empanne ! » — Amener le vent arrière
         </Button>
       )}
 
       {step === "passage-bome" && <p className="text-center text-sm text-ink-soft">La bôme traverse — reste à l&apos;écart, ça passe tout seul.</p>}
 
       {step === "choquer-gv" && (
-        <Button className="w-full" onClick={() => setStepIndex(6)}>
+        <Button className="w-full" onClick={() => setStepIndex(7)}>
           Choquer la grand-voile
         </Button>
       )}
 
       {step === "reglage-genois" && (
-        <Button className="w-full" onClick={() => setStepIndex(7)}>
+        <Button className="w-full" onClick={() => setStepIndex(8)}>
           Régler le génois
         </Button>
       )}

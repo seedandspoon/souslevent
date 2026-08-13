@@ -75,18 +75,6 @@ export default function LessonPage() {
           </div>
         </header>
 
-        {LESSON_EXPERIENCE_LINKS[lesson.id] && (
-          <Link href={LESSON_EXPERIENCE_LINKS[lesson.id].href}>
-            <div className="rounded-xl bg-brand-700 p-4 flex items-center gap-3 hover:opacity-95 transition-opacity">
-              <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center shrink-0">
-                <Hand size={16} className="text-white" />
-              </div>
-              <p className="text-sm font-medium text-white flex-1">{LESSON_EXPERIENCE_LINKS[lesson.id].label}</p>
-              <ArrowRight size={16} className="text-white/70 shrink-0" />
-            </div>
-          </Link>
-        )}
-
         {lesson.blocs.map((bloc, i) => (
           <BlockRenderer key={i} bloc={bloc} />
         ))}
@@ -126,6 +114,21 @@ export default function LessonPage() {
               </div>
             )}
           </Card>
+        )}
+
+        {LESSON_EXPERIENCE_LINKS[lesson.id] && (
+          <Link href={LESSON_EXPERIENCE_LINKS[lesson.id].href}>
+            <div className="rounded-xl bg-brand-700 p-4 flex items-center gap-3 hover:opacity-95 transition-opacity">
+              <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                <Hand size={16} className="text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-white/70">Maintenant que tu as lu la leçon</p>
+                <p className="text-sm font-medium text-white">{LESSON_EXPERIENCE_LINKS[lesson.id].label}</p>
+              </div>
+              <ArrowRight size={16} className="text-white/70 shrink-0" />
+            </div>
+          </Link>
         )}
 
         {!termine ? (

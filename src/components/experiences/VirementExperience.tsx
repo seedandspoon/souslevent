@@ -14,19 +14,29 @@ import type { EtatVoile } from "@/components/nautical-visuals/Sail";
 // ce fichier.
 //
 // Le dessin du bateau n'est plus manipulable directement : la barre est un
-// geste ponctuel (un tap sur « Pousse la barre sous le vent ») qui lance
-// une rotation animée et automatique jusqu'au près sur l'autre bord — ça
-// évite de faire glisser la coque à la souris/au doigt, un geste qui ne
-// correspond à aucun geste réel du dériveur. Pendant que le bateau tourne
-// tout seul, l'attention reste sur l'écoute : ouvrir le taquet, choquer
-// (un tap, c'est instantané à la main), attraper la nouvelle écoute
-// (bloqué tant que le génois n'a pas réellement traversé), border (une
-// vraie manivelle de winch à plusieurs tours, pas un simple tap — border
-// demande un effort, contrairement à choquer), puis bloquer. La
-// grand-voile suit le cap automatiquement ; le génois suit sa propre
-// progression (jibSignOverride) pour rester décorrélé de la barre — ce
-// décalage possible rend l'erreur "génois resté à contre" visible si on
-// ne le rebordait pas.
+// geste ponctuel (un tap sur « Je vire ! ») qui lance une rotation animée
+// et automatique jusqu'au près sur l'autre bord — assez lente (8s, avec
+// accélération/décélération) pour avoir le temps de comprendre ce qui se
+// passe pendant qu'on gère l'écoute, pas un effet qu'on subit. Ça évite
+// aussi de faire glisser la coque à la souris/au doigt, un geste qui ne
+// correspond à aucun geste réel du dériveur.
+//
+// Avant de pouvoir pousser la barre, deux taps distincts reproduisent le
+// réflexe de sécurité du cycle annonce → confirmation → action (voir la
+// leçon "La communication à bord") : on annonce « Paré à virer ? », on
+// attend/donne la confirmation « Paré ! », et seulement à ce moment-là
+// « Je vire ! » devient possible — jamais barre et écoute lancées sans
+// être sûr que c'est le bon moment, même seule à bord.
+//
+// Pendant que le bateau tourne tout seul, l'attention reste sur l'écoute :
+// ouvrir le taquet, choquer (un tap, c'est instantané à la main), attraper
+// la nouvelle écoute (bloqué tant que le génois n'a pas réellement
+// traversé), border (une vraie manivelle de winch à plusieurs tours, pas
+// un simple tap — border demande un effort, contrairement à choquer),
+// puis bloquer. La grand-voile suit le cap automatiquement ; le génois
+// suit sa propre progression (jibSignOverride) pour rester décorrélé de
+// la barre — ce décalage possible rend l'erreur "génois resté à contre"
+// visible si on ne le rebordait pas.
 //
 // L'exercice de mémorisation "remets les étapes dans l'ordre" ne vit
 // plus ici : il a été déplacé dans Quiz (voir qz-ordre-virement dans
@@ -40,10 +50,10 @@ const DIAL_R = 160;
 const PRES_ANGLE = 45;
 const ZONE_INTERDITE_MAX = 40; // même borne que ALLURES "face-au-vent" (angle.ts)
 const TOLERANCE_ARRIVEE = 10;
-const ROTATION_DUREE_MS = 5000;
+const ROTATION_DUREE_MS = 8000;
 const TOURS_WINCH = 3;
 
-type StepId = "route" | "annonce" | "barre" | "taquet" | "choquer" | "attraper" | "border" | "bloquer" | "stabiliser";
+type StepId = "route" | "annonce" | "confirmation" | "barre" | "taquet" | "choquer" | "attraper" | "border" | "bloquer" | "stabiliser";
 
 interface StepDef {
   id: StepId;
@@ -52,8 +62,9 @@ interface StepDef {
 
 const STEP_ORDER: StepDef[] = [
   { id: "route", label: "Vérifier que la route est dégagée" },
-  { id: "annonce", label: "Annoncer : « Paré à virer ? / Je vire ! »" },
-  { id: "barre", label: "Pousser doucement la barre sous le vent" },
+  { id: "annonce", label: "Annoncer : « Paré à virer ? »" },
+  { id: "confirmation", label: "Attendre la confirmation : « Paré ! »" },
+  { id: "barre", label: "Annoncer « Je vire ! » et pousser la barre sous le vent" },
   { id: "taquet", label: "Ouvrir le taquet de l'écoute bordée" },
   { id: "choquer", label: "Choquer l'écoute à la main" },
   { id: "attraper", label: "Attraper la nouvelle écoute" },
@@ -108,9 +119,9 @@ export function VirementExperience() {
   // la rotation animée. Toutes les autres étapes attendent un geste — un
   // tap ou un tour de manivelle décidé en regardant le bateau.
   if (step === "barre" && enZoneInterdite) {
-    setStepIndex(3);
+    setStepIndex(4);
   } else if (step === "stabiliser" && arrivee) {
-    setStepIndex(9);
+    setStepIndex(10);
   }
 
   const boomSign = boomSignForHeading(heading);
@@ -119,10 +130,10 @@ export function VirementExperience() {
   const mainsailEtat: EtatVoile = enZoneInterdite ? "faseille" : "bon";
   // Le génois est bien réglé au départ (bon), faseille dès qu'on l'a
   // choqué et jusqu'à ce qu'il soit rebordé au winch sur la nouvelle
-  // amure (étapes "attraper" et "border" = stepIndex 5 et 6), et faseille
+  // amure (étapes "attraper" et "border" = stepIndex 6 et 7), et faseille
   // aussi ponctuellement si le bateau pointe trop près du vent, quelle
   // que soit l'écoute.
-  const jibEtat: EtatVoile = enZoneInterdite || (stepIndex >= 5 && stepIndex < 7) ? "faseille" : "bon";
+  const jibEtat: EtatVoile = enZoneInterdite || (stepIndex >= 6 && stepIndex < 8) ? "faseille" : "bon";
 
   function pousserLaBarre() {
     if (virant) return;
@@ -147,7 +158,7 @@ export function VirementExperience() {
     const prochain = toursWinch + 1;
     setToursWinch(prochain);
     if (prochain >= TOURS_WINCH) {
-      setStepIndex(7);
+      setStepIndex(8);
     }
   }
 
@@ -233,24 +244,30 @@ export function VirementExperience() {
 
       {step === "annonce" && (
         <Button className="w-full" onClick={() => setStepIndex(2)}>
-          Annoncer et virer
+          Demander : « Paré à virer ? »
+        </Button>
+      )}
+
+      {step === "confirmation" && (
+        <Button className="w-full" onClick={() => setStepIndex(3)}>
+          Répondre : « Paré ! »
         </Button>
       )}
 
       {step === "barre" && (
         <Button className="w-full" onClick={pousserLaBarre} disabled={virant}>
-          Pousser la barre sous le vent
+          « Je vire ! » — Pousser la barre
         </Button>
       )}
 
       {step === "taquet" && (
-        <Button className="w-full" onClick={() => setStepIndex(4)}>
+        <Button className="w-full" onClick={() => setStepIndex(5)}>
           Ouvrir le taquet
         </Button>
       )}
 
       {step === "choquer" && (
-        <Button className="w-full" onClick={() => setStepIndex(5)}>
+        <Button className="w-full" onClick={() => setStepIndex(6)}>
           Choquer l&apos;écoute
         </Button>
       )}
@@ -262,7 +279,7 @@ export function VirementExperience() {
             disabled={currentAmure !== targetAmure}
             onClick={() => {
               setJibSign(targetJibSign);
-              setStepIndex(6);
+              setStepIndex(7);
             }}
           >
             Attraper la nouvelle écoute
@@ -305,7 +322,7 @@ export function VirementExperience() {
       )}
 
       {step === "bloquer" && (
-        <Button className="w-full" onClick={() => setStepIndex(8)}>
+        <Button className="w-full" onClick={() => setStepIndex(9)}>
           Bloquer l&apos;écoute
         </Button>
       )}
