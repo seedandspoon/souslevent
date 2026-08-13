@@ -13,7 +13,7 @@ export const level3Lessons: Lesson[] = [
       {
         type: "texte",
         contenu:
-          "Le virement de bord change d'amure en passant par le lit du vent. Voici le geste décomposé action par action, comme si tu devais tout faire seule : barre et écoute. Sur un bateau avec équipage, ces gestes se répartissent entre plusieurs personnes ; seule à bord, tu les enchaînes toi-même — c'est justement pour ça qu'ils doivent devenir un réflexe, à force de répétition.",
+          "Le virement de bord change d'amure en passant par le lit du vent. Voici le geste décomposé action par action, comme si tu devais tout faire seul : barre et écoute. Sur un bateau avec équipage, ces gestes se répartissent entre plusieurs personnes ; seul à bord, tu les enchaînes toi-même — c'est justement pour ça qu'ils doivent devenir un réflexe, à force de répétition.",
       },
       {
         type: "etapes",
@@ -59,7 +59,7 @@ export const level3Lessons: Lesson[] = [
           "Oublier d'ouvrir le taquet avant de tirer sur l'écoute : rien ne bouge, ou on force sur un cordage bloqué.",
           "Attendre trop longtemps avant de border la nouvelle écoute : le génois prend de la vitesse et devient difficile à border.",
           "Pousser la barre trop fort ou trop vite : le bateau perd sa vitesse et peut rester bloqué face au vent.",
-          "Virer sans annoncer, même seule : sauter l'annonce mentale fait plus facilement sauter une étape du geste.",
+          "Virer sans annoncer, même seul : sauter l'annonce mentale fait plus facilement sauter une étape du geste.",
         ],
       },
     ],

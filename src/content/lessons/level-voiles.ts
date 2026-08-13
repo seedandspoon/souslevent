@@ -31,7 +31,7 @@ export const levelVoilesLessons: Lesson[] = [
         items: [
           "Pas assez bordée, elle faseille : le bord d'attaque flotte et claque, la voile perd sa forme et ne porte plus.",
           "Bien réglée : le ventre est creux et régulier, le bateau avance à sa vitesse.",
-          "Trop bordée, elle freine : la voile est plaquée, plate — elle ralentit le bateau au lieu de le propulser. Ce piège est moins visible qu'une voile qui faseille, et souvent moins repéré par une débutante.",
+          "Trop bordée, elle freine : la voile est plaquée, plate — elle ralentit le bateau au lieu de le propulser. Ce piège est moins visible qu'une voile qui faseille, et souvent moins repéré par un débutant.",
         ],
       },
       {

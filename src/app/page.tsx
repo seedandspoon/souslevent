@@ -17,10 +17,10 @@ import {
 import { getNextLesson, getLessonPosition, getTotalConceptsCount } from "@/lib/curriculum";
 
 function niveauLabel(pct: number) {
-  if (pct < 15) return "Débutante";
-  if (pct < 40) return "Apprentie";
+  if (pct < 15) return "Débutant";
+  if (pct < 40) return "Apprenti";
   if (pct < 70) return "Intermédiaire";
-  return "Confirmée";
+  return "Confirmé";
 }
 
 export default function AccueilPage() {
