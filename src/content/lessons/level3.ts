@@ -130,36 +130,65 @@ export const level3Lessons: Lesson[] = [
     moduleId: "module-3-1",
     ordre: 3,
     titre: "Réduire la toile : les ris",
-    dureeMinutes: 5,
-    resume: "Le geste technique pour naviguer plus léger quand le vent forcit.",
+    dureeMinutes: 6,
+    resume: "Le geste technique, point par point, pour naviguer plus léger quand le vent forcit.",
     conceptIds: ["c-prise-de-ris"],
     blocs: [
       {
         type: "texte",
         contenu:
-          "Quand le vent forcit, réduire la surface de voilure — prendre un ris — permet de garder un bateau plus stable et plus facile à barrer, plutôt que de naviguer avec trop de gîte.",
+          "Quand le vent forcit, réduire la surface de voilure — prendre un ris — permet de garder un bateau plus stable et plus facile à barrer, plutôt que de naviguer avec trop de gîte. Voici le geste décomposé point par point sur la grand-voile, le cas le plus courant ; le principe (moins de voile dehors, mât en bas) est le même sur un génois à enrouleur, en tirant simplement sur l'écoute pendant qu'on choque la drisse.",
       },
       {
         type: "etapes",
-        titre: "Prendre un ris dans la grand-voile (principe général)",
+        titre: "Avant de prendre le ris",
         items: [
-          "Choquer l'écoute de grand-voile et border le hale-bas pour libérer la bôme.",
-          "Descendre la drisse de grand-voile jusqu'au point de ris repéré.",
-          "Accrocher le point d'amure du ris à l'avant, au niveau du mât.",
-          "Border la ligne de ris pour ramener le point d'écoute du ris vers la bôme.",
-          "Retendre la drisse, puis reborder l'écoute de grand-voile.",
+          "Repère à l'avance quel ris tu vas prendre (1, 2 ou 3 selon la force du vent) : plus tôt tu anticipes, plus le choix est facile à faire calmement.",
+          "Mets le bateau au près serré ou face au vent (à la voile ou au moteur), pour dépowerer la grand-voile avant de toucher à la drisse.",
+          "Vérifie que le hale-bas est bordé, pour que la bôme ne remonte pas quand tu vas choquer l'écoute.",
+          "Repère les bouts que tu vas manipuler dans le bon ordre : drisse de grand-voile, ligne (ou bosse) du ris, écoute de grand-voile.",
+        ],
+      },
+      {
+        type: "etapes",
+        titre: "Le geste, point par point",
+        items: [
+          "Choque complètement l'écoute de grand-voile : la voile ne doit plus porter du tout, sinon la drisse reste plaquée par le vent et ne descend pas.",
+          "Choque la drisse de grand-voile en l'accompagnant à la main — jamais un lâcher libre, la voile doit descendre sous contrôle.",
+          "Descends jusqu'au repère du point de ris choisi (marque de couleur sur la drisse, ou nombre de tours de winch convenu à l'avance).",
+          "Accroche le point d'amure du ris (l'œillet avant, côté mât) à son crochet ou sa têtière.",
+          "Retends légèrement la drisse, juste assez pour bloquer ce point d'amure en place.",
+          "Borde la ligne de ris pour ramener le point d'écoute du ris vers la bôme, jusqu'à ce que la bordure de la voile soit bien tendue le long de la bôme.",
+          "Retends complètement la drisse de grand-voile au réglage normal.",
+          "Reborde l'écoute de grand-voile au réglage adapté à l'allure du moment.",
+        ],
+      },
+      {
+        type: "etapes",
+        titre: "Une fois le ris pris",
+        items: [
+          "Range l'excédent de voile qui pend sous la bôme avec les garcettes prévues, nouées lâche — jamais serrées comme des points de tension, elles ne retiennent pas la voile.",
+          "Vérifie qu'aucun bout ne traîne à l'eau ou près d'un winch avant de reprendre de la vitesse.",
+          "Reprends ton cap et observe le comportement du bateau (gîte, barre, vitesse) : s'il gîte encore trop, c'est le signal qu'il faut envisager le ris suivant.",
         ],
       },
       {
         type: "astuce",
         contenu:
-          "Le geste exact varie selon le système du bateau (ris pris à la main, ris automatique...) — la logique reste la même : moins de voile dehors, mât en bas.",
+          "Seule à bord, entraîne-toi à quai ou par petit temps à prendre un ris posément, sans pression : le jour où tu en as vraiment besoin, le vent forcit déjà et le bateau bouge — ce n'est pas le moment de découvrir le geste.",
+      },
+      {
+        type: "astuce",
+        contenu:
+          "Le geste exact varie selon le système du bateau (ris pris à la main, ris automatique, bosses menées au cockpit...) — repère à l'avance comment fonctionne celui de ton bateau plutôt que de l'apprendre en pleine manœuvre.",
       },
       {
         type: "erreurs",
         items: [
-          "Attendre trop longtemps pour prendre un ris : la manœuvre devient plus difficile quand le vent est déjà très fort.",
-          "Oublier de choquer l'écoute avant de descendre la drisse : la voile reste sous tension et le ris est difficile à prendre.",
+          "Attendre trop longtemps pour prendre un ris : la manœuvre devient plus difficile et plus physique quand le vent est déjà très fort.",
+          "Oublier de choquer l'écoute avant de descendre la drisse : la voile reste sous tension et le ris est difficile, voire impossible, à prendre.",
+          "Serrer les garcettes de bôme comme si elles tenaient la voile : elles ne servent qu'à ranger le tissu, pas à reprendre l'effort — les serrer fort peut déchirer la voile.",
+          "Oublier de reborder l'écoute une fois le ris pris : la grand-voile reste molle et perd toute son efficacité, même bien réduite.",
         ],
       },
     ],
