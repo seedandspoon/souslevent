@@ -13,7 +13,7 @@ export default function ReglageVoilePage() {
         </Link>
         <h1 className="text-xl font-semibold text-ink">Réglage d&apos;une voile</h1>
       </div>
-      <Link href="/apprendre/l2-ecoutes-et-drisses" className="text-sm text-brand-500 font-medium ml-9 inline-block mb-4">
+      <Link href="/apprendre/l-regler-les-voiles" className="text-sm text-brand-500 font-medium ml-9 inline-block mb-4">
         ← Revoir la leçon
       </Link>
       <ReglageVoileExperience />

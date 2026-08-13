@@ -43,7 +43,7 @@ export function ReglageVoileExperience() {
   const etatPrecedent = useRef(etat);
   useEffect(() => {
     if (etat === "bon" && etatPrecedent.current !== "bon") {
-      enregistrerReponse(["c-ecoute"], true);
+      enregistrerReponse(["c-ecoute", "c-faseillement"], true);
     }
     etatPrecedent.current = etat;
   }, [etat]);

@@ -229,6 +229,22 @@ export const glossary: GlossaryTerm[] = [
     lessonId: "l2-ecoutes-et-drisses",
   },
   {
+    id: "g-faseillement",
+    terme: "Faseillement (luffing)",
+    definition: "Battement d'une voile pas assez bordée : le bord d'attaque flotte et claque, la voile perd sa forme et ne porte plus.",
+    categorie: "Voiles",
+    termesAssociesIds: ["g-ecoute", "g-penon"],
+    lessonId: "l-regler-les-voiles",
+  },
+  {
+    id: "g-penon",
+    terme: "Penon (telltale)",
+    definition: "Petit ruban fixé sur une voile qui indique visuellement si l'écoulement de l'air est correct : s'il décroche d'un côté, la voile n'est pas encore bien réglée.",
+    categorie: "Voiles",
+    termesAssociesIds: ["g-faseillement", "g-ecoute"],
+    lessonId: "l-regler-les-voiles",
+  },
+  {
     id: "g-drisse",
     terme: "Drisse (halyard)",
     definition: "Cordage utilisé pour hisser une voile le long du mât ou de l'étai.",

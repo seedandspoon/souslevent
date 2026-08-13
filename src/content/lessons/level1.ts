@@ -92,7 +92,7 @@ export const level1Lessons: Lesson[] = [
         contenu:
           "Le vent réel est celui que mesurerait un observateur immobile. Le vent apparent est celui que ressent réellement l'équipage : il combine le vent réel et le vent créé par le déplacement du bateau. C'est le vent apparent qui gonfle les voiles.",
       },
-      { type: "schema", illustration: "wind-apparent-real", legende: "Le vent apparent combine vent réel et vitesse du bateau" },
+      { type: "schema", illustration: "wind-apparent-real", legende: "Le vent apparent combine vent réel et vent vitesse (créé par le déplacement du bateau)" },
       {
         type: "texte",
         contenu:

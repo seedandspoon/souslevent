@@ -3,7 +3,7 @@
 
 export const LESSON_EXPERIENCE_LINKS: Record<string, { href: string; label: string }> = {
   "l1-les-allures": { href: "/experiences/allures", label: "Essayer en interactif" },
-  "l2-ecoutes-et-drisses": { href: "/experiences/reglage-voile", label: "Essayer en interactif" },
+  "l-regler-les-voiles": { href: "/experiences/reglage-voile", label: "Essayer en interactif" },
   "l3-virement-de-bord": { href: "/experiences/virement", label: "Essayer en interactif" },
   "l3-empannage": { href: "/experiences/empannage", label: "Essayer en interactif" },
 };

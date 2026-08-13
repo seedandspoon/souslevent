@@ -12,25 +12,48 @@ function ArrowDefs({ id, color }: { id: string; color: string }) {
   );
 }
 
+/**
+ * Triangle des vitesses, pointe à queue : vent réel (O→P1) puis vent créé
+ * par la vitesse du bateau (P1→P2, toujours dans l'axe du bateau — avancer
+ * crée un vent contraire équivalent, quel que soit le vent réel) ; la
+ * résultante vent apparent (O→P2) est ce que ressent réellement
+ * l'équipage. Le bateau est décalé vers le bas (translate) sans toucher
+ * TOP_BOAT_D, réutilisé tel quel par les autres schémas de ce fichier.
+ */
 export function WindApparentReal() {
+  // Construction par parallélogramme plutôt que pointe-à-queue : les trois
+  // vecteurs partagent leur origine O, chacun garde une pointe de flèche
+  // bien à lui (jamais deux pointes au même endroit) — plus lisible qu'un
+  // enchaînement où la pointe du vent vitesse et celle du vent apparent se
+  // superposent exactement au même point.
+  const O = { x: 290, y: 18 };
+  const reel = { dx: -100, dy: 60 };
+  const vitesse = { dx: 0, dy: 130 };
+  const A = { x: O.x + reel.dx, y: O.y + reel.dy };
+  const B = { x: O.x + vitesse.dx, y: O.y + vitesse.dy };
+  const C = { x: O.x + reel.dx + vitesse.dx, y: O.y + reel.dy + vitesse.dy };
+
   return (
-    <IllustrationFrame label="Le vent apparent combine le vent réel et la vitesse du bateau" viewBox="0 0 400 260">
+    <IllustrationFrame label="Le vent apparent combine le vent réel et le vent créé par la vitesse du bateau" viewBox="0 0 400 460">
       <ArrowDefs id="arrow-real" color={BRAND} />
+      <ArrowDefs id="arrow-speed" color={INK} />
       <ArrowDefs id="arrow-app" color={ACCENT} />
-      <path d={TOP_BOAT_D} fill="none" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
-      <line x1={200} y1={95} x2={200} y2={135} stroke={INK} strokeWidth={2} opacity={0.5} />
 
-      {/* Vent réel : vient d'en haut */}
-      <line x1={200} y1={15} x2={200} y2={48} stroke={BRAND} strokeWidth={4} markerEnd="url(#arrow-real)" />
-      <Label x={200} y={12} fill={BRAND}>Vent réel</Label>
+      <g transform="translate(0, 230)">
+        <path d={TOP_BOAT_D} fill="none" stroke={INK} strokeWidth={3} strokeLinejoin="round" />
+      </g>
 
-      {/* Vitesse bateau : vers le bas */}
-      <line x1={280} y1={200} x2={280} y2={240} stroke={INK} strokeWidth={3} markerEnd="url(#arrow-real)" opacity={0.55} />
-      <Label x={280} y={253} fill={INK} size={11}>Vitesse du bateau</Label>
+      {/* Vent réel : le vent qu'on ressentirait à l'arrêt */}
+      <line x1={O.x} y1={O.y} x2={A.x} y2={A.y} stroke={BRAND} strokeWidth={4} markerEnd="url(#arrow-real)" />
+      <Label x={A.x - 8} y={A.y - 10} fill={BRAND} anchor="end">Vent réel</Label>
 
-      {/* Vent apparent : résultante diagonale */}
-      <line x1={200} y1={15} x2={260} y2={70} stroke={ACCENT} strokeWidth={4} markerEnd="url(#arrow-app)" />
-      <Label x={295} y={55} fill={ACCENT}>Vent apparent</Label>
+      {/* Vent vitesse : le vent créé par le déplacement, toujours dans l'axe du bateau (ici vertical) */}
+      <line x1={O.x} y1={O.y} x2={B.x} y2={B.y} stroke={INK} strokeWidth={3.5} markerEnd="url(#arrow-speed)" opacity={0.6} />
+      <Label x={B.x + 10} y={B.y + 4} fill={INK} size={11} anchor="start" weight={500}>Vent vitesse</Label>
+
+      {/* Vent apparent : résultante des deux, ce que ressent réellement l'équipage */}
+      <line x1={O.x} y1={O.y} x2={C.x} y2={C.y} stroke={ACCENT} strokeWidth={4} markerEnd="url(#arrow-app)" />
+      <Label x={C.x - 12} y={C.y + 6} fill={ACCENT} anchor="end">Vent apparent</Label>
     </IllustrationFrame>
   );
 }
