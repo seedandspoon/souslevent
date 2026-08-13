@@ -118,7 +118,7 @@ const ALERTES: Record<AlerteId, { titre: string; detail: string }> = {
   sortie: {
     titre: "Le génois est resté à contre",
     detail:
-      "Le bateau a changé d'amure, mais le génois est resté du même côté : il faseille. Attrape vite la nouvelle écoute, borde-la à la main, puis termine au winch — avant de sortir du lit du vent, sinon il prend de la vitesse à contre.",
+      "Le bateau a changé d'amure, mais le génois est resté du même côté : il faseille. Attrape vite la nouvelle écoute et borde-la à la main, avant de sortir du lit du vent, sinon il prend de la vitesse à contre.",
   },
   "trop-dur": {
     titre: "L'écoute devient trop dure à tenir",
