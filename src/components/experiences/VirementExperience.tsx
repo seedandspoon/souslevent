@@ -57,7 +57,11 @@ import type { EtatVoile } from "@/components/nautical-visuals/Sail";
 // ou pire si le génois tire d'un coup, seule source de risque identifiée
 // qui manquait jusqu'ici dans cette manœuvre). Le génois reste faseille
 // tout du long des deux étapes (voir jibEtat), il ne redevient "bon"
-// qu'une fois le winch terminé.
+// qu'une fois le winch terminé. En mode guidé, une troisième alerte
+// ("trop-dur") marque la transition entre les deux : elle n'anime rien
+// (aucun segment ne tourne à ce moment-là), elle sert juste à faire
+// passer le bon geste au bon moment plutôt que d'enchaîner les deux
+// techniques sans transition.
 
 const CX = 200;
 const CY = 210;
@@ -104,7 +108,7 @@ const STEP_ORDER: StepDef[] = [
   { id: "stabiliser", label: "Stabiliser le cap sur la nouvelle amure" },
 ];
 
-type AlerteId = "entree" | "sortie";
+type AlerteId = "entree" | "sortie" | "trop-dur";
 
 const ALERTES: Record<AlerteId, { titre: string; detail: string }> = {
   entree: {
@@ -115,6 +119,11 @@ const ALERTES: Record<AlerteId, { titre: string; detail: string }> = {
     titre: "Le génois est resté à contre",
     detail:
       "Le bateau a changé d'amure, mais le génois est resté du même côté : il faseille. Attrape vite la nouvelle écoute, borde-la à la main, puis termine au winch — avant de sortir du lit du vent, sinon il prend de la vitesse à contre.",
+  },
+  "trop-dur": {
+    titre: "L'écoute devient trop dure à tenir",
+    detail:
+      "C'est le signal pour passer au winch : fais 3 tours autour du tambour dans le sens des aiguilles d'une montre, cale l'écoute dans les mâchoires du taquet auto-serreur, puis termine de border à la manivelle jusqu'au bon réglage.",
   },
 };
 
@@ -241,6 +250,7 @@ export function VirementExperience() {
     setTractionsMain(prochain);
     if (prochain >= TRACTIONS_MAIN) {
       setStepIndex(8);
+      if (aideActivee) setAlerte("trop-dur");
     }
   }
 
@@ -467,6 +477,11 @@ export function VirementExperience() {
             titre="Virement réussi !"
             detail={`Tu es maintenant ${amureLabel(targetAmure)} amure, au près.`}
           />
+          <p className="text-xs text-ink-soft text-center leading-relaxed">
+            Ce simulateur ralentit volontairement le mouvement pour te laisser le temps de voir chaque geste : dans la
+            réalité, un virement bien exécuté prend environ 12 secondes en tout. Une fois le réflexe acquis, ça
+            s&apos;enchaîne bien plus vite qu&apos;ici.
+          </p>
           <Button onClick={recommencer}>Refaire un virement</Button>
         </div>
       )}

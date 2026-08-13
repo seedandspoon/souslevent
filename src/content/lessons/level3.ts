@@ -55,13 +55,13 @@ export const level3Lessons: Lesson[] = [
       {
         type: "astuce",
         contenu:
-          "Dans la réalité, un virement bien exécuté dure environ 12 secondes du premier ordre à la vitesse retrouvée — le génois ne faseille que quelques secondes. Le simulateur ralentit volontairement le mouvement pour te laisser le temps de voir chaque geste ; une fois le réflexe acquis, tout s'enchaîne bien plus vite qu'à l'écran.",
+          "Dans la réalité, un virement bien exécuté dure environ 12 secondes du premier ordre à la vitesse retrouvée — le génois ne faseille que quelques secondes.",
       },
       {
         type: "erreurs",
         items: [
           "Choquer l'écoute d'un coup au lieu de l'accompagner : elle peut fouetter ou se prendre dans un winch.",
-          "Oublier d'ouvrir le taquet avant de tirer sur l'écoute : rien ne bouge, ou on force sur un cordage bloqué.",
+          "Oublier d'ouvrir le taquet (ou coinceur) avant de choquer l'écoute bordée : il tient bon tant qu'on ne le libère pas, même en tirant de toutes ses forces. À l'inverse, pas besoin de l'ouvrir pour border davantage la nouvelle écoute : un taquet à came laisse filer le cordage dans le sens où on le tire, il ne bloque que dans l'autre sens.",
           "Attendre trop longtemps avant de border la nouvelle écoute : le génois prend de la vitesse et devient difficile à border.",
           "Enrouler l'écoute autour de la main ou du poignet en la bordant à la main : si le génois tire d'un coup, tu dois pouvoir lâcher immédiatement — jamais de tour autour de la main, ajoute plutôt un tour de winch.",
           "Pousser la barre trop fort ou trop vite : le bateau perd sa vitesse et peut rester bloqué face au vent.",
