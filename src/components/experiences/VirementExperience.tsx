@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { amurePourCap, distanceAuVent, normalize360, type Amure } from "@/lib/interactions/angle";
 import { Button } from "@/components/ui/Button";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
+import { enregistrerReponse } from "@/lib/progress";
 import { SailboatDiagram } from "@/components/nautical-visuals";
 import { BRAND, INK } from "@/components/nautical-visuals/tokens";
 import type { EtatVoile } from "@/components/nautical-visuals/Sail";
@@ -102,6 +103,7 @@ export function VirementExperience() {
   const [virant, setVirant] = useState(false);
   const [toursWinch, setToursWinch] = useState(0);
   const rafRef = useRef<number | null>(null);
+  const enregistre = useRef(false);
 
   useEffect(() => () => {
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
@@ -123,6 +125,16 @@ export function VirementExperience() {
   } else if (step === "stabiliser" && arrivee) {
     setStepIndex(10);
   }
+
+  // Un virement réussi vaut comme une bonne réponse pour le concept
+  // "virement de bord" : sans ça, réussir la manœuvre dix fois ne
+  // changerait jamais le score de compétence "Manœuvres" du profil.
+  useEffect(() => {
+    if (termine && !enregistre.current) {
+      enregistre.current = true;
+      enregistrerReponse(["c-virement"], true);
+    }
+  }, [termine]);
 
   const boomSign = boomSignForHeading(heading);
   const d = distanceAuVent(heading);
@@ -166,6 +178,7 @@ export function VirementExperience() {
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     rafRef.current = null;
     setVirant(false);
+    enregistre.current = false;
     const nextSign = (startSign * -1) as 1 | -1;
     const nextStartHeading = -PRES_ANGLE * nextSign;
     const nextStartAmure = amurePourCap(nextStartHeading);

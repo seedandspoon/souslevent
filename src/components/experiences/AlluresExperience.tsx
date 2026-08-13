@@ -8,6 +8,19 @@ import { allurePourCap, amurePourCap, distanceAuVent, ALLURES, type Amure } from
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
 import { SailboatDiagram } from "@/components/nautical-visuals";
 import { INK, BRAND, DANGER, polar } from "@/components/nautical-visuals/tokens";
+import { enregistrerReponse } from "@/lib/progress";
+
+// Concept testé par chaque allure du mode Défi — "face-au-vent" n'a pas
+// de concept dédié (ce n'est pas une allure qu'on choisit, juste la zone
+// interdite), donc pas de bouton associé à enregistrer.
+const ALLURE_CONCEPT: Record<string, string> = {
+  pres: "c-allure-pres",
+  "bon-plein": "c-allure-bon-plein",
+  travers: "c-allure-travers",
+  largue: "c-allure-largue",
+  "grand-largue": "c-allure-grand-largue",
+  "vent-arriere": "c-allure-vent-arriere",
+};
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" —
 // voir .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de
@@ -167,7 +180,11 @@ export function AlluresExperience() {
             {ALLURES.map((a) => (
               <button
                 key={a.id}
-                onClick={() => setSelectedAllure(a.id)}
+                onClick={() => {
+                  setSelectedAllure(a.id);
+                  const concept = ALLURE_CONCEPT[allure.id];
+                  if (concept) enregistrerReponse([concept], a.id === allure.id);
+                }}
                 className={clsx(
                   "text-sm font-medium py-2 px-3 rounded-lg border transition-colors",
                   selectedAllure === a.id
@@ -187,7 +204,10 @@ export function AlluresExperience() {
               {(["babord", "tribord"] as const).map((a) => (
                 <button
                   key={a}
-                  onClick={() => setSelectedAmure(a)}
+                  onClick={() => {
+                    setSelectedAmure(a);
+                    enregistrerReponse([amure === "tribord" ? "c-amure-tribord" : "c-amure-babord"], a === amure);
+                  }}
                   className={clsx(
                     "text-sm font-medium py-2 px-3 rounded-lg border transition-colors",
                     selectedAmure === a

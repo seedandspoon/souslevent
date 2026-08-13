@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { OrderedStepsCheck } from "@/components/interactive/OrderedStepsCheck";
 import { Rope, RopeEnd, DepthCrossing } from "@/components/nautical-visuals";
+import { enregistrerReponse } from "@/lib/progress";
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" —
 // voir .claude/skills/nautical-pedagogical-visuals/SKILL.md avant de
@@ -152,7 +153,11 @@ export function NoeudChaiseExperience() {
       )}
 
       {showCheck && (
-        <OrderedStepsCheck steps={LABELS_CHECK} successDetail="Tu as reconstitué le mouvement du nœud de chaise." />
+        <OrderedStepsCheck
+          steps={LABELS_CHECK}
+          successDetail="Tu as reconstitué le mouvement du nœud de chaise."
+          onComplete={(correctFirstTry) => enregistrerReponse(["c-noeud-chaise"], correctFirstTry)}
+        />
       )}
     </div>
   );

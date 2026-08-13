@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { amurePourCap, distanceAuVent, normalize360, type Amure } from "@/lib/interactions/angle";
 import { Button } from "@/components/ui/Button";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
+import { enregistrerReponse } from "@/lib/progress";
 import { SailboatDiagram } from "@/components/nautical-visuals";
 import { BRAND, INK } from "@/components/nautical-visuals/tokens";
 import type { EtatVoile } from "@/components/nautical-visuals/Sail";
@@ -105,6 +106,7 @@ export function EmpannageExperience() {
   const rafRef = useRef<number | null>(null);
   const alerteTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dernierSigneBome = useRef(boomSignForHeading(startHeading));
+  const enregistre = useRef(false);
 
   useEffect(
     () => () => {
@@ -134,6 +136,15 @@ export function EmpannageExperience() {
   } else if (step === "stabiliser" && arrivee) {
     setStepIndex(9);
   }
+
+  // Un empannage réussi vaut comme une bonne réponse pour le concept
+  // "empannage" — même logique que le virement, voir VirementExperience.
+  useEffect(() => {
+    if (termine && !enregistre.current) {
+      enregistre.current = true;
+      enregistrerReponse(["c-empannage"], true);
+    }
+  }, [termine]);
 
   const boomSign = boomSignForHeading(heading);
   const d = distanceAuVent(heading);
@@ -190,6 +201,7 @@ export function EmpannageExperience() {
     rafRef.current = null;
     setEmpannant(false);
     setAlerteBome(false);
+    enregistre.current = false;
     const nextSign = (startSign * -1) as 1 | -1;
     const nextStartHeading = 180 - ALLURE_ANGLE * nextSign;
     setStartSign(nextSign);

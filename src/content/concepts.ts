@@ -62,6 +62,9 @@ export const concepts: Concept[] = [
   { id: "c-barre", titre: "La barre", skillTag: "manoeuvres", glossaryTermId: "g-barre" },
   { id: "c-safran", titre: "Le safran", skillTag: "manoeuvres", glossaryTermId: "g-safran" },
 
+  // Nœuds
+  { id: "c-noeud-chaise", titre: "Le nœud de chaise", skillTag: "manoeuvres" },
+
   // Niveau 3 — Manœuvrer
   { id: "c-virement", titre: "Le virement de bord", skillTag: "manoeuvres", glossaryTermId: "g-virement" },
   { id: "c-empannage", titre: "L'empannage", skillTag: "manoeuvres", glossaryTermId: "g-empannage" },

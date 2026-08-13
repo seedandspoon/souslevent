@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { DragSlider } from "@/components/interactive/DragSlider";
 import { FeedbackBanner } from "@/components/interactive/FeedbackBanner";
 import { SailboatDiagram } from "@/components/nautical-visuals";
+import { enregistrerReponse } from "@/lib/progress";
 
 // Référence officielle de la skill "nautical-pedagogical-visuals" — voir
 // .claude/skills/nautical-pedagogical-visuals/SKILL.md. Le voilier de
@@ -35,6 +36,17 @@ export function ReglageVoileExperience() {
   const ecart = boomAngle - optimal;
 
   const etat: "faseille" | "freine" | "bon" = ecart > TOLERANCE ? "faseille" : ecart < -TOLERANCE ? "freine" : "bon";
+
+  // Un bon réglage vaut comme une bonne réponse pour le concept "écoute" —
+  // seulement au moment où on l'atteint (pas à chaque frame pendant qu'on
+  // reste dessus), sinon un run continu spammerait le suivi de révision.
+  const etatPrecedent = useRef(etat);
+  useEffect(() => {
+    if (etat === "bon" && etatPrecedent.current !== "bon") {
+      enregistrerReponse(["c-ecoute"], true);
+    }
+    etatPrecedent.current = etat;
+  }, [etat]);
 
   const message = useMemo(() => {
     if (etat === "faseille")
