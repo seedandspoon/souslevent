@@ -90,6 +90,7 @@ export const level2Lessons: Lesson[] = [
         items: [
           "Approcher les doigts du winch pendant qu'il est sous tension : risque réel de coincement.",
           "Enrouler le cordage dans le mauvais sens, ce qui le fait déraper au lieu de le bloquer.",
+          "Enrouler un cordage autour de la main pour mieux tirer : ne le fais jamais, même sans winch — si la charge augmente d'un coup, tu dois toujours pouvoir lâcher. Ajoute un tour de winch plutôt qu'un tour de main.",
         ],
       },
     ],

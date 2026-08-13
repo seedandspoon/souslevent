@@ -63,6 +63,7 @@ export const level3Lessons: Lesson[] = [
           "Choquer l'écoute d'un coup au lieu de l'accompagner : elle peut fouetter ou se prendre dans un winch.",
           "Oublier d'ouvrir le taquet avant de tirer sur l'écoute : rien ne bouge, ou on force sur un cordage bloqué.",
           "Attendre trop longtemps avant de border la nouvelle écoute : le génois prend de la vitesse et devient difficile à border.",
+          "Enrouler l'écoute autour de la main ou du poignet en la bordant à la main : si le génois tire d'un coup, tu dois pouvoir lâcher immédiatement — jamais de tour autour de la main, ajoute plutôt un tour de winch.",
           "Pousser la barre trop fort ou trop vite : le bateau perd sa vitesse et peut rester bloqué face au vent.",
           "Virer sans annoncer, même seul : sauter l'annonce mentale fait plus facilement sauter une étape du geste.",
         ],

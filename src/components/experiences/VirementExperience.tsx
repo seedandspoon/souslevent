@@ -49,12 +49,15 @@ import type { EtatVoile } from "@/components/nautical-visuals/Sail";
 // n'a pas tapé "Attraper" — c'est exactement ce que l'alerte y explique.
 //
 // "Border" est décomposé en deux gestes distincts (border-main puis
-// border/winch), pas un seul : de vraies sources de voile décrivent
-// cette technique en deux temps — un tour à la main pour reprendre le
-// gros du mou rapidement, puis 2 à 3 tours de winch une fois l'écoute
-// trop dure à tenir à la main. Le génois reste faseille tout du long des
-// deux étapes (voir jibEtat), il ne redevient "bon" qu'une fois le winch
-// terminé.
+// border/winch), chacun à plusieurs tractions/tours plutôt qu'un simple
+// tap : de vraies sources de voile décrivent cette technique en deux
+// temps — plusieurs tractions à la main pour reprendre le gros du mou
+// rapidement, puis 2 à 3 tours de winch une fois l'écoute trop dure à
+// tenir à la main (jamais enroulée autour du poignet — risque de brûlure
+// ou pire si le génois tire d'un coup, seule source de risque identifiée
+// qui manquait jusqu'ici dans cette manœuvre). Le génois reste faseille
+// tout du long des deux étapes (voir jibEtat), il ne redevient "bon"
+// qu'une fois le winch terminé.
 
 const CX = 200;
 const CY = 210;
@@ -67,6 +70,7 @@ const TOLERANCE_ARRIVEE = 10;
 const ROTATION_DUREE_MS = 8000; // durée du mode "Enchaîné" (rotation complète, 90°)
 const MS_PAR_DEGRE = ROTATION_DUREE_MS / (PRES_ANGLE * 2);
 const TOURS_WINCH = 3;
+const TRACTIONS_MAIN = 3;
 
 type StepId =
   | "route"
@@ -150,6 +154,7 @@ export function VirementExperience() {
   const [virant, setVirant] = useState(false);
   const [alerte, setAlerte] = useState<AlerteId | null>(null);
   const [toursWinch, setToursWinch] = useState(0);
+  const [tractionsMain, setTractionsMain] = useState(0);
   const rafRef = useRef<number | null>(null);
   const enregistre = useRef(false);
 
@@ -231,6 +236,14 @@ export function VirementExperience() {
     }
   }
 
+  function tirerLaMain() {
+    const prochain = tractionsMain + 1;
+    setTractionsMain(prochain);
+    if (prochain >= TRACTIONS_MAIN) {
+      setStepIndex(8);
+    }
+  }
+
   function tournerLaManivelle() {
     const prochain = toursWinch + 1;
     setToursWinch(prochain);
@@ -254,6 +267,7 @@ export function VirementExperience() {
     setJibSign(nextStartAmure === "babord" ? 1 : -1);
     setStepIndex(0);
     setToursWinch(0);
+    setTractionsMain(0);
   }
 
   return (
@@ -390,9 +404,19 @@ export function VirementExperience() {
       )}
 
       {step === "border-main" && !enPause && (
-        <Button className="w-full" onClick={() => setStepIndex(8)}>
-          Border rapidement à la main
-        </Button>
+        <div className="flex flex-col items-center gap-2">
+          <Button className="w-full" onClick={tirerLaMain}>
+            Tirer l&apos;écoute à la main
+          </Button>
+          <div className="flex items-center gap-1.5">
+            {Array.from({ length: TRACTIONS_MAIN }, (_, i) => (
+              <span key={i} className={clsx("w-2 h-2 rounded-full", i < tractionsMain ? "bg-brand-500" : "bg-surface-2")} />
+            ))}
+          </div>
+          <p className="text-xs text-ink-soft text-center">
+            Main ouverte, jamais enroulée autour du poignet : si le génois tire d&apos;un coup, tu dois pouvoir lâcher.
+          </p>
+        </div>
       )}
 
       {step === "border" && !enPause && (
