@@ -50,7 +50,12 @@ export const level3Lessons: Lesson[] = [
       {
         type: "astuce",
         contenu:
-          "Seule à bord, entraîne-toi à quai, moteur coupé : refais la séquence barre → taquet → choque → attrape → borde → winch plusieurs fois de suite, juste pour que l'enchaînement des gestes devienne automatique avant de le faire en navigation.",
+          "Seul à bord, entraîne-toi à quai, moteur coupé : refais la séquence barre → taquet → choque → attrape → borde → winch plusieurs fois de suite, juste pour que l'enchaînement des gestes devienne automatique avant de le faire en navigation.",
+      },
+      {
+        type: "astuce",
+        contenu:
+          "Dans la réalité, un virement bien exécuté dure environ 12 secondes du premier ordre à la vitesse retrouvée — le génois ne faseille que quelques secondes. Le simulateur ralentit volontairement le mouvement pour te laisser le temps de voir chaque geste ; une fois le réflexe acquis, tout s'enchaîne bien plus vite qu'à l'écran.",
       },
       {
         type: "erreurs",
@@ -207,7 +212,7 @@ export const level3Lessons: Lesson[] = [
       {
         type: "astuce",
         contenu:
-          "Seule à bord, entraîne-toi à quai ou par petit temps à prendre un ris posément, sans pression : le jour où tu en as vraiment besoin, le vent forcit déjà et le bateau bouge — ce n'est pas le moment de découvrir le geste.",
+          "Seul à bord, entraîne-toi à quai ou par petit temps à prendre un ris posément, sans pression : le jour où tu en as vraiment besoin, le vent forcit déjà et le bateau bouge — ce n'est pas le moment de découvrir le geste.",
       },
       {
         type: "astuce",

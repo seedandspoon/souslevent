@@ -47,6 +47,14 @@ import type { EtatVoile } from "@/components/nautical-visuals/Sail";
 // ne le rebordait pas : au deuxième arrêt du mode guidé, le bateau a déjà
 // changé d'amure mais le génois, lui, reste du côté d'avant tant qu'on
 // n'a pas tapé "Attraper" — c'est exactement ce que l'alerte y explique.
+//
+// "Border" est décomposé en deux gestes distincts (border-main puis
+// border/winch), pas un seul : de vraies sources de voile décrivent
+// cette technique en deux temps — un tour à la main pour reprendre le
+// gros du mou rapidement, puis 2 à 3 tours de winch une fois l'écoute
+// trop dure à tenir à la main. Le génois reste faseille tout du long des
+// deux étapes (voir jibEtat), il ne redevient "bon" qu'une fois le winch
+// terminé.
 
 const CX = 200;
 const CY = 210;
@@ -60,7 +68,18 @@ const ROTATION_DUREE_MS = 8000; // durée du mode "Enchaîné" (rotation complè
 const MS_PAR_DEGRE = ROTATION_DUREE_MS / (PRES_ANGLE * 2);
 const TOURS_WINCH = 3;
 
-type StepId = "route" | "annonce" | "confirmation" | "barre" | "taquet" | "choquer" | "attraper" | "border" | "bloquer" | "stabiliser";
+type StepId =
+  | "route"
+  | "annonce"
+  | "confirmation"
+  | "barre"
+  | "taquet"
+  | "choquer"
+  | "attraper"
+  | "border-main"
+  | "border"
+  | "bloquer"
+  | "stabiliser";
 
 interface StepDef {
   id: StepId;
@@ -75,7 +94,8 @@ const STEP_ORDER: StepDef[] = [
   { id: "taquet", label: "Ouvrir le taquet de l'écoute bordée" },
   { id: "choquer", label: "Choquer l'écoute à la main" },
   { id: "attraper", label: "Attraper la nouvelle écoute" },
-  { id: "border", label: "Border à la main puis terminer au winch" },
+  { id: "border-main", label: "Border rapidement à la main" },
+  { id: "border", label: "Terminer au winch (2 à 3 tours)" },
   { id: "bloquer", label: "Bloquer l'écoute dans son taquet" },
   { id: "stabiliser", label: "Stabiliser le cap sur la nouvelle amure" },
 ];
@@ -90,7 +110,7 @@ const ALERTES: Record<AlerteId, { titre: string; detail: string }> = {
   sortie: {
     titre: "Le génois est resté à contre",
     detail:
-      "Le bateau a changé d'amure, mais le génois est resté du même côté : il faseille. Attrape vite la nouvelle écoute et borde-la avant de sortir du lit du vent, sinon il prend de la vitesse à contre.",
+      "Le bateau a changé d'amure, mais le génois est resté du même côté : il faseille. Attrape vite la nouvelle écoute, borde-la à la main, puis termine au winch — avant de sortir du lit du vent, sinon il prend de la vitesse à contre.",
   },
 };
 
@@ -157,7 +177,7 @@ export function VirementExperience() {
   if (!aideActivee && step === "barre" && enZoneInterdite) {
     setStepIndex(4);
   } else if (step === "stabiliser" && arrivee) {
-    setStepIndex(10);
+    setStepIndex(11);
   }
 
   // Un virement réussi vaut comme une bonne réponse pour le concept
@@ -175,11 +195,11 @@ export function VirementExperience() {
   const boomAngle = Math.min(72, Math.max(16, d * 0.75));
   const mainsailEtat: EtatVoile = enZoneInterdite ? "faseille" : "bon";
   // Le génois est bien réglé au départ (bon), faseille dès qu'on l'a
-  // choqué et jusqu'à ce qu'il soit rebordé au winch sur la nouvelle
-  // amure (étapes "attraper" et "border" = stepIndex 6 et 7), et faseille
-  // aussi ponctuellement si le bateau pointe trop près du vent, quelle
-  // que soit l'écoute.
-  const jibEtat: EtatVoile = enZoneInterdite || (stepIndex >= 6 && stepIndex < 8) ? "faseille" : "bon";
+  // choqué et jusqu'à ce qu'il soit rebordé — à la main puis au winch —
+  // sur la nouvelle amure (étapes "attraper", "border-main" et "border" =
+  // stepIndex 6 à 8), et faseille aussi ponctuellement si le bateau
+  // pointe trop près du vent, quelle que soit l'écoute.
+  const jibEtat: EtatVoile = enZoneInterdite || (stepIndex >= 6 && stepIndex < 9) ? "faseille" : "bon";
 
   function animerVers(depart: number, cible: number, onDone?: () => void) {
     setVirant(true);
@@ -215,7 +235,7 @@ export function VirementExperience() {
     const prochain = toursWinch + 1;
     setToursWinch(prochain);
     if (prochain >= TOURS_WINCH) {
-      setStepIndex(8);
+      setStepIndex(9);
       if (aideActivee) animerVers(sortieHeading, targetHeading);
     }
   }
@@ -369,6 +389,12 @@ export function VirementExperience() {
         </div>
       )}
 
+      {step === "border-main" && !enPause && (
+        <Button className="w-full" onClick={() => setStepIndex(8)}>
+          Border rapidement à la main
+        </Button>
+      )}
+
       {step === "border" && !enPause && (
         <div className="flex flex-col items-center gap-2">
           <Button className="w-full" onClick={tournerLaManivelle}>
@@ -401,7 +427,7 @@ export function VirementExperience() {
       )}
 
       {step === "bloquer" && !enPause && (
-        <Button className="w-full" onClick={() => setStepIndex(9)}>
+        <Button className="w-full" onClick={() => setStepIndex(10)}>
           Bloquer l&apos;écoute
         </Button>
       )}
