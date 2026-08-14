@@ -202,21 +202,21 @@ export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (co
 
       {item.type === "qcm" && (
         <>
-          <p className="text-[15px] font-medium text-ink mb-4">{item.enonce}</p>
+          <p className="text-[0.9375rem] font-medium text-ink mb-4">{item.enonce}</p>
           <ChoiceList options={item.options} reponseIndex={item.reponseIndex} onAnswer={handleAnswer} />
         </>
       )}
 
       {item.type === "vrai-faux" && (
         <>
-          <p className="text-[15px] font-medium text-ink mb-4">{item.enonce}</p>
+          <p className="text-[0.9375rem] font-medium text-ink mb-4">{item.enonce}</p>
           <VraiFauxChoices reponse={item.reponse} onAnswer={handleAnswer} />
         </>
       )}
 
       {item.type === "reconnaissance" && (
         <>
-          <p className="text-[15px] font-medium text-ink mb-3">{item.enonce}</p>
+          <p className="text-[0.9375rem] font-medium text-ink mb-3">{item.enonce}</p>
           <div className="mb-4">
             <Illustration id={item.illustration} />
           </div>
@@ -227,7 +227,7 @@ export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (co
       {item.type === "scenario" && (
         <>
           <div className="rounded-xl bg-brand-50 p-4 mb-4">
-            <p className="text-[15px] text-ink leading-relaxed">{item.situation}</p>
+            <p className="text-[0.9375rem] text-ink leading-relaxed">{item.situation}</p>
           </div>
           <ChoiceList options={item.options} reponseIndex={item.reponseIndex} onAnswer={handleAnswer} />
         </>
@@ -235,14 +235,14 @@ export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (co
 
       {item.type === "association" && (
         <>
-          <p className="text-[15px] font-medium text-ink mb-4">{item.enonce}</p>
+          <p className="text-[0.9375rem] font-medium text-ink mb-4">{item.enonce}</p>
           <AssociationPairs paires={item.paires} onAnswer={handleAnswer} />
         </>
       )}
 
       {item.type === "ordre-etapes" && (
         <>
-          <p className="text-[15px] font-medium text-ink mb-4">{item.titre}</p>
+          <p className="text-[0.9375rem] font-medium text-ink mb-4">{item.titre}</p>
           <OrderedStepsCheck steps={item.etapes} showSuccessBanner={false} onComplete={handleAnswer} />
         </>
       )}

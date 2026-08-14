@@ -89,7 +89,7 @@ export default function LessonPage() {
           <ChevronLeft size={22} />
         </Link>
         <div className="min-w-0">
-          <p className="text-[11px] font-medium text-ink-soft uppercase tracking-wide truncate">
+          <p className="text-[0.6875rem] font-medium text-ink-soft uppercase tracking-wide truncate">
             {getAllLessonsOrdered().findIndex((l) => l.id === lesson.id) + 1} / {getAllLessonsOrdered().length}
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function LessonPage() {
                 {qPos + 1} / {questions.length}
               </p>
             </div>
-            <p className="text-[15px] font-medium text-ink mb-4">{question.enonce}</p>
+            <p className="text-[0.9375rem] font-medium text-ink mb-4">{question.enonce}</p>
             <div className="flex flex-col gap-2">
               {question.options.map((option, i) => {
                 const estBonneReponse = i === question.reponseIndex;

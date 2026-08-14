@@ -5,7 +5,7 @@ import { Illustration } from "@/components/illustrations/registry";
 export function BlockRenderer({ bloc }: { bloc: BlockType }) {
   switch (bloc.type) {
     case "texte":
-      return <p className="text-[15px] leading-relaxed text-ink">{bloc.contenu}</p>;
+      return <p className="text-[0.9375rem] leading-relaxed text-ink">{bloc.contenu}</p>;
 
     case "schema":
       return (
@@ -27,7 +27,7 @@ export function BlockRenderer({ bloc }: { bloc: BlockType }) {
                 <span className="shrink-0 w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-semibold flex items-center justify-center mt-0.5">
                   {i + 1}
                 </span>
-                <span className="text-[15px] leading-relaxed text-ink pt-0.5">{item}</span>
+                <span className="text-[0.9375rem] leading-relaxed text-ink pt-0.5">{item}</span>
               </li>
             ))}
           </ol>

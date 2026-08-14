@@ -29,7 +29,7 @@ export function BottomNav() {
               <Link
                 href={href}
                 className={clsx(
-                  "flex flex-col items-center justify-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
+                  "flex flex-col items-center justify-center gap-1 py-2.5 text-[0.6875rem] font-medium transition-colors",
                   active ? "text-brand-500" : "text-ink-soft"
                 )}
               >

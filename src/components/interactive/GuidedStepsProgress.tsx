@@ -61,7 +61,7 @@ export function GuidedStepsProgress<T extends { id: string; label: string }>({
               >
                 <span
                   className={clsx(
-                    "w-5 h-5 rounded-full text-[11px] flex items-center justify-center shrink-0",
+                    "w-5 h-5 rounded-full text-[0.6875rem] flex items-center justify-center shrink-0",
                     fait && "bg-success text-white",
                     actif && "bg-brand-500 text-white",
                     !fait && !actif && "bg-surface-2 text-ink-soft"

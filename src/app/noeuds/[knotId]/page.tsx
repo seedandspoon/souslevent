@@ -48,7 +48,7 @@ export default function KnotPage() {
 
       <Card className="p-5 mt-5">
         <p className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-2">Utilité</p>
-        <p className="text-[15px] text-ink leading-relaxed">{knot.usage}</p>
+        <p className="text-[0.9375rem] text-ink leading-relaxed">{knot.usage}</p>
       </Card>
 
       <Card className="p-5 mt-4">
@@ -59,7 +59,7 @@ export default function KnotPage() {
               <span className="shrink-0 w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-semibold flex items-center justify-center mt-0.5">
                 {i + 1}
               </span>
-              <span className="text-[15px] leading-relaxed text-ink pt-0.5">{etape}</span>
+              <span className="text-[0.9375rem] leading-relaxed text-ink pt-0.5">{etape}</span>
             </li>
           ))}
         </ol>
