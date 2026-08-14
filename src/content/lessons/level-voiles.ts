@@ -53,11 +53,25 @@ export const levelVoilesLessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "La voile est plaquée, toute plate, et le bateau semble ralentir. Que fais-tu ?",
-      options: ["Je borde encore plus", "Je choque un peu", "Je ne touche à rien, c'est déjà réglé", "Je change d'allure"],
-      reponseIndex: 1,
-      explication: "Une voile plaquée et plate freine le bateau : c'est le signe qu'elle est trop bordée, pas pas assez — il faut choquer, pas border.",
-    },
+    questionsInline: [
+      {
+        enonce: "La voile est plaquée, toute plate, et le bateau semble ralentir. Que fais-tu ?",
+        options: ["Je borde encore plus", "Je choque un peu", "Je ne touche à rien, c'est déjà réglé", "Je change d'allure"],
+        reponseIndex: 1,
+        explication: "Une voile plaquée et plate freine le bateau : c'est le signe qu'elle est trop bordée, pas pas assez — il faut choquer, pas border.",
+      },
+      {
+        enonce: "Sur un vrai bateau, quel est le signal le plus fin pour savoir si une voile est bien réglée ?",
+        options: ["La vitesse ressentie", "Les penons", "La couleur du ciel", "Le bruit du vent"],
+        reponseIndex: 1,
+        explication: "Les penons donnent le signal le plus fin : s'ils décrochent d'un côté, la voile n'est pas encore réglée.",
+      },
+      {
+        enonce: "Une fois une voile bien réglée à un instant donné, faut-il continuer à surveiller son réglage ?",
+        options: ["Non, une fois réglée elle le reste", "Oui, le bon réglage change avec le vent, l'allure et chaque risée", "Seulement si le vent tombe complètement", "Non, seulement au départ de la sortie"],
+        reponseIndex: 1,
+        explication: "Le réglage n'est jamais figé : il change avec le vent, l'allure et chaque risée — c'est une boucle à répéter en continu.",
+      },
+    ],
   },
 ];

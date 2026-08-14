@@ -38,17 +38,31 @@ export const level4Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Sur une carte marine, à quoi correspond la profondeur indiquée par une sonde ?",
-      options: [
-        "La profondeur maximale possible, jamais atteinte",
-        "Une profondeur de référence, à laquelle s'ajoute généralement la hauteur de marée",
-        "La profondeur exacte à tout moment de la journée",
-        "La distance jusqu'au prochain port",
-      ],
-      reponseIndex: 1,
-      explication: "La sonde est rapportée à un niveau bas de référence ; la profondeur réelle dépend en plus de la hauteur de marée du moment.",
-    },
+    questionsInline: [
+      {
+        enonce: "Sur une carte marine, à quoi correspond la profondeur indiquée par une sonde ?",
+        options: [
+          "La profondeur maximale possible, jamais atteinte",
+          "Une profondeur de référence, à laquelle s'ajoute généralement la hauteur de marée",
+          "La profondeur exacte à tout moment de la journée",
+          "La distance jusqu'au prochain port",
+        ],
+        reponseIndex: 1,
+        explication: "La sonde est rapportée à un niveau bas de référence ; la profondeur réelle dépend en plus de la hauteur de marée du moment.",
+      },
+      {
+        enonce: "Qu'est-ce qu'un amer, sur une carte marine ?",
+        options: ["Une zone de danger sous-marine", "Un point fixe reconnaissable (phare, clocher, pointe) utile pour se situer", "Le nom d'un type de bouée", "La distance entre deux ports"],
+        reponseIndex: 1,
+        explication: "Un amer est un point fixe et reconnaissable (phare, clocher, pointe) qui aide à se situer à vue.",
+      },
+      {
+        enonce: "Une zone de la carte est teintée différemment près de ta route. Que dois-tu penser ?",
+        options: ["C'est probablement un défaut d'impression, sans importance", "C'est souvent le signe d'un danger (roches, hauts-fonds)", "Cela indique toujours un mouillage autorisé", "Cela signale la présence d'un port"],
+        reponseIndex: 1,
+        explication: "Une teinte différente signale souvent une zone de danger (roches, hauts-fonds) : il ne faut jamais l'ignorer.",
+      },
+    ],
   },
   {
     id: "l4-cap-et-route",
@@ -87,17 +101,31 @@ export const level4Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Le bateau pointe plein nord (cap 000°), mais un courant le pousse vers l'est. Que peut-on observer ?",
-      options: [
-        "Le cap et la route restent identiques",
-        "La route réelle dévie vers l'est, différente du cap suivi",
-        "Le bateau recule",
-        "Le vent apparent devient nul",
-      ],
-      reponseIndex: 1,
-      explication: "Le courant pousse le bateau de côté : la route réelle (la trajectoire sur l'eau) s'écarte du cap pointé.",
-    },
+    questionsInline: [
+      {
+        enonce: "Le bateau pointe plein nord (cap 000°), mais un courant le pousse vers l'est. Que peut-on observer ?",
+        options: [
+          "Le cap et la route restent identiques",
+          "La route réelle dévie vers l'est, différente du cap suivi",
+          "Le bateau recule",
+          "Le vent apparent devient nul",
+        ],
+        reponseIndex: 1,
+        explication: "Le courant pousse le bateau de côté : la route réelle (la trajectoire sur l'eau) s'écarte du cap pointé.",
+      },
+      {
+        enonce: "Comment repérer une dérive avant qu'elle ne s'accumule ?",
+        options: ["En ne regardant que le compas", "En comparant régulièrement un amer visé au début de la route avec sa position actuelle", "En augmentant la vitesse du bateau", "Ce n'est pas possible à repérer en cours de route"],
+        reponseIndex: 1,
+        explication: "Comparer régulièrement un amer visé au début de la route avec sa position actuelle permet de repérer une dérive avant qu'elle ne s'accumule.",
+      },
+      {
+        enonce: "Pour suivre une route précise malgré la dérive, que faut-il parfois faire ?",
+        options: ["Pointer le cap légèrement en amont de la direction voulue", "Ne jamais corriger le cap, la route se corrige seule", "Naviguer uniquement au moteur", "Ignorer le courant, il ne joue qu'un rôle mineur"],
+        reponseIndex: 0,
+        explication: "Corriger en pointant le cap légèrement en amont de la direction voulue compense la dérive causée par le vent et le courant.",
+      },
+    ],
   },
   {
     id: "l4-balisage",
@@ -145,12 +173,26 @@ export const level4Lessons: Lesson[] = [
           "Ce chapitre simplifie le balisage pour une première sortie encadrée. Le balisage complet (cardinal, dangers isolés, eaux saines, marques spéciales) est plus riche et mérite une formation dédiée.",
       },
     ],
-    questionInline: {
-      enonce: "Tu remontes un chenal vers le port. Une marque rouge cylindrique apparaît sur ta route. De quel côté la laisses-tu ?",
-      options: ["À tribord", "À bâbord", "Peu importe le côté", "Il faut faire le tour par le large"],
-      reponseIndex: 1,
-      explication: "En revenant vers le port (système IALA région A), les marques rouges se laissent à bâbord.",
-    },
+    questionsInline: [
+      {
+        enonce: "Tu remontes un chenal vers le port. Une marque rouge cylindrique apparaît sur ta route. De quel côté la laisses-tu ?",
+        options: ["À tribord", "À bâbord", "Peu importe le côté", "Il faut faire le tour par le large"],
+        reponseIndex: 1,
+        explication: "En revenant vers le port (système IALA région A), les marques rouges se laissent à bâbord.",
+      },
+      {
+        enonce: "Une marque verte conique apparaît en remontant vers le port. De quel côté la laisses-tu ?",
+        options: ["À bâbord", "À tribord", "Cela dépend du vent", "Il faut s'en éloigner par le large"],
+        reponseIndex: 1,
+        explication: "En revenant vers le port, les marques vertes coniques se laissent à tribord.",
+      },
+      {
+        enonce: "Que change-t-on en sortant du chenal vers le large, par rapport à l'entrée ?",
+        options: ["Rien, la règle reste identique", "La logique s'inverse : rouge et vert changent de côté", "Seules les marques vertes comptent", "Le balisage latéral ne s'applique plus"],
+        reponseIndex: 1,
+        explication: "En sortant vers le large, la logique du balisage latéral s'inverse simplement par rapport à l'entrée.",
+      },
+    ],
   },
   {
     id: "l4-mouillage",
@@ -194,16 +236,30 @@ export const level4Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Pourquoi file-t-on une longueur de chaîne bien plus grande que la profondeur de l'eau ?",
-      options: [
-        "Pour décorer le mouillage",
-        "Pour que l'ancre tire à l'horizontale sur le fond plutôt que d'être arrachée vers le haut",
-        "Ce n'est pas vraiment nécessaire",
-        "Pour économiser la chaîne restante",
-      ],
-      reponseIndex: 1,
-      explication: "Une chaîne tendue presque à l'horizontale permet à l'ancre de mordre le fond ; trop verticale, elle risque de se déraper.",
-    },
+    questionsInline: [
+      {
+        enonce: "Pourquoi file-t-on une longueur de chaîne bien plus grande que la profondeur de l'eau ?",
+        options: [
+          "Pour décorer le mouillage",
+          "Pour que l'ancre tire à l'horizontale sur le fond plutôt que d'être arrachée vers le haut",
+          "Ce n'est pas vraiment nécessaire",
+          "Pour économiser la chaîne restante",
+        ],
+        reponseIndex: 1,
+        explication: "Une chaîne tendue presque à l'horizontale permet à l'ancre de mordre le fond ; trop verticale, elle risque de se déraper.",
+      },
+      {
+        enonce: "Pourquoi faut-il anticiper la hauteur d'eau à marée basse avant de mouiller ?",
+        options: ["Ce n'est pas utile, seule la marée haute compte", "Pour ne pas se retrouver à sec (échoué)", "Pour choisir la couleur de l'ancre", "Pour économiser de la chaîne"],
+        reponseIndex: 1,
+        explication: "Il faut anticiper la hauteur d'eau à marée basse pour ne pas se retrouver à sec, et prévoir assez de chaîne pour la marée haute.",
+      },
+      {
+        enonce: "Que faut-il vérifier sur la carte avant de choisir l'emplacement du mouillage ?",
+        options: ["Uniquement la couleur de l'eau", "La nature du fond (sable, vase) : certains fonds tiennent mal l'ancre", "Le nombre de bateaux déjà présents", "La météo du lendemain uniquement"],
+        reponseIndex: 1,
+        explication: "Certains fonds (comme la vase) tiennent moins bien l'ancre que d'autres : vérifier la nature du fond sur la carte fait partie des bases d'un mouillage.",
+      },
+    ],
   },
 ];

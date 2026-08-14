@@ -38,12 +38,26 @@ export const level7Lessons: Lesson[] = [
           "Cette règle est une version simplifiée du RIPAM (règle 12). D'autres règles s'appliquent selon les situations (dépassement, navire à moteur...) et une formation encadrée reste nécessaire pour naviguer en autonomie.",
       },
     ],
-    questionInline: {
-      enonce: "Deux voiliers voient leurs routes se croiser. Toi, tu es tribord amure (le vent vient de ton côté tribord). Que fais-tu ?",
-      options: ["Tu t'écartes systématiquement", "Tu es prioritaire, mais tu restes vigilant", "Le plus rapide a toujours priorité", "Il n'existe aucune règle entre voiliers"],
-      reponseIndex: 1,
-      explication: "Tribord amure, tu es prioritaire — mais la priorité n'enlève rien à la vigilance.",
-    },
+    questionsInline: [
+      {
+        enonce: "Deux voiliers voient leurs routes se croiser. Toi, tu es tribord amure (le vent vient de ton côté tribord). Que fais-tu ?",
+        options: ["Tu t'écartes systématiquement", "Tu es prioritaire, mais tu restes vigilant", "Le plus rapide a toujours priorité", "Il n'existe aucune règle entre voiliers"],
+        reponseIndex: 1,
+        explication: "Tribord amure, tu es prioritaire — mais la priorité n'enlève rien à la vigilance.",
+      },
+      {
+        enonce: "Deux voiliers portent la même amure. Lequel est prioritaire ?",
+        options: ["Celui au vent", "Celui sous le vent", "Le plus rapide", "Aucun n'est prioritaire"],
+        reponseIndex: 1,
+        explication: "Si les deux bateaux portent la même amure, celui qui est sous le vent est prioritaire.",
+      },
+      {
+        enonce: "Le bateau non prioritaire doit-il s'écarter au dernier moment ou tôt ?",
+        options: ["Au dernier moment, pour laisser le temps d'évaluer la situation", "Suffisamment tôt pour que la manœuvre soit claire", "Cela n'a pas d'importance", "Seulement si l'autre bateau le demande par VHF"],
+        reponseIndex: 1,
+        explication: "Le bateau non prioritaire doit s'écarter suffisamment tôt pour que la manœuvre soit claire, jamais au dernier moment.",
+      },
+    ],
   },
   {
     id: "l7-voilier-et-moteur",
@@ -81,17 +95,31 @@ export const level7Lessons: Lesson[] = [
           "Ce chapitre simplifie des règles qui comptent de nombreuses exceptions (chenaux étroits, dispositifs de séparation de trafic...). Elles se travaillent en détail lors d'une formation encadrée.",
       },
     ],
-    questionInline: {
-      enonce: "Un voilier navigue moteur allumé et embrayé, voiles hissées. Comment est-il considéré vis-à-vis des règles de priorité ?",
-      options: [
-        "Comme un voilier à la voile, toujours prioritaire",
-        "Comme un bateau à moteur, sans la priorité d'un voilier à la voile",
-        "Comme un navire contraint par son tirant d'eau",
-        "Il n'existe pas de règle dans ce cas",
-      ],
-      reponseIndex: 1,
-      explication: "Dès que le moteur est engagé pour la propulsion, le voilier est traité comme un bateau à moteur.",
-    },
+    questionsInline: [
+      {
+        enonce: "Un voilier navigue moteur allumé et embrayé, voiles hissées. Comment est-il considéré vis-à-vis des règles de priorité ?",
+        options: [
+          "Comme un voilier à la voile, toujours prioritaire",
+          "Comme un bateau à moteur, sans la priorité d'un voilier à la voile",
+          "Comme un navire contraint par son tirant d'eau",
+          "Il n'existe pas de règle dans ce cas",
+        ],
+        reponseIndex: 1,
+        explication: "Dès que le moteur est engagé pour la propulsion, le voilier est traité comme un bateau à moteur.",
+      },
+      {
+        enonce: "Un voilier navigue uniquement à la voile, moteur coupé, face à un bateau à moteur pur. Qui est en général prioritaire ?",
+        options: ["Le bateau à moteur", "Le voilier à la voile", "Le plus gros bateau", "Aucun n'est prioritaire"],
+        reponseIndex: 1,
+        explication: "Un voilier à la voile est en général prioritaire sur un bateau à moteur pur.",
+      },
+      {
+        enonce: "Un cargo est contraint par son tirant d'eau dans un chenal étroit. Que dois-tu faire même s'il est « en tort » en théorie ?",
+        options: ["Lui imposer ta priorité coûte que coûte", "L'éviter, car il ne peut pas manœuvrer librement", "L'ignorer, la règle voile/moteur suffit toujours", "Couper sa route pour aller plus vite"],
+        reponseIndex: 1,
+        explication: "Les gros navires contraints par leur tirant d'eau ou leur manœuvrabilité doivent être évités même s'ils sont « en tort » en théorie.",
+      },
+    ],
   },
   {
     id: "l7-feux-de-navigation",
@@ -134,11 +162,25 @@ export const level7Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "De nuit, tu aperçois le feu rouge d'un autre bateau qui te fait face. De quel côté ce bateau te présente-t-il ?",
-      options: ["Son côté tribord", "Son côté bâbord", "Son arrière", "Il n'y a pas moyen de savoir"],
-      reponseIndex: 1,
-      explication: "Le feu rouge signale le côté bâbord : c'est ce côté du bateau qui te fait face.",
-    },
+    questionsInline: [
+      {
+        enonce: "De nuit, tu aperçois le feu rouge d'un autre bateau qui te fait face. De quel côté ce bateau te présente-t-il ?",
+        options: ["Son côté tribord", "Son côté bâbord", "Son arrière", "Il n'y a pas moyen de savoir"],
+        reponseIndex: 1,
+        explication: "Le feu rouge signale le côté bâbord : c'est ce côté du bateau qui te fait face.",
+      },
+      {
+        enonce: "Quel feu est visible à l'arrière d'un bateau, quelle que soit sa route ?",
+        options: ["Le feu vert", "Le feu rouge", "Le feu blanc de poupe", "Le feu de tête de mât uniquement"],
+        reponseIndex: 2,
+        explication: "Le feu blanc de poupe est visible à l'arrière du bateau.",
+      },
+      {
+        enonce: "Voir un seul feu de couleur suffit-il à avoir toute l'information sur un bateau croisé de nuit ?",
+        options: ["Oui, la couleur suffit toujours", "Non, il faut aussi observer s'il se rapproche et sous quel angle", "Oui, mais seulement avec des jumelles", "Non, il faut d'abord l'appeler par VHF"],
+        reponseIndex: 1,
+        explication: "Voir un seul feu de couleur ne donne pas toute l'information : il faut aussi observer si le bateau se rapproche et sous quel angle.",
+      },
+    ],
   },
 ];

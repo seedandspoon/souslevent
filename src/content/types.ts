@@ -25,6 +25,13 @@ export interface Module {
   titre: string;
 }
 
+export interface QuestionInline {
+  enonce: string;
+  options: string[];
+  reponseIndex: number;
+  explication: string;
+}
+
 export interface Lesson {
   id: string;
   moduleId: string;
@@ -34,12 +41,9 @@ export interface Lesson {
   resume: string;
   blocs: BlockType[];
   conceptIds: string[];
-  questionInline?: {
-    enonce: string;
-    options: string[];
-    reponseIndex: number;
-    explication: string;
-  };
+  // 3 questions couvrant la leçon, affichées une à une dans un ordre
+  // mélangé à chaque passage (voir shuffle() dans la page de leçon).
+  questionsInline?: QuestionInline[];
 }
 
 export interface Concept {

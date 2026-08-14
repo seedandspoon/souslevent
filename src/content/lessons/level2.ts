@@ -29,12 +29,26 @@ export const level2Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Quel bord de la grand-voile longe le mât ?",
-      options: ["La bordure", "La chute", "Le guindant", "Le point d'écoute"],
-      reponseIndex: 2,
-      explication: "Le guindant est le bord avant de la voile, fixé le long du mât.",
-    },
+    questionsInline: [
+      {
+        enonce: "Quel bord de la grand-voile longe le mât ?",
+        options: ["La bordure", "La chute", "Le guindant", "Le point d'écoute"],
+        reponseIndex: 2,
+        explication: "Le guindant est le bord avant de la voile, fixé le long du mât.",
+      },
+      {
+        enonce: "Comment appelle-t-on le bord arrière, libre, de la grand-voile ?",
+        options: ["Le guindant", "La bordure", "La chute", "Le point d'écoute"],
+        reponseIndex: 2,
+        explication: "La chute est le bord arrière, libre, de la grand-voile.",
+      },
+      {
+        enonce: "À quoi servent les lattes glissées dans la grand-voile ?",
+        options: ["À renforcer toute la voile de façon homogène", "À soutenir la chute et l'empêcher de battre dans le vent", "À hisser la voile plus vite", "À indiquer le sens du vent"],
+        reponseIndex: 1,
+        explication: "Les lattes soutiennent surtout la chute et l'empêchent de battre dans le vent — elles ne renforcent pas toute la voile.",
+      },
+    ],
   },
   {
     id: "l2-ecoutes-et-drisses",
@@ -59,12 +73,26 @@ export const level2Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Tu veux hisser la grand-voile avant de partir. Quel cordage utilises-tu ?",
-      options: ["L'écoute de grand-voile", "La drisse de grand-voile", "La drisse de génois", "Le hale-bas"],
-      reponseIndex: 1,
-      explication: "Hisser une voile se fait toujours avec sa drisse.",
-    },
+    questionsInline: [
+      {
+        enonce: "Tu veux hisser la grand-voile avant de partir. Quel cordage utilises-tu ?",
+        options: ["L'écoute de grand-voile", "La drisse de grand-voile", "La drisse de génois", "Le hale-bas"],
+        reponseIndex: 1,
+        explication: "Hisser une voile se fait toujours avec sa drisse.",
+      },
+      {
+        enonce: "À quoi sert l'écoute ?",
+        options: ["À hisser la voile", "À régler l'angle de la voile par rapport au vent", "À mesurer la force du vent", "À immobiliser le bateau"],
+        reponseIndex: 1,
+        explication: "L'écoute règle l'angle de la voile une fois hissée : on la borde ou on la choque.",
+      },
+      {
+        enonce: "Pourquoi évite-t-on de dire « tire la corde » à bord ?",
+        options: ["Parce qu'il n'y a pas de cordages à bord", "Parce que chaque cordage a un nom précis, essentiel pour une consigne claire et rapide", "Parce que « corde » est un gros mot en navigation", "Parce que ça abîme le cordage"],
+        reponseIndex: 1,
+        explication: "Chaque cordage a un nom précis (écoute, drisse...) : nommer précisément permet de donner une consigne claire et rapide.",
+      },
+    ],
   },
   {
     id: "l2-le-winch",
@@ -94,17 +122,31 @@ export const level2Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Dans quel sens enroule-t-on un cordage autour d'un winch ?",
-      options: [
-        "Dans le sens des aiguilles d'une montre",
-        "Dans le sens inverse des aiguilles d'une montre",
-        "Cela dépend du bateau",
-        "Peu importe, le winch bloque dans les deux sens",
-      ],
-      reponseIndex: 0,
-      explication: "Les winchs sont conçus pour bloquer le cordage lorsqu'il est enroulé dans le sens des aiguilles d'une montre.",
-    },
+    questionsInline: [
+      {
+        enonce: "Dans quel sens enroule-t-on un cordage autour d'un winch ?",
+        options: [
+          "Dans le sens des aiguilles d'une montre",
+          "Dans le sens inverse des aiguilles d'une montre",
+          "Cela dépend du bateau",
+          "Peu importe, le winch bloque dans les deux sens",
+        ],
+        reponseIndex: 0,
+        explication: "Les winchs sont conçus pour bloquer le cordage lorsqu'il est enroulé dans le sens des aiguilles d'une montre.",
+      },
+      {
+        enonce: "Pourquoi ne faut-il jamais enrouler un cordage autour de sa main pour tirer plus fort ?",
+        options: ["Cela n'a pas d'importance", "Si la charge augmente d'un coup, il faut toujours pouvoir lâcher — ajoute un tour de winch plutôt", "Cela use le cordage plus vite", "Cela ralentit la manœuvre"],
+        reponseIndex: 1,
+        explication: "Un tour de cordage autour de la main empêche de lâcher en cas de charge soudaine : ajoute un tour de winch plutôt qu'un tour de main.",
+      },
+      {
+        enonce: "Que risque-t-on en approchant les doigts d'un winch sous tension ?",
+        options: ["Rien de particulier", "Un coincement réel des doigts", "Une décharge électrique", "De faire déraper le cordage"],
+        reponseIndex: 1,
+        explication: "Approcher les doigts d'un winch sous tension présente un risque réel de coincement.",
+      },
+    ],
   },
   {
     id: "l2-barre-et-safran",
@@ -134,11 +176,25 @@ export const level2Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Tu barres avec une barre franche. Tu la pousses vers bâbord. De quel côté le bateau tourne-t-il ?",
-      options: ["Vers bâbord", "Vers tribord", "Il ne tourne pas", "Cela dépend du vent"],
-      reponseIndex: 1,
-      explication: "Avec une barre franche, le mouvement est inversé : pousser vers bâbord fait tourner le bateau vers tribord.",
-    },
+    questionsInline: [
+      {
+        enonce: "Tu barres avec une barre franche. Tu la pousses vers bâbord. De quel côté le bateau tourne-t-il ?",
+        options: ["Vers bâbord", "Vers tribord", "Il ne tourne pas", "Cela dépend du vent"],
+        reponseIndex: 1,
+        explication: "Avec une barre franche, le mouvement est inversé : pousser vers bâbord fait tourner le bateau vers tribord.",
+      },
+      {
+        enonce: "Qu'est-ce qui fait réellement tourner le bateau ?",
+        options: ["La barre elle-même", "Le safran, orienté par la barre, qui dévie l'écoulement de l'eau", "Le vent dans les voiles uniquement", "Le mât"],
+        reponseIndex: 1,
+        explication: "Le safran est la surface immergée qui, orientée, dévie l'écoulement de l'eau et fait tourner le bateau ; la barre ne fait que le commander.",
+      },
+      {
+        enonce: "Avec une roue, tourner vers tribord fait tourner le bateau...",
+        options: ["Vers bâbord (sens inversé)", "Vers tribord (sens direct)", "Le bateau ne tourne pas avec une roue", "Cela dépend du vent"],
+        reponseIndex: 1,
+        explication: "Avec une roue, le sens est direct : tourner vers tribord fait tourner le bateau vers tribord.",
+      },
+    ],
   },
 ];

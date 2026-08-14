@@ -80,6 +80,9 @@ export const concepts: Concept[] = [
   { id: "c-derive-navigation", titre: "La dérive (cap et route)", skillTag: "navigation", glossaryTermId: "g-derive" },
   { id: "c-balisage-laterale", titre: "Le balisage latéral", skillTag: "navigation", glossaryTermId: "g-balisage-laterale" },
   { id: "c-maree-courant", titre: "Marée et courant", skillTag: "navigation", glossaryTermId: "g-maree-courant" },
+  { id: "c-marnage-coefficient", titre: "Marnage et coefficient de marée", skillTag: "navigation", glossaryTermId: "g-marnage" },
+  { id: "c-douziemes", titre: "La règle des douzièmes", skillTag: "navigation", glossaryTermId: "g-regle-douziemes" },
+  { id: "c-courant-maree", titre: "Les courants de marée", skillTag: "navigation", glossaryTermId: "g-etale" },
 
   // Niveau 5 — Météo
   { id: "c-beaufort", titre: "L'échelle de Beaufort", skillTag: "meteo", glossaryTermId: "g-beaufort" },

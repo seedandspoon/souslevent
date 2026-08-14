@@ -74,17 +74,31 @@ export const level3Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Que dois-tu faire avant de pouvoir choquer l'écoute du génois ?",
-      options: [
-        "Rien, il suffit de tirer dessus",
-        "Ouvrir le taquet (ou coinceur) qui la bloque",
-        "Attendre que le bateau soit stabilisé sur la nouvelle amure",
-        "Border l'écoute de grand-voile",
-      ],
-      reponseIndex: 1,
-      explication: "L'écoute est bloquée dans son taquet tant qu'elle est bordée : il faut l'ouvrir avant de pouvoir la choquer.",
-    },
+    questionsInline: [
+      {
+        enonce: "Que dois-tu faire avant de pouvoir choquer l'écoute du génois ?",
+        options: [
+          "Rien, il suffit de tirer dessus",
+          "Ouvrir le taquet (ou coinceur) qui la bloque",
+          "Attendre que le bateau soit stabilisé sur la nouvelle amure",
+          "Border l'écoute de grand-voile",
+        ],
+        reponseIndex: 1,
+        explication: "L'écoute est bloquée dans son taquet tant qu'elle est bordée : il faut l'ouvrir avant de pouvoir la choquer.",
+      },
+      {
+        enonce: "Quel mot déclenche réellement le début du geste, une fois la confirmation reçue ?",
+        options: ["« Paré ! »", "« Je vire ! »", "« Attends ! »", "« Prêt ? »"],
+        reponseIndex: 1,
+        explication: "« Je vire ! » est le mot qui déclenche le geste, prononcé seulement après avoir reçu la confirmation « Paré ! ».",
+      },
+      {
+        enonce: "Une fois la nouvelle écoute bordée à la main, que fais-tu si tu n'arrives plus à la border davantage ?",
+        options: ["Tu tires plus fort à la main, jamais de winch", "Tu fais des tours de winch dans le sens des aiguilles d'une montre puis tu termines à la manivelle", "Tu abandonnes le réglage", "Tu ouvres le taquet de l'autre écoute"],
+        reponseIndex: 1,
+        explication: "Une fois la limite de la force à la main atteinte, on passe au winch : tours dans le sens des aiguilles d'une montre puis manivelle.",
+      },
+    ],
   },
   {
     id: "l3-empannage",
@@ -156,17 +170,31 @@ export const level3Lessons: Lesson[] = [
           "Avant d'annoncer « Paré à empanner ? », jette un œil derrière toi : c'est le seul moment de la manœuvre où regarder où va le bateau ne suffit pas, il faut aussi regarder où est la bôme.",
       },
     ],
-    questionInline: {
-      enonce: "Pourquoi l'empannage demande-t-il plus de vigilance que le virement de bord ?",
-      options: [
-        "Il est plus lent à exécuter",
-        "La bôme peut traverser rapidement et frapper quelqu'un",
-        "Les voiles ne bougent pas pendant la manœuvre",
-        "Il est interdit par vent fort",
-      ],
-      reponseIndex: 1,
-      explication: "En passant par le vent arrière, la bôme peut traverser vite et fort si elle n'a pas été bordée au préalable.",
-    },
+    questionsInline: [
+      {
+        enonce: "Pourquoi l'empannage demande-t-il plus de vigilance que le virement de bord ?",
+        options: [
+          "Il est plus lent à exécuter",
+          "La bôme peut traverser rapidement et frapper quelqu'un",
+          "Les voiles ne bougent pas pendant la manœuvre",
+          "Il est interdit par vent fort",
+        ],
+        reponseIndex: 1,
+        explication: "En passant par le vent arrière, la bôme peut traverser vite et fort si elle n'a pas été bordée au préalable.",
+      },
+      {
+        enonce: "Quel geste, fait avant même de toucher la barre, limite la violence du passage de la bôme ?",
+        options: ["Choquer complètement la grand-voile", "Border la grand-voile vers l'axe du bateau", "Affaler le génois", "Accélérer au moteur"],
+        reponseIndex: 1,
+        explication: "Border la grand-voile vers l'axe avant de tourner limite la course que la bôme va prendre en traversant.",
+      },
+      {
+        enonce: "Par vent fort, est-il parfois plus prudent de virer de bord plutôt que d'empanner ?",
+        options: ["Non, l'empannage est toujours plus sûr", "Oui, même si le trajet est plus long", "Non, virer est interdit par vent fort", "Oui, mais seulement au moteur"],
+        reponseIndex: 1,
+        explication: "Par vent fort, virer de bord (en passant par le lit du vent) est souvent plus sûr qu'empanner, même si le trajet est plus long.",
+      },
+    ],
   },
   {
     id: "l3-reduire-la-toile",
@@ -240,17 +268,31 @@ export const level3Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "À quel moment est-il préférable de prendre un ris ?",
-      options: [
-        "Seulement quand il devient déjà difficile de barrer",
-        "Dès qu'on sent que le bateau gîte plus que ce qui est confortable",
-        "Uniquement au port, jamais en mer",
-        "Seulement si tout l'équipage vote pour",
-      ],
-      reponseIndex: 1,
-      explication: "Il vaut mieux réduire la toile tôt, quand la manœuvre est encore facile, plutôt que d'attendre que les conditions se dégradent.",
-    },
+    questionsInline: [
+      {
+        enonce: "À quel moment est-il préférable de prendre un ris ?",
+        options: [
+          "Seulement quand il devient déjà difficile de barrer",
+          "Dès qu'on sent que le bateau gîte plus que ce qui est confortable",
+          "Uniquement au port, jamais en mer",
+          "Seulement si tout l'équipage vote pour",
+        ],
+        reponseIndex: 1,
+        explication: "Il vaut mieux réduire la toile tôt, quand la manœuvre est encore facile, plutôt que d'attendre que les conditions se dégradent.",
+      },
+      {
+        enonce: "Pourquoi choque-t-on complètement l'écoute de grand-voile avant de choquer la drisse ?",
+        options: ["Ce n'est pas nécessaire", "Sinon la voile porte encore et la drisse reste plaquée par le vent, elle ne descend pas", "Pour aller plus vite", "Pour éviter d'user la drisse"],
+        reponseIndex: 1,
+        explication: "Si la voile porte encore, la drisse reste plaquée par le vent et ne descend pas : il faut d'abord choquer complètement l'écoute.",
+      },
+      {
+        enonce: "À quoi servent les garcettes une fois le ris pris ?",
+        options: ["À reprendre l'effort du vent sur la voile", "À ranger l'excédent de tissu, nouées lâche", "À hisser la voile plus haut", "À remplacer l'écoute"],
+        reponseIndex: 1,
+        explication: "Les garcettes ne servent qu'à ranger le tissu excédentaire, nouées lâche — les serrer fort comme si elles tenaient l'effort peut déchirer la voile.",
+      },
+    ],
   },
   {
     id: "l3-communication-equipage",
@@ -288,16 +330,30 @@ export const level3Lessons: Lesson[] = [
         contenu: "En cas de doute ou d'imprévu, un équipier peut toujours dire « Attends ! » pour stopper la manœuvre avant l'action.",
       },
     ],
-    questionInline: {
-      enonce: "Le barreur annonce « Paré à virer ? ». Que doit faire l'équipier avant que le virement commence ?",
-      options: [
-        "Rien, le barreur vire directement",
-        "Confirmer qu'il est prêt en répondant « Paré ! »",
-        "Choquer immédiatement toutes les écoutes",
-        "Quitter le cockpit",
-      ],
-      reponseIndex: 1,
-      explication: "Le barreur attend la confirmation de chaque équipier concerné avant de déclencher la manœuvre.",
-    },
+    questionsInline: [
+      {
+        enonce: "Le barreur annonce « Paré à virer ? ». Que doit faire l'équipier avant que le virement commence ?",
+        options: [
+          "Rien, le barreur vire directement",
+          "Confirmer qu'il est prêt en répondant « Paré ! »",
+          "Choquer immédiatement toutes les écoutes",
+          "Quitter le cockpit",
+        ],
+        reponseIndex: 1,
+        explication: "Le barreur attend la confirmation de chaque équipier concerné avant de déclencher la manœuvre.",
+      },
+      {
+        enonce: "Que peut dire un équipier pour stopper une manœuvre avant l'action, en cas de doute ?",
+        options: ["« Paré ! »", "« Attends ! »", "« Je vire ! »", "Rien, il est trop tard"],
+        reponseIndex: 1,
+        explication: "« Attends ! » permet à tout équipier de stopper la manœuvre avant que l'action ne soit déclenchée.",
+      },
+      {
+        enonce: "Quel est le cycle standard d'une manœuvre annoncée à bord ?",
+        options: ["Action → confirmation → annonce", "Annonce → confirmation → action", "Confirmation → action → annonce", "Il n'y a pas de cycle standard"],
+        reponseIndex: 1,
+        explication: "Le cycle est toujours annonce → confirmation → action : le barreur annonce, l'équipage confirme, puis le barreur déclenche l'action.",
+      },
+    ],
   },
 ];

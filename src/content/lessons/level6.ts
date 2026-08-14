@@ -43,17 +43,31 @@ export const level6Lessons: Lesson[] = [
           "Les obligations d'équipement et de port du gilet varient selon la réglementation en vigueur et les conditions. Ce chapitre donne des repères généraux ; suis toujours les consignes du skipper et la réglementation applicable.",
       },
     ],
-    questionInline: {
-      enonce: "Tu montes pour la première fois sur un voilier que tu ne connais pas. Quel est le bon réflexe avant de partir ?",
-      options: [
-        "Attendre d'être en mer pour repérer le matériel de sécurité",
-        "Demander au skipper où se trouve l'équipement de sécurité et comment il s'utilise",
-        "Ne rien demander, c'est au skipper de s'en occuper seul",
-        "Vérifier uniquement la météo",
-      ],
-      reponseIndex: 1,
-      explication: "Repérer le matériel de sécurité avant de partir, pas en cas d'urgence, fait partie des bons réflexes d'équipier.",
-    },
+    questionsInline: [
+      {
+        enonce: "Tu montes pour la première fois sur un voilier que tu ne connais pas. Quel est le bon réflexe avant de partir ?",
+        options: [
+          "Attendre d'être en mer pour repérer le matériel de sécurité",
+          "Demander au skipper où se trouve l'équipement de sécurité et comment il s'utilise",
+          "Ne rien demander, c'est au skipper de s'en occuper seul",
+          "Vérifier uniquement la météo",
+        ],
+        reponseIndex: 1,
+        explication: "Repérer le matériel de sécurité avant de partir, pas en cas d'urgence, fait partie des bons réflexes d'équipier.",
+      },
+      {
+        enonce: "Quel équipement sert à rester attaché au bateau par mauvais temps ou de nuit ?",
+        options: ["Le gilet de sauvetage seul", "Le harnais et sa longe", "L'extincteur", "La trousse de secours"],
+        reponseIndex: 1,
+        explication: "Le harnais et sa longe permettent de rester attaché au bateau, utilisés par mauvais temps ou de nuit.",
+      },
+      {
+        enonce: "Le port du gilet est-il optionnel dès que la météo semble calme ?",
+        options: ["Oui, toujours", "Non, les consignes du bord priment", "Oui, sauf la nuit", "Cela dépend uniquement de chaque équipier"],
+        reponseIndex: 1,
+        explication: "Penser que le port du gilet est optionnel dès que la météo semble calme est une erreur : les consignes du bord priment.",
+      },
+    ],
   },
   {
     id: "l6-vent-qui-forcit",
@@ -92,12 +106,26 @@ export const level6Lessons: Lesson[] = [
           "En cas de doute, il vaut mieux réduire la toile « un cran trop tôt » que trop tard : on peut toujours renvoyer de la toile si le vent faiblit.",
       },
     ],
-    questionInline: {
-      enonce: "Tu navigues au près. Le vent forcit rapidement et le bateau gîte de plus en plus. Que fais-tu ?",
-      options: ["Tu attends de voir si ça se calme", "Tu prends un ris pour réduire la toile", "Tu empannes pour aller plus vite", "Tu affales toutes les voiles immédiatement"],
-      reponseIndex: 1,
-      explication: "Réduire la toile (prendre un ris) garde le bateau plus stable et contrôlable, sans perdre toute propulsion.",
-    },
+    questionsInline: [
+      {
+        enonce: "Tu navigues au près. Le vent forcit rapidement et le bateau gîte de plus en plus. Que fais-tu ?",
+        options: ["Tu attends de voir si ça se calme", "Tu prends un ris pour réduire la toile", "Tu empannes pour aller plus vite", "Tu affales toutes les voiles immédiatement"],
+        reponseIndex: 1,
+        explication: "Réduire la toile (prendre un ris) garde le bateau plus stable et contrôlable, sans perdre toute propulsion.",
+      },
+      {
+        enonce: "Quel est souvent le premier signal visible d'un vent qui forcit ?",
+        options: ["Une gîte croissante", "Une baisse de la vitesse du bateau", "Un ciel qui s'éclaircit", "Le silence du vent dans les voiles"],
+        reponseIndex: 0,
+        explication: "Une gîte croissante est souvent le premier signal d'un vent qui forcit, avant même que le bateau devienne difficile à contrôler.",
+      },
+      {
+        enonce: "Vaut-il mieux réduire la toile trop tôt ou trop tard en cas de doute ?",
+        options: ["Trop tard, pour ne pas perdre de vitesse inutilement", "Trop tôt, on peut toujours renvoyer de la toile si le vent faiblit", "Cela n'a pas d'importance", "Il ne faut jamais réduire la toile par précaution"],
+        reponseIndex: 1,
+        explication: "En cas de doute, mieux vaut réduire la toile « un cran trop tôt » que trop tard : on peut toujours renvoyer de la toile si le vent faiblit.",
+      },
+    ],
   },
   {
     id: "l6-homme-a-la-mer",
@@ -141,17 +169,31 @@ export const level6Lessons: Lesson[] = [
           "Cette fiche donne les grands principes. La manœuvre précise de retour vers la personne (sous voile ou au moteur) se pratique et s'affine en formation encadrée.",
       },
     ],
-    questionInline: {
-      enonce: "Une personne tombe à l'eau. Quelle est la toute première chose à faire ?",
-      options: [
-        "Foncer immédiatement vers le moteur",
-        "Crier « Homme à la mer ! » et désigner quelqu'un pour ne jamais la quitter des yeux",
-        "Attendre qu'elle nage vers le bateau",
-        "Affaler toutes les voiles avant tout",
-      ],
-      reponseIndex: 1,
-      explication: "Alerter l'équipage et ne jamais quitter la personne des yeux est le tout premier réflexe, avant même de manœuvrer.",
-    },
+    questionsInline: [
+      {
+        enonce: "Une personne tombe à l'eau. Quelle est la toute première chose à faire ?",
+        options: [
+          "Foncer immédiatement vers le moteur",
+          "Crier « Homme à la mer ! » et désigner quelqu'un pour ne jamais la quitter des yeux",
+          "Attendre qu'elle nage vers le bateau",
+          "Affaler toutes les voiles avant tout",
+        ],
+        reponseIndex: 1,
+        explication: "Alerter l'équipage et ne jamais quitter la personne des yeux est le tout premier réflexe, avant même de manœuvrer.",
+      },
+      {
+        enonce: "Pourquoi ne faut-il jamais quitter des yeux la personne tombée à l'eau, même quelques secondes ?",
+        options: ["Ce n'est pas si important si le GPS est déclenché", "Elle peut devenir très difficile à repérer ensuite", "C'est une simple habitude sans réel enjeu", "Seul le barreur doit la regarder"],
+        reponseIndex: 1,
+        explication: "Une personne à l'eau peut devenir très difficile à repérer si on la quitte des yeux, même quelques secondes.",
+      },
+      {
+        enonce: "Un équipier veut sauter à l'eau pour porter secours sans gilet ni longe. Que risque-t-on ?",
+        options: ["Rien, c'est le geste attendu", "Créer un second homme à la mer", "Cela accélère toujours le sauvetage", "Aucun risque si l'équipier sait nager"],
+        reponseIndex: 1,
+        explication: "Sauter à l'eau sans gilet ni longe crée un second homme à la mer, ce qui aggrave la situation au lieu de la résoudre.",
+      },
+    ],
   },
   {
     id: "l6-alerte-vhf",
@@ -200,12 +242,26 @@ export const level6Lessons: Lesson[] = [
           "Cette fiche donne les repères essentiels. La procédure complète et l'usage de la VHF se pratiquent en formation encadrée ; en cas de doute réel en mer, il vaut toujours mieux alerter que d'hésiter.",
       },
     ],
-    questionInline: {
-      enonce:
-        "Le moteur tombe en panne alors que le bateau dérive doucement vers des rochers, sans urgence vitale immédiate. Quel type d'appel radio est le plus adapté ?",
-      options: ["Mayday", "Pan-pan", "Sécurité", "Aucun appel n'est nécessaire"],
-      reponseIndex: 1,
-      explication: "Il n'y a pas de danger immédiat pour la vie : c'est une situation urgente qui relève d'un Pan-pan plutôt que d'un Mayday.",
-    },
+    questionsInline: [
+      {
+        enonce:
+          "Le moteur tombe en panne alors que le bateau dérive doucement vers des rochers, sans urgence vitale immédiate. Quel type d'appel radio est le plus adapté ?",
+        options: ["Mayday", "Pan-pan", "Sécurité", "Aucun appel n'est nécessaire"],
+        reponseIndex: 1,
+        explication: "Il n'y a pas de danger immédiat pour la vie : c'est une situation urgente qui relève d'un Pan-pan plutôt que d'un Mayday.",
+      },
+      {
+        enonce: "Quel canal VHF est le canal international de veille et de détresse ?",
+        options: ["Canal 6", "Canal 16", "Canal 22", "Canal 9"],
+        reponseIndex: 1,
+        explication: "Le canal 16 est le canal international de veille et de détresse.",
+      },
+      {
+        enonce: "Dans un appel Mayday, quelles informations doit-on donner après le nom du bateau ?",
+        options: ["Uniquement le nombre de personnes à bord", "La position, la nature de la détresse, l'assistance demandée et le nombre de personnes à bord", "Seulement la météo du moment", "Le nom du port de départ"],
+        reponseIndex: 1,
+        explication: "Un appel Mayday donne, dans l'ordre, le nom du bateau, la position, la nature de la détresse et l'assistance demandée, puis le nombre de personnes à bord.",
+      },
+    ],
   },
 ];

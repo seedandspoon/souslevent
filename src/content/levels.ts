@@ -65,6 +65,7 @@ export const modules: Module[] = [
   { id: "module-voiles-1", levelId: "niveau-voiles", ordre: 1, titre: "Le réglage de voile" },
   { id: "module-3-1", levelId: "niveau-3", ordre: 1, titre: "Virer, empanner, réduire la toile" },
   { id: "module-4-1", levelId: "niveau-4", ordre: 1, titre: "Cartes, caps et balisage" },
+  { id: "module-4-2", levelId: "niveau-4", ordre: 2, titre: "La marée, comme en Bretagne" },
   { id: "module-5-1", levelId: "niveau-5", ordre: 1, titre: "Vent, ciel et prévisions" },
   { id: "module-6-1", levelId: "niveau-6", ordre: 1, titre: "Les bons réflexes" },
   { id: "module-7-1", levelId: "niveau-7", ordre: 1, titre: "Priorités et feux de navigation" },

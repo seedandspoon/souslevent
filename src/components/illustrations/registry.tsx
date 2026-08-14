@@ -7,6 +7,7 @@ import { SailsOverview, MainsailParts, SheetHalyard, WinchDiagram, TillerWheel, 
 import { KnotFigureEight, KnotBowline, KnotHalfHitch, KnotRoundTurn, KnotCleat } from "./KnotDiagrams";
 import { EmpannageBoomSweep, VirementGeometrie, PriseDeRisDiagram } from "./ManeuverDiagrams";
 import { BuoyageLateralDiagram, CapRouteDiagram, MouillageDiagram, FeuxNavigationDiagram } from "./NavigationDiagrams";
+import { MarnageCoefficientDiagram, DouziemesBarChart, CourantMareeDiagram } from "./TideDiagrams";
 
 const registry: Record<string, ComponentType> = {
   "boat-parts": () => <BoatSide showLabels />,
@@ -22,6 +23,9 @@ const registry: Record<string, ComponentType> = {
   "cap-route": CapRouteDiagram,
   "mouillage-schema": MouillageDiagram,
   "feux-navigation": FeuxNavigationDiagram,
+  "marnage-coefficient": MarnageCoefficientDiagram,
+  "regle-douziemes": DouziemesBarChart,
+  "courant-maree": CourantMareeDiagram,
   "points-of-sail-wheel": PointsOfSailWheel,
   "sails-overview": SailsOverview,
   "mainsail-parts": MainsailParts,

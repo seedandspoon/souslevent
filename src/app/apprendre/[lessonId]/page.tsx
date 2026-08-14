@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { QuestionInline } from "@/content/types";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -17,12 +18,35 @@ import { LESSON_EXPERIENCE_LINKS } from "@/lib/experienceLinks";
 import { db } from "@/lib/db";
 import { useLiveQuery } from "dexie-react-hooks";
 
+function shuffle<T>(items: T[]): T[] {
+  const copie = [...items];
+  for (let i = copie.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copie[i], copie[j]] = [copie[j], copie[i]];
+  }
+  return copie;
+}
+
 export default function LessonPage() {
   const params = useParams<{ lessonId: string }>();
   const router = useRouter();
   const lesson = getLesson(params.lessonId);
   const dejaTerminee = useIsLessonComplete(params.lessonId ?? "");
 
+  const questions: QuestionInline[] = lesson?.questionsInline ?? [];
+  // Ordre identique au premier rendu serveur et client (pas de Math.random ici,
+  // sous peine de désaccord d'hydratation) : le mélange n'a lieu qu'après le
+  // montage, côté client uniquement.
+  const [ordre, setOrdre] = useState(() => questions.map((_, i) => i));
+  useEffect(() => {
+    // Mélange volontairement différé au montage client (jamais pendant le
+    // rendu, serveur ou client) : c'est la seule source de hasard de la
+    // page, donc la seule à devoir être isolée de l'hydratation.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- randomisation intentionnelle, uniquement côté client
+    setOrdre(shuffle(questions.map((_, i) => i)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lesson?.id]);
+  const [qPos, setQPos] = useState(0);
   const [reponseIndex, setReponseIndex] = useState<number | null>(null);
   const [termine, setTermine] = useState(false);
   const completions = useLiveQuery(() => db.lessonCompletions.toArray(), [], []) ?? [];
@@ -32,14 +56,24 @@ export default function LessonPage() {
   const completedIds = completions.map((c) => c.lessonId);
   const prochaine = getNextLesson([...completedIds, lesson.id]);
 
+  const question = questions.length > 0 ? questions[ordre[qPos]] : null;
+  const derniereQuestion = qPos === questions.length - 1;
   const aRepondu = reponseIndex !== null;
-  const correct = lesson.questionInline ? reponseIndex === lesson.questionInline.reponseIndex : false;
+  const quizTermine = questions.length === 0 || (derniereQuestion && aRepondu);
+  const correct = question ? reponseIndex === question.reponseIndex : false;
 
   async function repondre(index: number) {
-    if (aRepondu || !lesson?.questionInline) return;
+    if (aRepondu || !question) return;
     setReponseIndex(index);
-    const bonneReponse = index === lesson.questionInline.reponseIndex;
-    await enregistrerReponse(lesson.conceptIds, bonneReponse);
+    const bonneReponse = index === question.reponseIndex;
+    await enregistrerReponse(lesson!.conceptIds, bonneReponse);
+  }
+
+  function questionSuivante() {
+    if (!derniereQuestion) {
+      setQPos((p) => p + 1);
+      setReponseIndex(null);
+    }
   }
 
   async function terminerLecon() {
@@ -79,15 +113,20 @@ export default function LessonPage() {
           <BlockRenderer key={i} bloc={bloc} />
         ))}
 
-        {lesson.questionInline && (
+        {question && (
           <Card className="p-5">
-            <p className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-3">
-              Vérifie ta compréhension
-            </p>
-            <p className="text-[15px] font-medium text-ink mb-4">{lesson.questionInline.enonce}</p>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs font-semibold text-brand-500 uppercase tracking-wide">
+                Vérifie ta compréhension
+              </p>
+              <p className="text-xs font-medium text-ink-soft">
+                {qPos + 1} / {questions.length}
+              </p>
+            </div>
+            <p className="text-[15px] font-medium text-ink mb-4">{question.enonce}</p>
             <div className="flex flex-col gap-2">
-              {lesson.questionInline.options.map((option, i) => {
-                const estBonneReponse = i === lesson.questionInline!.reponseIndex;
+              {question.options.map((option, i) => {
+                const estBonneReponse = i === question.reponseIndex;
                 const estSelectionnee = i === reponseIndex;
                 return (
                   <button
@@ -110,8 +149,13 @@ export default function LessonPage() {
             {aRepondu && (
               <div className={clsx("mt-4 rounded-xl p-3.5 text-sm leading-relaxed", correct ? "bg-success-soft text-ink" : "bg-danger-soft text-ink")}>
                 <p className="font-semibold mb-1">{correct ? "Bonne réponse !" : "Pas tout à fait."}</p>
-                {lesson.questionInline.explication}
+                {question.explication}
               </div>
+            )}
+            {aRepondu && !derniereQuestion && (
+              <Button className="w-full mt-4" onClick={questionSuivante}>
+                Question suivante
+              </Button>
             )}
           </Card>
         )}
@@ -132,7 +176,7 @@ export default function LessonPage() {
         )}
 
         {!termine ? (
-          <Button size="lg" className="w-full" onClick={terminerLecon} disabled={lesson.questionInline ? !aRepondu : false}>
+          <Button size="lg" className="w-full" onClick={terminerLecon} disabled={!quizTermine}>
             Terminer la leçon
           </Button>
         ) : (

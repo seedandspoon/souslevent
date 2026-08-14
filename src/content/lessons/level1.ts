@@ -30,12 +30,26 @@ export const level1Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Comment appelle-t-on l'arrière du bateau ?",
-      options: ["La proue", "La poupe", "L'étrave", "Le cockpit"],
-      reponseIndex: 1,
-      explication: "La poupe est l'arrière du bateau, à l'opposé de la proue.",
-    },
+    questionsInline: [
+      {
+        enonce: "Comment appelle-t-on l'arrière du bateau ?",
+        options: ["La proue", "La poupe", "L'étrave", "Le cockpit"],
+        reponseIndex: 1,
+        explication: "La poupe est l'arrière du bateau, à l'opposé de la proue.",
+      },
+      {
+        enonce: "Comment appelle-t-on l'avant du bateau ?",
+        options: ["La poupe", "La proue", "Le cockpit", "La coque"],
+        reponseIndex: 1,
+        explication: "La proue est l'avant du bateau.",
+      },
+      {
+        enonce: "Quel est le nom du tube horizontal qui tient le bas de la grand-voile ?",
+        options: ["Le mât", "La bôme", "Le pont", "Le cockpit"],
+        reponseIndex: 1,
+        explication: "La bôme est le tube horizontal qui tient le bas de la grand-voile ; le mât la soutient verticalement.",
+      },
+    ],
   },
   {
     id: "l1-vocabulaire-essentiel",
@@ -66,12 +80,31 @@ export const level1Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Le bateau penche fortement sous l'effet du vent. Comment appelle-t-on ce phénomène ?",
-      options: ["La dérive", "La gîte", "Le ris", "L'abattée"],
-      reponseIndex: 1,
-      explication: "La gîte est l'inclinaison du bateau causée par la pression du vent dans les voiles.",
-    },
+    questionsInline: [
+      {
+        enonce: "Le bateau penche fortement sous l'effet du vent. Comment appelle-t-on ce phénomène ?",
+        options: ["La dérive", "La gîte", "Le ris", "L'abattée"],
+        reponseIndex: 1,
+        explication: "La gîte est l'inclinaison du bateau causée par la pression du vent dans les voiles.",
+      },
+      {
+        enonce: "Que signifie « mouiller » ?",
+        options: ["Prendre l'eau", "Jeter l'ancre pour immobiliser le bateau", "Changer de cap", "Réduire la voilure"],
+        reponseIndex: 1,
+        explication: "Mouiller signifie jeter l'ancre pour immobiliser le bateau.",
+      },
+      {
+        enonce: "Quelle est la différence entre le cap et la route ?",
+        options: [
+          "Il n'y en a pas, ce sont des synonymes",
+          "Le cap est la direction visée, la route est le trajet réellement suivi",
+          "Le cap concerne la vitesse, la route la direction",
+          "Le cap ne s'utilise qu'au moteur",
+        ],
+        reponseIndex: 1,
+        explication: "Le cap est la direction visée (en degrés), la route est le trajet réellement suivi, qui peut différer sous l'effet du vent ou du courant.",
+      },
+    ],
   },
   {
     id: "l1-le-vent",
@@ -107,14 +140,28 @@ export const level1Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce:
-        "Un bateau immobile ressent un vent réel de 10 nœuds. Il se met à avancer face à ce vent à 5 nœuds. Que devient le vent apparent ?",
-      options: ["Il diminue", "Il augmente", "Il reste identique", "Il change de sens"],
-      reponseIndex: 1,
-      explication:
-        "En avançant face au vent, la vitesse du bateau s'ajoute à celle du vent réel : le vent apparent forcit.",
-    },
+    questionsInline: [
+      {
+        enonce:
+          "Un bateau immobile ressent un vent réel de 10 nœuds. Il se met à avancer face à ce vent à 5 nœuds. Que devient le vent apparent ?",
+        options: ["Il diminue", "Il augmente", "Il reste identique", "Il change de sens"],
+        reponseIndex: 1,
+        explication:
+          "En avançant face au vent, la vitesse du bateau s'ajoute à celle du vent réel : le vent apparent forcit.",
+      },
+      {
+        enonce: "Comment nomme-t-on le vent en mer : par la direction d'où il vient, ou vers laquelle il souffle ?",
+        options: ["Vers laquelle il souffle", "D'où il vient", "Cela dépend du pays", "Les deux indifféremment"],
+        reponseIndex: 1,
+        explication: "En mer, on nomme toujours le vent par la direction d'où il vient : un vent de nord-ouest vient du nord-ouest.",
+      },
+      {
+        enonce: "Peut-on naviguer directement dans le lit du vent ?",
+        options: ["Oui, c'est même la route la plus directe", "Non, les voiles n'y fonctionnent pas", "Oui, mais seulement avec le spinnaker", "Non, uniquement à cause du courant"],
+        reponseIndex: 1,
+        explication: "Face au vent, dans le lit du vent, les voiles ne peuvent pas fonctionner : le bateau ne peut pas avancer.",
+      },
+    ],
   },
   {
     id: "l1-tribord-babord",
@@ -147,12 +194,26 @@ export const level1Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Tu es à l'arrière du bateau et tu regardes vers l'avant. De quel côté est tribord ?",
-      options: ["À ta gauche", "À ta droite", "Cela dépend d'où tu regardes", "Il n'y a pas de tribord à l'arrière"],
-      reponseIndex: 1,
-      explication: "Tribord est toujours le côté droit du bateau quand on regarde vers l'avant, où que l'on se trouve à bord.",
-    },
+    questionsInline: [
+      {
+        enonce: "Tu es à l'arrière du bateau et tu regardes vers l'avant. De quel côté est tribord ?",
+        options: ["À ta gauche", "À ta droite", "Cela dépend d'où tu regardes", "Il n'y a pas de tribord à l'arrière"],
+        reponseIndex: 1,
+        explication: "Tribord est toujours le côté droit du bateau quand on regarde vers l'avant, où que l'on se trouve à bord.",
+      },
+      {
+        enonce: "Quelle couleur de feu de navigation correspond à tribord ?",
+        options: ["Rouge", "Vert", "Blanc", "Jaune"],
+        reponseIndex: 1,
+        explication: "Tribord correspond au feu vert, bâbord au feu rouge.",
+      },
+      {
+        enonce: "Tribord et bâbord dépendent-ils du sens dans lequel regarde la personne à bord ?",
+        options: ["Oui, comme droite et gauche", "Non, ils désignent toujours le même côté du bateau", "Seulement en cas de vent fort", "Seulement si le bateau recule"],
+        reponseIndex: 1,
+        explication: "Contrairement à droite/gauche, tribord et bâbord décrivent le bateau lui-même : ils ne changent jamais, quel que soit le sens où l'on regarde.",
+      },
+    ],
   },
   {
     id: "l1-avant-arriere",
@@ -177,12 +238,26 @@ export const level1Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Un autre bateau est repéré exactement sur ton côté droit, à 90° de l'axe de ton bateau. Où est-il ?",
-      options: ["Par l'avant tribord", "Par le travers tribord", "Par l'arrière tribord", "Dans le lit du vent"],
-      reponseIndex: 1,
-      explication: "À 90° sur le côté droit, il est « par le travers tribord ».",
-    },
+    questionsInline: [
+      {
+        enonce: "Un autre bateau est repéré exactement sur ton côté droit, à 90° de l'axe de ton bateau. Où est-il ?",
+        options: ["Par l'avant tribord", "Par le travers tribord", "Par l'arrière tribord", "Dans le lit du vent"],
+        reponseIndex: 1,
+        explication: "À 90° sur le côté droit, il est « par le travers tribord ».",
+      },
+      {
+        enonce: "Que désigne le travers d'un bateau ?",
+        options: ["Ce qui est devant", "Ce qui est perpendiculaire à l'axe du bateau, à 90°", "Ce qui est directement derrière", "La ligne de flottaison"],
+        reponseIndex: 1,
+        explication: "Le travers désigne ce qui se trouve perpendiculairement à l'axe du bateau, à 90°.",
+      },
+      {
+        enonce: "Pourquoi précise-t-on souvent un côté en disant « par le travers tribord » ?",
+        options: ["Parce que le mot travers seul ne veut rien dire", "Parce qu'il y a un travers de chaque côté du bateau, à 90°", "Parce que le travers change tout le temps", "Ce n'est jamais nécessaire de préciser"],
+        reponseIndex: 1,
+        explication: "Il existe un travers tribord et un travers bâbord, de part et d'autre du bateau : préciser le côté lève l'ambiguïté.",
+      },
+    ],
   },
   {
     id: "l1-amure",
@@ -212,12 +287,26 @@ export const level1Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Le vent souffle de bâbord sur ton bateau. Quelle amure portes-tu ?",
-      options: ["Tribord amure", "Bâbord amure", "Cela dépend de la voile utilisée", "Amure neutre"],
-      reponseIndex: 1,
-      explication: "Le bateau est nommé d'après le côté d'où vient le vent : ici, bâbord amure.",
-    },
+    questionsInline: [
+      {
+        enonce: "Le vent souffle de bâbord sur ton bateau. Quelle amure portes-tu ?",
+        options: ["Tribord amure", "Bâbord amure", "Cela dépend de la voile utilisée", "Amure neutre"],
+        reponseIndex: 1,
+        explication: "Le bateau est nommé d'après le côté d'où vient le vent : ici, bâbord amure.",
+      },
+      {
+        enonce: "Si le vent vient de tribord, de quel côté est bordée la grand-voile ?",
+        options: ["Tribord", "Bâbord", "Au centre, ni tribord ni bâbord", "Cela ne dépend pas du vent"],
+        reponseIndex: 1,
+        explication: "Vent de tribord = tribord amure : la grand-voile est alors bordée côté bâbord.",
+      },
+      {
+        enonce: "Quelle est la différence entre l'amure et l'allure ?",
+        options: ["Ce sont deux mots pour la même chose", "L'amure indique le côté d'où vient le vent, l'allure l'angle du bateau par rapport au vent", "L'amure ne concerne que le génois", "L'allure ne s'applique qu'au moteur"],
+        reponseIndex: 1,
+        explication: "L'amure indique le côté d'où vient le vent (tribord ou bâbord), l'allure indique l'angle entre le bateau et le vent (près, travers, vent arrière...).",
+      },
+    ],
   },
   {
     id: "l1-les-allures",
@@ -262,12 +351,26 @@ export const level1Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Le vent arrive perpendiculairement au bateau, sur le côté. Quelle allure est-ce ?",
-      options: ["Le près", "Le travers", "Le grand largue", "Le vent arrière"],
-      reponseIndex: 1,
-      explication: "Un vent à 90° de l'axe du bateau correspond à l'allure du travers.",
-    },
+    questionsInline: [
+      {
+        enonce: "Le vent arrive perpendiculairement au bateau, sur le côté. Quelle allure est-ce ?",
+        options: ["Le près", "Le travers", "Le grand largue", "Le vent arrière"],
+        reponseIndex: 1,
+        explication: "Un vent à 90° de l'axe du bateau correspond à l'allure du travers.",
+      },
+      {
+        enonce: "Quelle allure correspond à naviguer au plus près possible du vent, sans être dans le lit du vent ?",
+        options: ["Le vent arrière", "Le près", "Le grand largue", "Le travers"],
+        reponseIndex: 1,
+        explication: "Le près est l'allure la plus proche du vent, juste à la limite du lit du vent.",
+      },
+      {
+        enonce: "Le vent arrière est-il toujours l'allure la plus rapide ?",
+        options: ["Oui, toujours", "Non, le bon plein ou le largue sont souvent plus efficaces", "Oui, mais seulement au moteur", "Non, aucune allure n'est plus rapide qu'une autre"],
+        reponseIndex: 1,
+        explication: "Contrairement à une idée reçue, le vent arrière n'est pas toujours l'allure la plus rapide : le bon plein ou le largue le sont souvent davantage.",
+      },
+    ],
   },
   {
     id: "l1-les-voiles",
@@ -297,11 +400,25 @@ export const level1Lessons: Lesson[] = [
         ],
       },
     ],
-    questionInline: {
-      enonce: "Quelle voile est la mieux adaptée pour naviguer vent arrière avec un maximum de toile ?",
-      options: ["Le génois", "Le foc", "Le spinnaker", "La grand-voile seule"],
-      reponseIndex: 2,
-      explication: "Le spinnaker est conçu pour les allures portantes comme le vent arrière.",
-    },
+    questionsInline: [
+      {
+        enonce: "Quelle voile est la mieux adaptée pour naviguer vent arrière avec un maximum de toile ?",
+        options: ["Le génois", "Le foc", "Le spinnaker", "La grand-voile seule"],
+        reponseIndex: 2,
+        explication: "Le spinnaker est conçu pour les allures portantes comme le vent arrière.",
+      },
+      {
+        enonce: "Quelle est la principale différence entre le génois et le foc ?",
+        options: ["Le foc est plus grand et recouvre la grand-voile", "Le génois est plus grand et recouvre en partie la grand-voile", "Ce sont deux noms pour la même voile", "Le foc ne s'utilise qu'au vent arrière"],
+        reponseIndex: 1,
+        explication: "Le génois est plus grand que le foc et recouvre en partie la grand-voile ; le foc, plus petit, ne la recouvre pas.",
+      },
+      {
+        enonce: "À quelles allures utilise-t-on le spinnaker ?",
+        options: ["Au près uniquement", "Aux allures portantes (grand largue, vent arrière)", "Au travers uniquement", "À toutes les allures indifféremment"],
+        reponseIndex: 1,
+        explication: "Le spinnaker est réservé aux allures portantes, où il capte un maximum de vent venant de l'arrière.",
+      },
+    ],
   },
 ];
