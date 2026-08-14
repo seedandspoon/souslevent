@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import clsx from "clsx";
 import { Flame, Trophy, GraduationCap, ShieldAlert } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { SkillBar } from "@/components/ui/SkillBar";
+import { useTailleTexte } from "@/lib/useTailleTexte";
+import type { TailleTexte } from "@/lib/textScale";
 import {
   useProfile,
   useStreak,
@@ -15,6 +18,12 @@ import {
 import { getTotalConceptsCount, getAllLessonsOrdered } from "@/lib/curriculum";
 import { setPrenom } from "@/lib/progress";
 
+const OPTIONS_TAILLE_TEXTE: { valeur: TailleTexte; label: string; size: string }[] = [
+  { valeur: "normale", label: "Normale", size: "text-sm" },
+  { valeur: "grande", label: "Grande", size: "text-base" },
+  { valeur: "tres-grande", label: "Très grande", size: "text-lg" },
+];
+
 export default function ProfilPage() {
   const profil = useProfile();
   const streak = useStreak();
@@ -23,6 +32,7 @@ export default function ProfilPage() {
   const totalConcepts = getTotalConceptsCount();
   const globalPct = useGlobalProgressPercent(totalConcepts);
   const totalLessons = getAllLessonsOrdered().length;
+  const { taille, setTaille } = useTailleTexte();
 
   const [editing, setEditing] = useState(false);
   const [nom, setNom] = useState(profil.prenom);
@@ -56,6 +66,25 @@ export default function ProfilPage() {
             <p className="font-medium text-ink">{profil.prenom || "Ajouter ton prénom"}</p>
           </button>
         )}
+      </Card>
+
+      <Card className="p-5 mb-4">
+        <p className="text-xs font-medium text-ink-soft uppercase tracking-wide mb-3">Taille du texte</p>
+        <div className="flex rounded-xl bg-surface-2 p-1">
+          {OPTIONS_TAILLE_TEXTE.map((option) => (
+            <button
+              key={option.valeur}
+              onClick={() => setTaille(option.valeur)}
+              className={clsx(
+                "flex-1 font-medium py-2 rounded-lg transition-colors",
+                option.size,
+                taille === option.valeur ? "bg-surface text-ink shadow-sm" : "text-ink-soft"
+              )}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
       </Card>
 
       <div className="grid grid-cols-2 gap-3 mb-4">

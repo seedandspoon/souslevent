@@ -110,3 +110,14 @@ body {
 .no-scrollbar {
   scrollbar-width: none;
 }
+
+/* Taille du texte : les utilitaires Tailwind (text-sm, text-base...) sont
+   en rem, donc changer la taille de police racine agrandit tout
+   l'affichage de façon proportionnelle. Classes posées sur <html> par
+   useTailleTexte() (voir src/lib/textScale.ts). */
+html.text-scale-lg {
+  font-size: 112.5%;
+}
+html.text-scale-xl {
+  font-size: 125%;
+}

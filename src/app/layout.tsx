@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { BottomNav } from "@/components/nav/BottomNav";
 import { RegisterServiceWorker } from "@/components/RegisterServiceWorker";
 import { EnsureProfile } from "@/components/EnsureProfile";
+import { scriptAntiFlash } from "@/lib/textScale";
 import "./globals.css";
 
 const inter = Inter({
@@ -39,7 +40,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${inter.variable} h-full antialiased`}>
+    <html lang="fr" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        {/* Applique la taille de texte mémorisée avant le premier rendu,
+            pour éviter un flash à la taille par défaut (voir useTailleTexte
+            dans src/lib/textScale.ts, qui prend le relais côté React). */}
+        <script dangerouslySetInnerHTML={{ __html: scriptAntiFlash() }} />
+      </head>
       <body className="min-h-full flex flex-col bg-bg text-ink">
         <RegisterServiceWorker />
         <EnsureProfile />
