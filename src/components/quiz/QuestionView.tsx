@@ -12,13 +12,19 @@ function ChoiceList({
   options,
   reponseIndex,
   onAnswer,
+  revele = false,
 }: {
   options: string[];
   reponseIndex: number;
   onAnswer: (correct: boolean) => void;
+  // Force l'affichage de la bonne réponse sans qu'aucune option n'ait été
+  // cliquée : cas du temps écoulé, où il ne faut pas laisser les boutons
+  // cliquables ni marquer une option comme "mauvaise réponse" alors que
+  // personne n'a répondu.
+  revele?: boolean;
 }) {
   const [selected, setSelected] = useState<number | null>(null);
-  const repondu = selected !== null;
+  const repondu = revele || selected !== null;
 
   return (
     <div className="flex flex-col gap-2">
@@ -169,7 +175,7 @@ function AssociationPairs({
 
 export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (correct: boolean, tempsMs: number) => void }) {
   const [debut] = useState(() => Date.now());
-  const [repondu, setRepondu] = useState<{ correct: boolean } | null>(null);
+  const [repondu, setRepondu] = useState<{ correct: boolean; expire?: boolean } | null>(null);
   const [tempsRestant, setTempsRestant] = useState(20);
 
   const chronometre = item.type === "scenario" && item.chronometre;
@@ -177,7 +183,10 @@ export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (co
   useEffect(() => {
     if (!chronometre || repondu) return;
     if (tempsRestant <= 0) {
-      handleAnswer(false);
+      // Personne n'a cliqué : expire=true distingue ce cas d'une vraie
+      // mauvaise réponse, pour ne pas dire "pas tout à fait" alors
+      // qu'aucune réponse n'a été donnée.
+      handleAnswer(false, true);
       return;
     }
     const t = setTimeout(() => setTempsRestant((v) => v - 1), 1000);
@@ -185,9 +194,9 @@ export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (co
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tempsRestant, repondu, chronometre]);
 
-  function handleAnswer(correct: boolean) {
+  function handleAnswer(correct: boolean, expire = false) {
     if (repondu) return;
-    setRepondu({ correct });
+    setRepondu({ correct, expire });
     onAnswer(correct, Date.now() - debut);
   }
 
@@ -229,7 +238,12 @@ export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (co
           <div className="rounded-xl bg-brand-50 p-4 mb-4">
             <p className="text-[0.9375rem] text-ink leading-relaxed">{item.situation}</p>
           </div>
-          <ChoiceList options={item.options} reponseIndex={item.reponseIndex} onAnswer={handleAnswer} />
+          <ChoiceList
+            options={item.options}
+            reponseIndex={item.reponseIndex}
+            onAnswer={handleAnswer}
+            revele={repondu?.expire}
+          />
         </>
       )}
 
@@ -254,7 +268,12 @@ export function QuestionView({ item, onAnswer }: { item: QuizItem; onAnswer: (co
             repondu.correct ? "bg-success-soft text-ink" : "bg-danger-soft text-ink"
           )}
         >
-          <p className="font-semibold mb-1">{repondu.correct ? "Bonne réponse !" : "Pas tout à fait."}</p>
+          <p className="font-semibold mb-1">
+            {repondu.expire ? "Temps écoulé !" : repondu.correct ? "Bonne réponse !" : "Pas tout à fait."}
+          </p>
+          {repondu.expire && item.type === "scenario" && (
+            <p className="mb-1">La bonne réponse était : « {item.options[item.reponseIndex]} ».</p>
+          )}
           {item.explication}
         </div>
       )}
