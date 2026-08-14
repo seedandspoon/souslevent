@@ -2,7 +2,7 @@ import type { ComponentType } from "react";
 import { BoatSide } from "./BoatSide";
 import { HeelDiagram } from "./HeelDiagram";
 import { WindApparentReal, PortStarboard, ForeAftBeam, TackDiagram } from "./WindDiagrams";
-import { PointsOfSailWheel, QuizPointOfSailBeam } from "./PointsOfSailWheel";
+import { PointsOfSailWheel, QuizPointOfSailBeam, QuizPointOfSailBonPlein, QuizPointOfSailGrandLargue } from "./PointsOfSailWheel";
 import { SailsOverview, MainsailParts, SheetHalyard, WinchDiagram, TillerWheel, TelltaleTrimDiagram } from "./GearDiagrams";
 import { KnotFigureEight, KnotBowline, KnotHalfHitch, KnotRoundTurn, KnotCleat } from "./KnotDiagrams";
 import { EmpannageBoomSweep, VirementGeometrie, PriseDeRisDiagram } from "./ManeuverDiagrams";
@@ -35,7 +35,13 @@ const registry: Record<string, ComponentType> = {
   "telltale-trim": TelltaleTrimDiagram,
 
   "quiz-point-of-sail-beam": QuizPointOfSailBeam,
+  "quiz-point-of-sail-bon-plein": QuizPointOfSailBonPlein,
+  "quiz-point-of-sail-grand-largue": QuizPointOfSailGrandLargue,
   "quiz-boat-part-boom": () => <BoatSide highlight="bome" />,
+  "quiz-boat-part-mat": () => <BoatSide highlight="mat" />,
+  "quiz-boat-part-coque": () => <BoatSide highlight="coque" />,
+  "quiz-boat-part-pont": () => <BoatSide highlight="pont" />,
+  "quiz-boat-part-cockpit": () => <BoatSide highlight="cockpit" />,
 
   "knot-figure-eight": KnotFigureEight,
   "knot-bowline": KnotBowline,

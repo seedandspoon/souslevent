@@ -60,8 +60,10 @@ export function PointsOfSailWheel() {
   );
 }
 
-export function QuizPointOfSailBeam() {
-  const heading = 90; // Travers : cap perpendiculaire au vent
+// Même principe que PointsOfSailWheel, mais sans aucun label : le bateau
+// pointe à l'angle demandé (voir POINTS ci-dessus pour les angles
+// canoniques par allure) et c'est au quiz de faire deviner laquelle.
+function QuizPointOfSailAt({ heading }: { heading: number }) {
   return (
     <IllustrationFrame label="Un bateau et une flèche de vent : quelle allure ?" viewBox="0 0 400 290">
       <circle cx={CX} cy={CY} r={R} fill="none" stroke={BRAND} strokeWidth={1.5} strokeDasharray="3 5" opacity={0.4} />
@@ -77,4 +79,16 @@ export function QuizPointOfSailBeam() {
       </g>
     </IllustrationFrame>
   );
+}
+
+export function QuizPointOfSailBeam() {
+  return <QuizPointOfSailAt heading={90} />; // Travers
+}
+
+export function QuizPointOfSailBonPlein() {
+  return <QuizPointOfSailAt heading={60} />; // Bon plein
+}
+
+export function QuizPointOfSailGrandLargue() {
+  return <QuizPointOfSailAt heading={150} />; // Grand largue
 }
